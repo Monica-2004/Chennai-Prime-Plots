@@ -102,11 +102,12 @@
           body: JSON.stringify(formSubmitPayload)
         });
 
-        if (fsRes.ok) {
+        const fsData = await fsRes.json().catch(() => ({}));
+        if (fsRes.ok && fsData && fsData.success !== "false") {
           serverDispatched = true;
-          if (dispatchMethod === "offline_receipt") {
-            dispatchMethod = "formsubmit_autoresponder";
-          }
+          dispatchMethod = "formsubmit_autoresponder";
+        } else if (fsData && fsData.message && fsData.message.includes("Activation")) {
+          console.info("FormSubmit requires one-time activation at monicaperumal2004@gmail.com to enable autoresponders.");
         }
       } catch (err) {
         console.warn("Public email gateway notice:", err);

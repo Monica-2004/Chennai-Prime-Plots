@@ -19,7 +19,14 @@ export default async function handler(req, res) {
   }
 
   try {
-    const payload = req.body || {};
+    let payload = req.body || {};
+    if (typeof payload === 'string') {
+      try {
+        payload = JSON.parse(payload);
+      } catch (e) {
+        console.warn("Could not parse req.body as JSON string:", e);
+      }
+    }
     const bookingRef = payload.bookingRef || ("CP-CH-" + Math.floor(100000 + Math.random() * 900000));
     const recipientEmail = (payload.email || "").trim().toLowerCase();
     const recipientName = payload.fullName || payload.name || "Valued VIP Client";

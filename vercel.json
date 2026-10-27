@@ -5,6 +5,10 @@
     {
       "source": "/webhook/llb-property-inquiry",
       "destination": "/api/webhook/llb-property-inquiry"
+    },
+    {
+      "source": "/api/send-email",
+      "destination": "/api/webhook/llb-property-inquiry"
     }
   ]
 }
