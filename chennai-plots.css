@@ -6385,10 +6385,11 @@ html, body {
 
   /* 4. Ultra-Compact Live Navigation HUD on Mobile (Only 50px tall by default) */
   .gmaps-live-nav-hud {
-    position: absolute !important;
-    top: 8px !important;
+    position: fixed !important;
+    top: 58px !important;
     left: 8px !important;
     right: 8px !important;
+    z-index: 10001 !important;
     transform: none !important;
     width: auto !important;
     max-width: calc(100% - 16px) !important;
