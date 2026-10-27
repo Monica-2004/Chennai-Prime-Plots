@@ -4314,11 +4314,11 @@
 
     updateCameraFollowButtonUI();
 
-    // Show floating Live Navigation HUD banner
-
+    // Show floating Live Navigation HUD banner and hide Directions Panel to prevent overwriting
     const hud = document.getElementById("gmapsLiveNavHud");
-
     if (hud) hud.style.display = "block";
+    const dirPanel = document.getElementById("gmapsDirectionsPanel");
+    if (dirPanel) dirPanel.style.display = "none";
 
     // Update buttons
 
@@ -4571,18 +4571,18 @@
 
     setTimeout(updateZoomButtonsUI, 850);
 
-    // Restore directions panel if it was minimized
+    // Hide Live Nav HUD and restore directions panel
+    const liveHud = document.getElementById("gmapsLiveNavHud");
+    if (liveHud) liveHud.style.display = "none";
 
     const directionsPanel = document.getElementById("gmapsDirectionsPanel");
-
-    if (directionsPanel && directionsPanel.classList.contains("minimized")) {
-
-      directionsPanel.classList.remove("minimized");
-
-      const minBtn = document.getElementById("gmapsPanelMinimizeBtn");
-
-      if (minBtn) minBtn.innerHTML = '<i class="fas fa-chevron-up"></i> Minimize';
-
+    if (directionsPanel) {
+      directionsPanel.style.display = "";
+      if (directionsPanel.classList.contains("minimized")) {
+        directionsPanel.classList.remove("minimized");
+        const minBtn = document.getElementById("gmapsPanelMinimizeBtn");
+        if (minBtn) minBtn.innerHTML = '<i class="fas fa-chevron-up"></i> Minimize';
+      }
     }
 
     // Reset 3D Driver Street Vision telemetry
@@ -5116,8 +5116,9 @@
 
     }
 
+    const dirPanel = document.getElementById("gmapsDirectionsPanel");
+    if (dirPanel) dirPanel.style.display = "none";
     // Show Sleek Bottom-Docked Destination Arrived Showcase Bar Overlay with Plot Image
-
     showMapDestinationArrivedCard(navActiveDestPlot);
 
     // Auto-fit Map squarely into the user's screen
