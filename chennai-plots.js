@@ -158,6 +158,32 @@
 
   // DOM Content Loaded Initializer
 
+  
+  // Mobile Legend Floating Toggle (Pill to Expanded List)
+  window.toggleMapLegendFloating = function(event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    const legend = document.getElementById("mapLegendFloating");
+    if (!legend) return;
+    legend.classList.toggle("expanded");
+  };
+
+  // Mobile Live HUD Toggle (Collapses large action strip)
+  window.toggleMobileHudControls = function() {
+    const hud = document.getElementById("gmapsLiveNavHud");
+    const icon = document.getElementById("hudMobileToggleIcon");
+    if (!hud) return;
+    hud.classList.toggle("controls-expanded");
+    if (icon) {
+      if (hud.classList.contains("controls-expanded")) {
+        icon.className = "fas fa-chevron-up";
+      } else {
+        icon.className = "fas fa-chevron-down";
+      }
+    }
+  };
+
   document.addEventListener("DOMContentLoaded", () => {
 
     initDataset();
@@ -2269,41 +2295,36 @@
   function mobileSwitchView(mode) {
 
     const btnMap = document.getElementById("mobileBtnShowMap");
-
     const btnList = document.getElementById("mobileBtnShowList");
+    const navMap = document.getElementById("mobileNavMap");
+    const navList = document.getElementById("mobileNavList");
 
     if (mode === "map") {
-
       if (btnMap) btnMap.classList.add("active");
-
       if (btnList) btnList.classList.remove("active");
+      if (navMap) navMap.classList.add("active");
+      if (navList) navList.classList.remove("active");
 
-      const mapSec = document.getElementById("mapSection");
-
+      const mapSec = document.getElementById("mapSection") || document.getElementById("interactiveMapSection");
       if (mapSec) {
-
         mapSec.scrollIntoView({ behavior: "smooth", block: "start" });
-
       }
 
       setTimeout(() => {
-
-        if (mapInstance) mapInstance.invalidateSize();
-
+        if (mapInstance) {
+          if (mapInstance.resize) mapInstance.resize();
+          if (mapInstance.invalidateSize) mapInstance.invalidateSize();
+        }
       }, 350);
-
     } else {
-
       if (btnList) btnList.classList.add("active");
-
       if (btnMap) btnMap.classList.remove("active");
+      if (navList) navList.classList.add("active");
+      if (navMap) navMap.classList.remove("active");
 
       const showcaseSec = document.getElementById("showcaseSection");
-
       if (showcaseSec) {
-
         showcaseSec.scrollIntoView({ behavior: "smooth", block: "start" });
-
       }
 
     }
@@ -4316,7 +4337,15 @@
 
     // Show floating Live Navigation HUD banner and hide Directions Panel to prevent overwriting
     const hud = document.getElementById("gmapsLiveNavHud");
-    if (hud) hud.style.display = "block";
+    if (hud) {
+      hud.style.display = "block";
+      if (window.innerWidth <= 768) {
+        hud.classList.remove("controls-expanded");
+        const toggleIcon = document.getElementById("hudMobileToggleIcon");
+        if (toggleIcon) toggleIcon.className = "fas fa-chevron-down";
+      }
+    }
+    document.body.classList.add("nav-active");
     const dirPanel = document.getElementById("gmapsDirectionsPanel");
     if (dirPanel) dirPanel.style.display = "none";
 
@@ -4573,7 +4602,13 @@
 
     // Hide Live Nav HUD and restore directions panel
     const liveHud = document.getElementById("gmapsLiveNavHud");
-    if (liveHud) liveHud.style.display = "none";
+    if (liveHud) {
+      liveHud.style.display = "none";
+      liveHud.classList.remove("controls-expanded");
+    }
+    document.body.classList.remove("nav-active");
+    // Ensure all 20 plot markers are completely clear and clickable
+    document.querySelectorAll(".nav-dimmed-marker").forEach(el => el.classList.remove("nav-dimmed-marker"));
 
     const directionsPanel = document.getElementById("gmapsDirectionsPanel");
     if (directionsPanel) {

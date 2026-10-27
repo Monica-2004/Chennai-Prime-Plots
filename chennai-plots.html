@@ -466,6 +466,16 @@
                 <span id="hudRemainingDist">-- km</span> &bull; <span id="hudRemainingEta">-- min</span>
               </div>
             </div>
+
+            <!-- Mobile Quick Controls (Expand/Collapse Controls & Direct Exit) -->
+            <div class="hud-mobile-quick-actions" id="hudMobileQuickActions">
+              <button type="button" class="btn-hud-mobile-toggle" id="btnHudMobileToggle" onclick="window.toggleMobileHudControls()" aria-label="Toggle Navigation Controls" title="More Options">
+                <i class="fas fa-chevron-down" id="hudMobileToggleIcon"></i>
+              </button>
+              <button type="button" class="btn-hud-mobile-close" id="btnHudMobileClose" onclick="window.resetRouteNavigation()" aria-label="Exit Navigation" title="Exit Navigation">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
           </div>
 
           <!-- Bottom Micro Progress & Control Strip -->
@@ -682,22 +692,25 @@
           </div>
         </div>
 
-        <!-- Map Floating Legend -->
-        <div class="map-legend-floating">
+        <!-- Map Floating Legend (Collapsible Pill on Mobile, Expanded on Desktop) -->
+        <div class="map-legend-floating" id="mapLegendFloating" onclick="window.toggleMapLegendFloating(event)" title="Tap to toggle marker key">
           <div class="map-legend-title">
-            <i class="fas fa-map-pin" style="color:#fbbf24;"></i> Pointed Marker Key
+            <span class="legend-title-label"><i class="fas fa-map-pin" style="color:#fbbf24;"></i> Marker Key</span>
+            <i class="fas fa-chevron-up map-legend-chevron" id="mapLegendChevron"></i>
           </div>
-          <div class="legend-item">
-            <span class="legend-pointer-preview green"></span>
-            <span>Available Plot (Sanctioned)</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-pointer-preview gold"></span>
-            <span>Corner VIP / Ultra-Prime Asset</span>
-          </div>
-          <div class="legend-item">
-            <span style="font-size:0.9rem;">🎯</span>
-            <span>Pulsing Radar indicates live sale</span>
+          <div class="legend-items-list" id="mapLegendItemsList">
+            <div class="legend-item">
+              <span class="legend-pointer-preview green"></span>
+              <span>Available Plot (Sanctioned)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-pointer-preview gold"></span>
+              <span>Corner VIP / Ultra-Prime Asset</span>
+            </div>
+            <div class="legend-item">
+              <span style="font-size:0.9rem;">🎯</span>
+              <span>Pulsing Radar indicates live sale</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1442,23 +1455,23 @@
 
   <!-- Native Mobile App Bottom Navigation Bar -->
   <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Mobile App Navigation">
-    <button class="mobile-nav-item active" id="mobileNavMap" onclick="focusOnMapSection()">
+    <button class="mobile-nav-item active" id="mobileNavMap" onclick="window.mobileSwitchView('map')" title="View Map">
       <i class="fas fa-map-marked-alt"></i>
-      <span>Plots</span>
+      <span>Map</span>
     </button>
-    <button class="mobile-nav-item" id="mobileNavVision" onclick="toggleStreetVisionQuick()">
+    <button class="mobile-nav-item" id="mobileNavList" onclick="window.mobileSwitchView('list')" title="View Plot Cards">
+      <i class="fas fa-th-large"></i>
+      <span>Plots (20)</span>
+    </button>
+    <button class="mobile-nav-item" id="mobileNavVision" onclick="window.toggleStreetVisionQuick()" title="Driver's Eye 3D Street Vision">
       <i class="fas fa-street-view"></i>
       <span>3D Vision</span>
     </button>
-    <button class="mobile-nav-item" id="mobileNavFilter" onclick="toggleMobileFilterDrawer()">
-      <i class="fas fa-sliders-h"></i>
-      <span>Filter</span>
-    </button>
-    <button class="mobile-nav-item mobile-nav-highlight" id="mobileNavCab" onclick="openCabBookingForActivePlot()">
+    <button class="mobile-nav-item mobile-nav-highlight" id="mobileNavCab" onclick="window.openCabBookingForActivePlot()" title="Book Free VIP Site Visit Cab">
       <i class="fas fa-car-side"></i>
       <span>Free Cab</span>
     </button>
-    <a href="https://wa.me/919345029705?text=Hello%20Chennai%20Prime%20Plots,%20I%20am%20inquiring%20about%20prime%20plots." target="_blank" class="mobile-nav-item" id="mobileNavWhatsApp">
+    <a href="https://wa.me/919345029705?text=Hello%20Chennai%20Prime%20Plots,%20I%20am%20inquiring%20about%20prime%20plots." target="_blank" class="mobile-nav-item" id="mobileNavWhatsApp" title="Chat on WhatsApp">
       <i class="fab fa-whatsapp"></i>
       <span>WhatsApp</span>
     </a>

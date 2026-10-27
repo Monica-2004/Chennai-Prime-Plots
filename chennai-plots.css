@@ -582,6 +582,10 @@ button {
 
 .map-layer-toggles {
   display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .btn-satellite-active {
   background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
   color: #ffffff !important;
@@ -593,10 +597,6 @@ button {
 .btn-satellite-active:hover {
   filter: brightness(1.1);
   transform: translateY(-1px);
-}
-
-  align-items: center;
-  gap: 8px;
 }
 
 /* Map Container */
@@ -2622,10 +2622,16 @@ button {
 }
 
 .nav-dimmed-marker {
-  opacity: 0.16;
-  filter: grayscale(85%) blur(0.5px);
-  pointer-events: none;
-  transition: opacity 0.5s ease, filter 0.5s ease;
+  opacity: 0.78;
+  filter: saturate(90%);
+  pointer-events: auto !important;
+  cursor: pointer;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.nav-dimmed-marker:hover {
+  opacity: 1 !important;
+  transform: scale(1.1);
 }
 
 /* --- LEAFLET VEHICLE MARKER STYLES (CAR & BIKE) --- */
@@ -6284,5 +6290,263 @@ html, body {
   .plots-subdivision-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 6px !important;
+  }
+}
+
+
+/* ==========================================================================
+   MOBILE UNCLUTTERED MAP VIEWPORT & ZERO-COLLISION OVERLAYS
+   (Full map breathing room, collapsed legend pill, compact navigation HUD)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* 1. Large Unobstructed Mobile Map */
+  #chennaiLeafletMap {
+    height: calc(100vh - 150px) !important;
+    min-height: 520px !important;
+    max-height: 720px !important;
+    width: 100% !important;
+    border-radius: 12px !important;
+  }
+
+  /* 2. Hide redundant floating Map/List toggle bar (Bottom nav already has tabs) */
+  .mobile-map-list-toggle-bar {
+    display: none !important;
+  }
+
+  /* 3. Collapsible Floating Legend Pill (Leaves South Chennai / OMR 100% clear) */
+  .map-legend-floating {
+    position: absolute !important;
+    bottom: 74px !important;
+    left: auto !important;
+    right: 12px !important;
+    top: auto !important;
+    z-index: 500 !important;
+    padding: 6px 12px !important;
+    border-radius: 24px !important;
+    background: rgba(7, 13, 29, 0.90) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(212, 175, 55, 0.45) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+    max-width: 125px !important;
+    cursor: pointer !important;
+    transition: all 0.25s ease !important;
+  }
+
+  .map-legend-floating .map-legend-title {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 6px !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    color: #fbbf24 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    user-select: none !important;
+  }
+
+  .map-legend-floating .map-legend-chevron {
+    display: inline-block !important;
+    font-size: 0.65rem !important;
+    color: #fbbf24 !important;
+    transition: transform 0.25s ease !important;
+    transform: rotate(180deg) !important;
+  }
+
+  /* Hide legend items list when collapsed */
+  .map-legend-floating:not(.expanded) .legend-items-list,
+  .map-legend-floating:not(.expanded) .legend-item {
+    display: none !important;
+  }
+
+  /* Expanded state on tap */
+  .map-legend-floating.expanded {
+    max-width: 250px !important;
+    border-radius: 14px !important;
+    padding: 12px 14px !important;
+    background: rgba(7, 13, 29, 0.98) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85) !important;
+  }
+
+  .map-legend-floating.expanded .map-legend-chevron {
+    transform: rotate(0deg) !important;
+  }
+
+  .map-legend-floating.expanded .legend-items-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    margin-top: 10px !important;
+    padding-top: 8px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* 4. Ultra-Compact Live Navigation HUD on Mobile (Only 50px tall by default) */
+  .gmaps-live-nav-hud {
+    position: absolute !important;
+    top: 8px !important;
+    left: 8px !important;
+    right: 8px !important;
+    transform: none !important;
+    width: auto !important;
+    max-width: calc(100% - 16px) !important;
+    z-index: 1200 !important;
+    padding: 6px 10px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.75) !important;
+    background: rgba(11, 19, 43, 0.96) !important;
+    backdrop-filter: blur(14px) !important;
+    border: 1px solid rgba(212, 175, 55, 0.4) !important;
+  }
+
+  .hud-main-banner {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+
+  .hud-turn-icon-box {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.95rem !important;
+    flex-shrink: 0 !important;
+    border-radius: 8px !important;
+  }
+
+  .hud-turn-info {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .hud-turn-instruction {
+    font-size: 0.78rem !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-weight: 700 !important;
+    color: #f1f5f9 !important;
+  }
+
+  .hud-turn-distance {
+    font-size: 0.66rem !important;
+    color: #fbbf24 !important;
+  }
+
+  .hud-telemetry-box {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .hud-speed-badge {
+    display: none !important; /* Hide speedometer on mobile to maximize map visibility */
+  }
+
+  .hud-eta-pill {
+    font-size: 0.66rem !important;
+    padding: 3px 6px !important;
+    background: rgba(16, 185, 129, 0.25) !important;
+    border: 1px solid rgba(16, 185, 129, 0.45) !important;
+    border-radius: 6px !important;
+    color: #6ee7b7 !important;
+    white-space: nowrap !important;
+  }
+
+  .hud-mobile-quick-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .btn-hud-mobile-toggle,
+  .btn-hud-mobile-close {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    background: rgba(15, 23, 42, 0.85) !important;
+    color: #ffffff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0.72rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .btn-hud-mobile-toggle:hover {
+    background: rgba(212, 175, 55, 0.3) !important;
+    border-color: #fbbf24 !important;
+  }
+
+  .btn-hud-mobile-close {
+    background: rgba(239, 68, 68, 0.35) !important;
+    border-color: rgba(239, 68, 68, 0.7) !important;
+    color: #fca5a5 !important;
+  }
+
+  .btn-hud-mobile-close:hover {
+    background: rgba(239, 68, 68, 0.9) !important;
+    color: #ffffff !important;
+  }
+
+  /* Default on mobile: Hide multi-button controls strip */
+  .gmaps-live-nav-hud:not(.controls-expanded) .hud-progress-strip {
+    display: none !important;
+  }
+
+  /* Expanded on mobile: Show controls strip below main banner */
+  .gmaps-live-nav-hud.controls-expanded .hud-progress-strip {
+    display: block !important;
+    margin-top: 8px !important;
+    padding-top: 8px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+  }
+
+  .hud-strip-controls {
+    flex-direction: column !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+
+  .hud-mini-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+
+  .hud-mini-actions button {
+    padding: 6px 8px !important;
+    font-size: 0.7rem !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* 5. Horizontal Scrolling Map Controls Toolbar */
+  .map-controls-bar {
+    padding: 6px 8px !important;
+    gap: 6px !important;
+  }
+
+  .zone-filter-pills,
+  .map-layer-toggles {
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    flex-wrap: nowrap !important;
+    scrollbar-width: none !important;
+  }
+
+  .zone-filter-pills::-webkit-scrollbar,
+  .map-layer-toggles::-webkit-scrollbar {
+    display: none !important;
   }
 }
