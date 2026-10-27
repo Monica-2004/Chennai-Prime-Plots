@@ -1,0 +1,38 @@
+{
+  "name": "Chennai Prime Plots - 3D Street Vision",
+  "short_name": "Chennai Plots",
+  "description": "3D Street Vision, Satellite Road Navigation, and CMDA/DTCP Approved Prime Plots in Chennai.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#090e17",
+  "theme_color": "#0b132b",
+  "categories": ["real estate", "navigation", "business"],
+  "icons": [
+    {
+      "src": "assets/architectural-glass-tower.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/hero-luxury-real-estate.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "3D Street Vision",
+      "url": "./index.html?vision=1",
+      "description": "Launch 3D Street View with turning roads"
+    },
+    {
+      "name": "Book Free Cab",
+      "url": "./index.html?book=1",
+      "description": "Schedule a complimentary site inspection cab"
+    }
+  ]
+}

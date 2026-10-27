@@ -21,6 +21,14 @@
   <!-- Leaflet Map CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
+    <!-- PWA & Mobile App Settings -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0b132b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Chennai Plots">
+  <link rel="apple-touch-icon" href="assets/architectural-glass-tower.jpg">
+
   <!-- Chennai Plots Custom Stylesheet -->
   <link rel="stylesheet" href="chennai-plots.css">
 </head>
@@ -1389,6 +1397,72 @@
   <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
 
   <script src="chennai-plots-data.js"></script>
+  <script src="api-dispatcher.js"></script>
   <script src="chennai-plots.js"></script>
+
+  <!-- PWA App Install Banner -->
+  <div class="pwa-install-banner" id="pwaInstallBanner" style="display:none;">
+    <div class="pwa-banner-content">
+      <div class="pwa-banner-icon"><i class="fas fa-mobile-alt"></i></div>
+      <div class="pwa-banner-text">
+        <strong>Install Chennai Plots App</strong>
+        <p>Ultra-fast 3D Street Vision & GPS Navigation on your home screen</p>
+      </div>
+    </div>
+    <div class="pwa-banner-actions">
+      <button class="btn btn-sm btn-gold" id="btnPwaInstall">Install</button>
+      <button class="btn-pwa-dismiss" id="btnPwaDismiss">&times;</button>
+    </div>
+  </div>
+
+  <!-- Instant VIP Email Confirmation Receipt Modal -->
+  <div class="modal-backdrop" id="instantEmailReceiptModal" style="display:none; z-index:99999;">
+    <div class="modal-window" style="max-width: 680px; max-height: 90vh; display: flex; flex-direction: column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #0b132b, #1e293b); border-bottom: 2px solid #d4af37;">
+        <h3 style="color:#fbbf24; font-size:1.15rem; display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-check-circle" style="color:#10b981;"></i> Instant VIP Confirmation & Email Pass
+        </h3>
+        <button class="modal-close-btn" onclick="closeModal('instantEmailReceiptModal')" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body" style="overflow-y:auto; padding: 20px; background:#070b14;">
+        <div id="receiptContentContainer">
+          <!-- Dynamically populated with receipt HTML -->
+        </div>
+      </div>
+      <div class="modal-footer" style="padding: 14px 20px; background: #0f172a; border-top: 1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <button class="btn btn-secondary" onclick="window.print()" style="display:inline-flex; align-items:center; gap:6px;">
+          <i class="fas fa-print"></i> Print / Save PDF
+        </button>
+        <button class="btn btn-gold" onclick="closeModal('instantEmailReceiptModal')">
+          <i class="fas fa-check"></i> Done & Return to Map
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Native Mobile App Bottom Navigation Bar -->
+  <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Mobile App Navigation">
+    <button class="mobile-nav-item active" id="mobileNavMap" onclick="focusOnMapSection()">
+      <i class="fas fa-map-marked-alt"></i>
+      <span>Plots</span>
+    </button>
+    <button class="mobile-nav-item" id="mobileNavVision" onclick="toggleStreetVisionQuick()">
+      <i class="fas fa-street-view"></i>
+      <span>3D Vision</span>
+    </button>
+    <button class="mobile-nav-item" id="mobileNavFilter" onclick="toggleMobileFilterDrawer()">
+      <i class="fas fa-sliders-h"></i>
+      <span>Filter</span>
+    </button>
+    <button class="mobile-nav-item mobile-nav-highlight" id="mobileNavCab" onclick="openCabBookingForActivePlot()">
+      <i class="fas fa-car-side"></i>
+      <span>Free Cab</span>
+    </button>
+    <a href="https://wa.me/919345029705?text=Hello%20Chennai%20Prime%20Plots,%20I%20am%20inquiring%20about%20prime%20plots." target="_blank" class="mobile-nav-item" id="mobileNavWhatsApp">
+      <i class="fab fa-whatsapp"></i>
+      <span>WhatsApp</span>
+    </a>
+  </nav>
+
 </body>
 </html>

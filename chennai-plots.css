@@ -5739,3 +5739,193 @@ body {
 .dash-blinker:active {
   transform: scale(0.95);
 }
+
+
+/* ==========================================================================
+   MOBILE NATIVE APP EXPERIENCE & LAPTOP RESPONSIVE PERFECTION
+   ========================================================================== */
+
+/* 1. Mobile Bottom Navigation Bar */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(11, 19, 43, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  padding: 6px 12px;
+  justify-content: space-around;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: flex;
+  }
+  body {
+    padding-bottom: 70px;
+    overflow-x: hidden;
+  }
+  .hero-search-section {
+    padding: 14px;
+  }
+  .plots-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .btn-vision-steer {
+    padding: 8px 12px !important;
+    font-size: 0.8rem !important;
+    min-height: 42px;
+  }
+  .vision-steer-group {
+    width: 100%;
+    justify-content: center;
+    margin-top: 6px;
+  }
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  min-width: 54px;
+}
+
+.mobile-nav-item i {
+  font-size: 1.25rem;
+  margin-bottom: 3px;
+  transition: transform 0.2s ease;
+}
+
+.mobile-nav-item:hover,
+.mobile-nav-item:focus,
+.mobile-nav-item.active {
+  color: #fbbf24;
+}
+
+.mobile-nav-item.active i {
+  transform: translateY(-2px);
+  color: #fbbf24;
+}
+
+.mobile-nav-highlight {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  color: #ffffff !important;
+  border-radius: 12px;
+  padding: 6px 10px;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+}
+
+.mobile-nav-highlight i {
+  color: #ffffff !important;
+}
+
+/* 2. PWA Floating Install Banner */
+.pwa-install-banner {
+  display: flex;
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 460px;
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: 12px;
+  padding: 10px 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  justify-content: space-between;
+  align-items: center;
+  animation: pwaSlideIn 0.3s ease-out;
+}
+
+@keyframes pwaSlideIn {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.pwa-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pwa-banner-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #d97706, #b45309);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.pwa-banner-text strong {
+  display: block;
+  font-size: 0.85rem;
+  color: #f8fafc;
+}
+
+.pwa-banner-text p {
+  margin: 0;
+  font-size: 0.72rem;
+  color: #94a3b8;
+}
+
+.pwa-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-pwa-dismiss {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+/* 3. Laptop & Ultra-Wide Desktop Perfection */
+@media (min-width: 1025px) {
+  .interactive-map-section {
+    padding: 30px 0;
+  }
+  #chennaiLeafletMap {
+    height: 640px;
+    border-radius: 14px;
+  }
+  .driver-street-vision-container.split-mode .vision-viewport-wrap {
+    height: 480px;
+  }
+  .driver-street-vision-container.theater-mode .vision-viewport-wrap {
+    height: 620px;
+  }
+  .plots-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+}

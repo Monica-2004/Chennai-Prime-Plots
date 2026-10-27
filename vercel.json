@@ -1,4 +1,10 @@
 {
   "version": 2,
-  "cleanUrls": true
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/webhook/llb-property-inquiry",
+      "destination": "/api/webhook/llb-property-inquiry"
+    }
+  ]
 }
