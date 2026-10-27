@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open LLB Real Estate on Mobile Chrome</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230B132B'/><text x='50%' y='62%' font-size='48' font-weight='900' fill='%23C5A880' text-anchor='middle' font-family='Georgia, serif'>LLB</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg-body: #f8f9fa;
+      --black-primary: #0b0f19;
+      --gold-primary: #b8860b;
+      --gold-rich: #c5a880;
+      --border-light: #e2e8f0;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-body);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px 16px;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 36px 28px;
+      max-width: 540px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(11, 15, 25, 0.08);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(184, 134, 11, 0.1);
+      color: var(--gold-primary);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: 1.85rem;
+      color: var(--black-primary);
+      margin-bottom: 8px;
+    }
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .qr-box {
+      background: #ffffff;
+      border: 2px dashed var(--border-light);
+      border-radius: 12px;
+      padding: 16px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    .qr-box img {
+      display: block;
+      width: 200px;
+      height: 200px;
+      margin: 0 auto;
+    }
+    .url-box {
+      background: #f1f5f9;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: monospace;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--black-primary);
+      word-break: break-all;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .copy-btn {
+      background: var(--black-primary);
+      color: #ffffff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .copy-btn:hover {
+      background: #000000;
+    }
+    .instructions {
+      text-align: left;
+      background: #fafaf9;
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 22px;
+    }
+    .instructions h3 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--black-primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .instructions ol {
+      padding-left: 20px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .instructions ol strong {
+      color: var(--text-dark);
+    }
+    .action-links {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--black-primary);
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background: #000000;
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text-dark);
+      border: 1px solid var(--border-light);
+    }
+    .btn-outline:hover {
+      background: #ffffff;
+      border-color: var(--black-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="badge">
+      <i class="fas fa-mobile-alt"></i> Mobile Real Estate Portal
+    </div>
+    <h1>Open Chennai Plots on Mobile</h1>
+    <p class="subtitle">
+      Scan this QR code with your mobile camera or tap the direct link. No manual IP address typing required.
+    </p>
+
+    <!-- Dynamic QR Code -->
+    <div class="qr-box">
+      <img id="mobileQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=http%3A%2F%2F192.168.0.18%3A8080%2Fchennai-plots.html" alt="Mobile QR Code">
+    </div>
+
+    <!-- Direct Verified URL Box -->
+    <div class="url-box">
+      <span id="mobileUrlText">http://192.168.0.18:8080/chennai-plots.html</span>
+      <button class="copy-btn" onclick="copyUrl()">
+        <i class="fas fa-copy"></i> Copy
+      </button>
+    </div>
+
+    <!-- Direct 1-Click Launch Button -->
+    <div style="margin-bottom: 20px;">
+      <a id="directLaunchLink" href="http://192.168.0.18:8080/chennai-plots.html" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 1rem; background: linear-gradient(135deg, #059669 0%, #047857 100%);">
+        <i class="fas fa-external-link-alt"></i> Open Chennai Plots Directly
+      </a>
+    </div>
+
+    <!-- Instructions -->
+    <div class="instructions">
+      <h3><i class="fas fa-wifi" style="color:var(--gold-primary);"></i> Seamless Mobile Access:</h3>
+      <ol>
+        <li><strong>On Same Wi-Fi Network:</strong> Scan the QR code with your iPhone Camera or Android Google Lens / Chrome. It will open immediately without typing any IP address.</li>
+        <li><strong>Direct Browser Link:</strong> Tap or copy the URL above directly into Chrome on your phone.</li>
+        <li><strong>Access Outside Home (4G/5G):</strong> To access from mobile data anywhere outside your Wi-Fi, run a secure free Cloudflare tunnel (<code>cloudflared tunnel --url http://localhost:8080</code>) or deploy the frontend to free hosting (Vercel, Netlify, or Firebase Hosting).</li>
+      </ol>
+    </div>
+
+    <div class="action-links">
+      <a href="chennai-plots.html" class="btn btn-primary">
+        <i class="fas fa-map-marked-alt"></i> Chennai Plots Map
+      </a>
+      <a href="index.html" class="btn btn-outline">
+        <i class="fas fa-home"></i> Luxury Homes
+      </a>
+      <a href="admin.html" class="btn btn-outline">
+        <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Dynamically auto-detect LAN IP from /api/server-info
+    (async function initMobileLink() {
+      const qrImg = document.getElementById('mobileQrImg');
+      const urlText = document.getElementById('mobileUrlText');
+      const directLink = document.getElementById('directLaunchLink');
+
+      let targetUrl = window.location.origin + '/chennai-plots.html';
+
+      // If opened on localhost, query server for real LAN IP
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        try {
+          const res = await fetch('/api/server-info');
+          if (res.ok) {
+            const data = await res.json();
+            if (data.mobilePlotUrl) {
+              targetUrl = data.mobilePlotUrl;
+            }
+          }
+        } catch (e) {
+          // fallback to current origin
+        }
+      }
+
+      if (urlText) urlText.innerText = targetUrl;
+      if (directLink) directLink.href = targetUrl;
+      if (qrImg) {
+        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(targetUrl)}`;
+      }
+    })();
+
+    function copyUrl() {
+      const text = document.getElementById('mobileUrlText').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('✅ Direct Mobile URL copied to clipboard!\n' + text);
+      });
+    }
+  </script>
+</body>
+</html>

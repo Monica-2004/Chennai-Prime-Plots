@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin & Compliance Security Gateway — LLB Real Estate</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230b0f19'/><text x='50%' y='62%' font-size='48' font-weight='900' fill='%23dfcaa7' text-anchor='middle' font-family='Georgia, serif'>LLB</text></svg>">
+
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background-color: #0b0f19;">
+
+  <!-- Top Regulatory Bar -->
+  <aside class="top-bar" style="background:#070a10; border-bottom:1px solid rgba(255,255,255,0.1);">
+    <div class="container top-bar-inner">
+      <div class="top-bar-left">
+        <span class="official-pill" style="background:rgba(217, 119, 6, 0.2); border-color:rgba(217, 119, 6, 0.4); color:#fef3c7;">
+          <i class="fas fa-shield-halved"></i> Restricted Brokerage System • Authorized Personnel Only
+        </span>
+        <span class="top-bar-badge" style="background:rgba(255,255,255,0.08); color:#e2e8f0;">
+          <i class="fas fa-fingerprint"></i> Level-4 Audit Log Active
+        </span>
+      </div>
+      <div class="top-bar-right">
+        <a href="index.html" class="top-bar-link" style="color:var(--gold-light);"><i class="fas fa-globe"></i> Public Portal</a>
+        <a href="login.html" class="top-bar-link" style="color:#cbd5e1;"><i class="fas fa-user-lock"></i> Client Sign In</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Sticky Main Navigation -->
+  <header class="site-header" id="navbar" style="background:rgba(11, 15, 25, 0.96); border-bottom:1px solid rgba(255,255,255,0.12);">
+    <div class="container">
+      <div class="nav-wrapper">
+        <!-- Brand Logo -->
+        <a href="index.html" class="brand-logo">
+          <div class="brand-symbol" style="background:#141a29; border:1px solid var(--gold-primary);">LLB</div>
+          <div class="brand-text">
+            <div class="brand-name" style="color:#ffffff;">LLB <span style="color:var(--gold-primary);">REALTY</span></div>
+            <div class="brand-sub" style="color:#94a3b8;">Administration Gateway</div>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="desktop-nav" id="desktopNav">
+          <a href="index.html" class="nav-link" style="color:#cbd5e1;">Home</a>
+          <a href="chennai-plots.html" class="nav-link" style="color:var(--gold-primary); font-weight:700;"><i class="fas fa-map-pin"></i> Chennai Plots</a>
+          <a href="properties.html" class="nav-link" style="color:#cbd5e1;">Properties</a>
+          <a href="verified-land.html" class="nav-link" style="color:#cbd5e1;">Approved Land</a>
+          <a href="guarantee.html" class="nav-link" style="color:#cbd5e1;">Guarantee</a>
+          <a href="calculator.html" class="nav-link" style="color:#cbd5e1;">Mortgage Calc</a>
+          <a href="contact.html" class="nav-link" style="color:#cbd5e1;">Contact</a>
+          
+          <!-- Mobile Drawer Actions -->
+          <div class="mobile-nav-actions">
+            <a href="index.html" class="btn btn-black btn-block">
+              <i class="fas fa-arrow-left"></i> Return to Main Website
+            </a>
+            <div class="mobile-sub-actions">
+              <a href="login.html" class="btn btn-outline-black btn-sm">
+                <i class="fas fa-user-lock"></i> Client Login
+              </a>
+              <a href="admin.html" class="btn btn-outline-black btn-sm">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+              </a>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Actions -->
+        <div class="nav-actions">
+          <a href="index.html" class="btn btn-outline-white btn-sm nav-btn-desktop">
+            <i class="fas fa-arrow-left"></i> Back to Website
+          </a>
+          <a href="admin.html" class="btn btn-gold btn-sm nav-btn-desktop">
+            <i class="fas fa-tachometer-alt"></i> Direct Dashboard
+          </a>
+          <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Navigation" style="color:#ffffff; border-color:rgba(255,255,255,0.2);">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Back Navigation Bar -->
+  <div class="back-nav-bar" style="background:#111827; border-bottom:1px solid rgba(255,255,255,0.1);">
+    <div class="container back-nav-inner">
+      <a href="index.html" class="back-nav-pill" style="background:rgba(255,255,255,0.1); color:#ffffff; border-color:rgba(255,255,255,0.2);">
+        <i class="fas fa-arrow-left"></i> Back to Main Portal
+      </a>
+      <div class="breadcrumbs-trail" style="color:#94a3b8;">
+        <a href="index.html" style="color:#e2e8f0;">Home</a>
+        <span class="sep">/</span>
+        <span style="color:var(--gold-light); font-weight:700;">Admin & Compliance Gateway</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Login Container -->
+  <main class="container" style="padding: 40px 20px 90px;">
+    
+    <div class="auth-wrapper">
+      <div class="auth-card auth-card-dark">
+        
+        <div style="text-align: center; margin-bottom: 24px;">
+          <div style="width: 56px; height: 56px; background: rgba(184, 134, 11, 0.15); border: 1px solid var(--gold-primary); color: var(--gold-light); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin: 0 auto 14px;">
+            <i class="fas fa-shield-halved"></i>
+          </div>
+          <span class="section-tag" style="background: rgba(184, 134, 11, 0.2); border-color: var(--gold-primary); color: var(--gold-light);">
+            Brokerage Security Gateway
+          </span>
+          <h2 style="font-family: var(--font-serif); font-size: 1.85rem; color: #ffffff; margin: 8px 0;">
+            Administrative Login
+          </h2>
+          <p style="color: #94a3b8; font-size: 0.875rem; margin: 0;">
+            Restricted to Licensed Managing Brokers, Legal Fiduciaries, and FinCEN Compliance Officers.
+          </p>
+        </div>
+
+        <!-- Quick Demo Pill -->
+        <div class="quick-demo-pill" style="background:rgba(184, 134, 11, 0.15); border-color:var(--gold-light); color:var(--gold-light);" onclick="autoFillDemoAdmin()" title="Click to auto-populate administrative credentials">
+          <span><i class="fas fa-key"></i> <strong>Broker Credentials:</strong> admin@llbrealestate.com</span>
+          <span style="font-weight:700; text-decoration:underline;">Click to Fill</span>
+        </div>
+
+        <!-- Feedback Alert -->
+        <div id="adminAlert" style="display:none; padding:12px; border-radius:var(--radius-sm); margin-bottom:18px; font-size:0.875rem;"></div>
+
+        <!-- Admin Login Form -->
+        <form id="adminLoginForm">
+          <div class="form-group">
+            <label for="adminEmail"><i class="fas fa-id-badge"></i> Authorized Broker / Counsel Email</label>
+            <input type="email" id="adminEmail" class="form-control" placeholder="admin@llbrealestate.com" required value="admin@llbrealestate.com">
+          </div>
+
+          <div class="form-group">
+            <label for="adminRole"><i class="fas fa-user-tag"></i> Security Clearance Role</label>
+            <select id="adminRole" class="form-control">
+              <option value="Managing Broker of Record">Managing Broker of Record (Jonathan Sterling, Esq.)</option>
+              <option value="Fiduciary Escrow Officer">Sovereign Fiduciary Escrow Officer</option>
+              <option value="FinCEN Compliance Auditor">FinCEN AML Compliance Auditor</option>
+              <option value="n8n Pipeline Administrator">n8n Automation & Systems Architect</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="adminPasskey"><i class="fas fa-lock"></i> Master Administrative Passkey</label>
+            <input type="password" id="adminPasskey" class="form-control" placeholder="••••••••••••" required value="admin2026">
+          </div>
+
+          <div style="margin-bottom: 24px;">
+            <label style="display:flex; align-items:center; gap:8px; font-size:0.8125rem; color:#cbd5e1; cursor:pointer;">
+              <input type="checkbox" id="admin2faCheck" checked required>
+              <span>I confirm compliance with 2026 Fiduciary Escrow Security Standards.</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-gold btn-block" id="adminSubmitBtn" style="padding:15px; font-size:1rem;">
+            <i class="fas fa-unlock-keyhole"></i> Authenticate & Enter Broker Portal
+          </button>
+        </form>
+
+        <div style="margin-top:24px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.1); text-align:center;">
+          <a href="index.html" style="color:#94a3b8; font-size:0.8125rem; text-decoration:none;">
+            <i class="fas fa-arrow-left"></i> Return to Public Real Estate Website
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="site-footer" style="background:#070a10; border-top:1px solid rgba(255,255,255,0.1); color:#94a3b8;">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; padding:24px 0;">
+        <div>&copy; 2026 LLB Real Estate Group LLC. Internal Brokerage Management System.</div>
+        <div style="display:flex; gap:16px;">
+          <a href="index.html" style="color:var(--gold-light); text-decoration:none;">Home Portal</a>
+          <a href="admin.html" style="color:var(--gold-light); text-decoration:none;">Live Dashboard</a>
+          <a href="guarantee.html" style="color:var(--gold-light); text-decoration:none;">Guarantees</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile navigation toggle
+    const mobileToggle = document.getElementById("mobileToggle");
+    const desktopNav = document.getElementById("desktopNav");
+    if (mobileToggle && desktopNav) {
+      mobileToggle.addEventListener("click", function() {
+        desktopNav.classList.toggle("mobile-open");
+      });
+    }
+
+    function autoFillDemoAdmin() {
+      document.getElementById("adminEmail").value = "admin@llbrealestate.com";
+      document.getElementById("adminPasskey").value = "admin2026";
+    }
+
+    const form = document.getElementById("adminLoginForm");
+    const alertBox = document.getElementById("adminAlert");
+    const submitBtn = document.getElementById("adminSubmitBtn");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const email = document.getElementById("adminEmail").value.trim();
+      const pass = document.getElementById("adminPasskey").value.trim();
+      const role = document.getElementById("adminRole").value;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying Sovereign Clearance...';
+
+      setTimeout(() => {
+        alertBox.style.display = "block";
+        alertBox.style.background = "rgba(5, 150, 105, 0.2)";
+        alertBox.style.border = "1px solid #10b981";
+        alertBox.style.color = "#6ee7b7";
+        alertBox.innerHTML = `<strong><i class="fas fa-check-circle"></i> Security Clearance Approved:</strong> Authorized as ${role}. Redirecting to Brokerage Admin Suite...`;
+
+        setTimeout(() => {
+          window.location.href = "admin.html";
+        }, 800);
+      }, 700);
+    });
+  </script>
+</body>
+</html>

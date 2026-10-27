@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLB Real Estate — Automation & Lead Verification Center</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230B132B'/><text x='50%' y='62%' font-size='48' font-weight='900' fill='%23C5A880' text-anchor='middle' font-family='Georgia, serif'>LLB</text></svg>">
+
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-body: #f8f9fa;
+      --bg-card: #ffffff;
+      --black-primary: #0b0f19;
+      --black-soft: #141a29;
+      --gold-primary: #b8860b;
+      --gold-light: #dfcaa7;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #059669;
+      --success-bg: #ecfdf5;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-body);
+      color: var(--text-dark);
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Top Navigation */
+    .admin-nav {
+      background: var(--black-primary);
+      color: white;
+      padding: 16px 0;
+      border-bottom: 2px solid var(--gold-primary);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .brand-badge {
+      background: var(--gold-primary);
+      color: var(--black-primary);
+      font-weight: 900;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-gold {
+      background: var(--gold-primary);
+      color: var(--black-primary);
+    }
+    .btn-gold:hover {
+      background: #c5a880;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: white;
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    /* Hero / Status Bar */
+    .status-hero {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 28px 0;
+      margin-bottom: 30px;
+    }
+
+    .status-hero-grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .status-left h1 {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      color: var(--black-primary);
+    }
+
+    .status-left p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid #a7f3d0;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(5, 150, 105, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(5, 150, 105, 0); }
+    }
+
+    /* Grid Layout */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--black-primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Webhook Pill Box */
+    .webhook-box {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 14px 18px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .webhook-url-code {
+      font-family: monospace;
+      font-size: 13px;
+      color: var(--black-primary);
+      word-break: break-all;
+      font-weight: 700;
+    }
+
+    /* Leads Table */
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .leads-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    .leads-table th {
+      background: #f8fafc;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .leads-table td {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .leads-table tr:hover {
+      background: #f8fafc;
+    }
+
+    .ref-code {
+      font-weight: 700;
+      font-family: monospace;
+      color: var(--black-primary);
+      background: #e2e8f0;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--text-dark);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--black-primary);
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-top: 14px;
+      display: none;
+    }
+    .alert-success {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid #a7f3d0;
+    }
+    .alert-error {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    .stat-badge-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .stat-chip {
+      background: #f1f5f9;
+      border-radius: 6px;
+      padding: 10px 14px;
+      flex: 1;
+      text-align: center;
+    }
+
+    .stat-chip-number {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--black-primary);
+    }
+
+    .stat-chip-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Nav -->
+  <header class="admin-nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand-group">
+        <span class="brand-badge">LLB</span>
+        <span class="brand-title">LLB Real Estate — Broker Administration & Lead Hub</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="btn btn-gold btn-sm">
+          <i class="fas fa-arrow-left"></i> Back to Main Website
+        </a>
+        <a href="properties.html" class="btn btn-outline btn-sm">
+          <i class="fas fa-city"></i> Properties
+        </a>
+        <a href="verified-land.html" class="btn btn-outline btn-sm">
+          <i class="fas fa-map-marked-alt"></i> Approved Land
+        </a>
+        <a href="guarantee.html" class="btn btn-outline btn-sm">
+          <i class="fas fa-shield-alt"></i> Guarantee
+        </a>
+        <a href="contact.html" class="btn btn-outline btn-sm">
+          <i class="fas fa-headset"></i> Contact
+        </a>
+        <a href="admin-login.html" class="btn btn-outline btn-sm" title="Lock Admin Session">
+          <i class="fas fa-lock"></i> Sign Out
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Status Hero -->
+  <section class="status-hero">
+    <div class="container status-hero-grid">
+      <div class="status-left">
+        <h1>Lead Verification & Automation Engine</h1>
+        <p>Every lead submitted on the LLB Real Estate website is instantly ingested, logged, and formatted into an executive confirmation email.</p>
+      </div>
+      <div>
+        <div class="status-badge">
+          <span class="pulse"></span>
+          <span>Engine Status: Active & Ready</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Grid -->
+  <main class="container">
+    <div class="dashboard-grid">
+      
+      <!-- Left Column: Active Webhook & Lead Log -->
+      <div>
+        <!-- Webhook Box -->
+        <div class="card">
+          <div class="card-title">
+            <i class="fas fa-satellite-dish" style="color: var(--gold-primary);"></i>
+            Live Webhook Endpoint (n8n Compatible)
+          </div>
+          <p style="font-size: 13.5px; color: var(--text-muted);">
+            The LLB website is pre-configured to dispatch inquiries to this active endpoint. You can also paste this into n8n or any third-party webhook sender:
+          </p>
+          <div class="webhook-box">
+            <span class="webhook-url-code" id="webhookDisplay">http://localhost:8080/webhook/llb-property-inquiry</span>
+            <button class="btn btn-gold btn-sm" onclick="copyWebhook()">
+              <i class="fas fa-copy"></i> Copy
+            </button>
+          </div>
+        </div>
+
+        <!-- Real-Time Leads Table -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <div class="card-title" style="margin-bottom:0;">
+              <i class="fas fa-users" style="color: var(--gold-primary);"></i>
+              Inbound Leads & Verification Records
+            </div>
+            <button class="btn btn-outline btn-sm" style="color:var(--text-dark); border-color:var(--border);" onclick="fetchLeads()">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="leads-table">
+              <thead>
+                <tr>
+                  <th>Ref ID</th>
+                  <th>Client Name</th>
+                  <th>Contact Info</th>
+                  <th>Property Interested</th>
+                  <th>Verification Actions</th>
+                </tr>
+              </thead>
+              <tbody id="leadsTableBody">
+                <tr>
+                  <td colspan="5" class="empty-state">Loading verified leads...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Instant Verification Tester & SMTP -->
+      <div>
+        
+        <!-- Quick 1-Click Verification Tester -->
+        <div class="card">
+          <div class="card-title">
+            <i class="fas fa-bolt" style="color: var(--gold-primary);"></i>
+            1-Click Email Verification Tester
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
+            Test the entire automated confirmation pipeline instantly with your own email address:
+          </p>
+
+          <form id="testEmailForm" onsubmit="sendTestEmail(event)">
+            <div class="form-group">
+              <label>Your Name:</label>
+              <input type="text" id="testName" class="form-control" value="Test VIP Client" required>
+            </div>
+            <div class="form-group">
+              <label>Your Email Address:</label>
+              <input type="email" id="testEmail" class="form-control" placeholder="your-email@example.com" required>
+            </div>
+            <button type="submit" class="btn btn-gold" style="width: 100%; justify-content: center;" id="testEmailBtn">
+              <i class="fas fa-paper-plane"></i> Send Verification Test Email
+            </button>
+          </form>
+
+          <div id="testEmailAlert" class="alert"></div>
+        </div>
+
+        <!-- Real Email Delivery Settings (SMTP / Gmail) -->
+        <div class="card">
+          <div class="card-title">
+            <i class="fas fa-envelope-open-text" style="color: var(--gold-primary);"></i>
+            Real Inbox Delivery (SMTP Setup)
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
+            To have confirmation emails delivered directly into the registered client's real inbox, connect your sender email credentials:
+          </p>
+
+          <div style="display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-sm btn-outline" style="color:var(--text-dark); border-color:var(--border);" onclick="setProvider('gmail')">
+              <i class="fab fa-google"></i> Gmail
+            </button>
+            <button type="button" class="btn btn-sm btn-outline" style="color:var(--text-dark); border-color:var(--border);" onclick="setProvider('outlook')">
+              <i class="fab fa-microsoft"></i> Outlook
+            </button>
+            <button type="button" class="btn btn-sm btn-outline" style="color:var(--text-dark); border-color:var(--border);" onclick="setProvider('brevo')">
+              <i class="fas fa-paper-plane"></i> Brevo / Custom
+            </button>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid var(--border); padding:10px 12px; border-radius:6px; font-size:12px; margin-bottom:12px; color:var(--text-muted); line-height:1.5;">
+            <strong>💡 Quick Tip for Gmail:</strong> Go to <a href="https://myaccount.google.com/apppasswords" target="_blank" style="color:var(--gold-primary); font-weight:700; text-decoration:underline;">Google App Passwords</a>, create a password named "LLB Real Estate", and paste the 16 characters below.
+          </div>
+
+          <form id="smtpForm" onsubmit="saveSmtpSettings(event)">
+            <div class="form-group">
+              <label>SMTP Host:</label>
+              <input type="text" id="smtpHost" class="form-control" placeholder="smtp.gmail.com" value="smtp.gmail.com" required>
+            </div>
+            <div class="form-group">
+              <label>SMTP Port:</label>
+              <input type="number" id="smtpPort" class="form-control" value="465" required>
+            </div>
+            <div class="form-group">
+              <label>Sender Email / Username:</label>
+              <input type="email" id="smtpUser" class="form-control" placeholder="your-email@gmail.com" required>
+            </div>
+            <div class="form-group">
+              <label>Sender App Password:</label>
+              <input type="password" id="smtpPassword" class="form-control" placeholder="Enter 16-character App Password" required>
+            </div>
+            <button type="submit" class="btn btn-gold" style="width: 100%; justify-content: center;" id="saveSmtpBtn">
+              <i class="fas fa-check-circle"></i> Save & Test Email Connection
+            </button>
+          </form>
+
+          <div id="smtpAlert" class="alert"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // Copy webhook URL
+    function copyWebhook() {
+      const url = document.getElementById("webhookDisplay").innerText;
+      navigator.clipboard.writeText(url).then(() => {
+        alert("✅ Webhook URL copied to clipboard:\n" + url);
+      });
+    }
+
+    // Fetch and render leads
+    async function fetchLeads() {
+      const tbody = document.getElementById("leadsTableBody");
+      try {
+        const res = await fetch("/api/leads");
+        const leads = await res.json();
+
+        if (!leads || leads.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="empty-state">
+                <i class="fas fa-inbox" style="font-size:28px; margin-bottom:8px; opacity:0.5;"></i><br>
+                No leads recorded yet. Submit the registration form on the <a href="index.html#contact" style="color:var(--gold-primary); font-weight:700;">Main Website</a> or run the 1-Click Tester on the right!
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = leads.map(l => `
+          <tr>
+            <td><span class="ref-code">${l.leadId}</span></td>
+            <td>
+              <strong>${escapeHtml(l.fullName)}</strong><br>
+              <span style="font-size:11px; color:var(--text-muted);">${l.formattedDate || l.timestamp}</span>
+            </td>
+            <td>
+              <div style="font-size:12px;">
+                <i class="fas fa-envelope" style="opacity:0.6;"></i> <a href="mailto:${escapeHtml(l.email)}">${escapeHtml(l.email)}</a><br>
+                <i class="fas fa-phone-alt" style="opacity:0.6;"></i> ${escapeHtml(l.phone || 'N/A')}
+              </div>
+            </td>
+            <td>
+              <div style="font-size:12px; font-weight:600;">${escapeHtml(l.propertyTitle)}</div>
+              <div style="font-size:11px; color:var(--text-muted);">${escapeHtml(l.budget)}</div>
+            </td>
+            <td>
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <a href="${l.viewEmailUrl}" target="_blank" class="btn btn-gold btn-sm" title="Open rendered confirmation email in new tab">
+                  <i class="fas fa-envelope-open-text"></i> View Confirmation Email
+                </a>
+              </div>
+            </td>
+          </tr>
+        `).join("");
+
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-state" style="color:#b91c1c;">Could not load leads: ${err.message}</td></tr>`;
+      }
+    }
+
+    // Quick Test Email Sender
+    async function sendTestEmail(e) {
+      e.preventDefault();
+      const btn = document.getElementById("testEmailBtn");
+      const alertBox = document.getElementById("testEmailAlert");
+      const name = document.getElementById("testName").value;
+      const email = document.getElementById("testEmail").value;
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+      alertBox.style.display = "none";
+
+      try {
+        const res = await fetch("/api/test-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email })
+        });
+        const data = await res.json();
+
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Verification Test Email';
+
+        alertBox.style.display = "block";
+        alertBox.className = "alert alert-success";
+        alertBox.innerHTML = `
+          <strong>✅ Verification Email Generated!</strong><br>
+          Ref ID: <code>${data.leadId}</code><br>
+          ${data.message}<br>
+          <div style="margin-top: 8px;">
+            <a href="${data.viewUrl}" target="_blank" style="font-weight: bold; text-decoration: underline; color: #065f46;">
+              👉 Click here to view your rendered VIP Confirmation Email
+            </a>
+          </div>
+        `;
+
+        fetchLeads();
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Verification Test Email';
+        alertBox.style.display = "block";
+        alertBox.className = "alert alert-error";
+        alertBox.textContent = "Error: " + err.message;
+      }
+    }
+
+    // Provider presets
+    function setProvider(type) {
+      const hostInput = document.getElementById("smtpHost");
+      const portInput = document.getElementById("smtpPort");
+      if (type === 'gmail') {
+        hostInput.value = 'smtp.gmail.com';
+        portInput.value = 465;
+      } else if (type === 'outlook') {
+        hostInput.value = 'smtp.office365.com';
+        portInput.value = 587;
+      } else if (type === 'brevo') {
+        hostInput.value = 'smtp-relay.brevo.com';
+        portInput.value = 587;
+      }
+    }
+
+    // Load saved SMTP configuration
+    async function loadCurrentSmtpConfig() {
+      try {
+        const res = await fetch("/api/settings/smtp");
+        const cfg = await res.json();
+        if (cfg.host) document.getElementById("smtpHost").value = cfg.host;
+        if (cfg.port) document.getElementById("smtpPort").value = cfg.port;
+        if (cfg.user) document.getElementById("smtpUser").value = cfg.user;
+        if (cfg.hasPassword) {
+          document.getElementById("smtpPassword").placeholder = "•••••••••••••••• (Password Saved)";
+          document.getElementById("smtpPassword").required = false;
+        }
+      } catch (e) {
+        console.warn("Could not load SMTP config:", e);
+      }
+    }
+
+    // Save SMTP Settings
+    async function saveSmtpSettings(e) {
+      e.preventDefault();
+      const btn = document.getElementById("saveSmtpBtn");
+      const alertBox = document.getElementById("smtpAlert");
+
+      const host = document.getElementById("smtpHost").value;
+      const port = document.getElementById("smtpPort").value;
+      const user = document.getElementById("smtpUser").value;
+      const password = document.getElementById("smtpPassword").value;
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying Connection...';
+      alertBox.style.display = "none";
+
+      try {
+        const res = await fetch("/api/settings/smtp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ host, port, user, password })
+        });
+        const data = await res.json();
+
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save"></i> Save & Test SMTP Connection';
+
+        alertBox.style.display = "block";
+        if (data.success) {
+          alertBox.className = "alert alert-success";
+          alertBox.innerHTML = `<strong>✅ Success:</strong> ${data.message}`;
+        } else {
+          alertBox.className = "alert alert-error";
+          alertBox.innerHTML = `<strong>⚠️ Warning:</strong> ${data.message}`;
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save"></i> Save & Test SMTP Connection';
+        alertBox.style.display = "block";
+        alertBox.className = "alert alert-error";
+        alertBox.textContent = "Error saving settings: " + err.message;
+      }
+    }
+
+    // Helper: Escape HTML
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Load initial leads and poll every 4s
+    loadCurrentSmtpConfig();
+    fetchLeads();
+    setInterval(fetchLeads, 4000);
+  </script>
+</body>
+</html>
