@@ -18,12 +18,23 @@
   /**
    * Helper to attempt cross-origin and local endpoints with fast timeout
    */
-  async function fetchWithTimeout(url, options = {}, timeoutMs = 4000) {
+  const HTTPS_API_BASES = [
+    "https://good-monkey-24.loca.lt",
+    "https://chennai-plots-api.loca.lt"
+  ];
+  const HTTPS_API_BASE = HTTPS_API_BASES[0];
+
+  async function fetchWithTimeout(url, options = {}, timeoutMs = 5000) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
     try {
+      const reqHeaders = Object.assign({
+        "Bypass-Tunnel-Reminder": "true"
+      }, options.headers || {});
+
       const response = await fetch(url, {
         ...options,
+        headers: reqHeaders,
         signal: controller.signal,
       });
       clearTimeout(timeoutId);
@@ -67,11 +78,11 @@
 
     // 2. Try SMTP Webhook endpoints (Localhost Python server, relative path, and serverless)
     const endpointsToTry = [
+      ...HTTPS_API_BASES.map(b => `${b}/webhook/llb-property-inquiry`),
+      ...HTTPS_API_BASES.map(b => `${b}/api/plots/verify-availability-email`),
       "/webhook/llb-property-inquiry",
       "http://localhost:8080/webhook/llb-property-inquiry",
-      "http://127.0.0.1:8080/webhook/llb-property-inquiry",
-      "/api/webhook/llb-property-inquiry",
-      "https://chennai-prime-plots.vercel.app/api/webhook/llb-property-inquiry"
+      "http://127.0.0.1:8080/webhook/llb-property-inquiry"
     ];
 
     for (const endpoint of endpointsToTry) {
@@ -148,6 +159,7 @@
     let serverMessage = "";
 
     const verifyEndpoints = [
+      ...HTTPS_API_BASES.map(b => `${b}/api/auth/send-verification-email`),
       "/api/auth/send-verification-email",
       "http://localhost:8080/api/auth/send-verification-email",
       "http://127.0.0.1:8080/api/auth/send-verification-email"
@@ -213,6 +225,7 @@
 
     // Check server endpoint if reachable
     const verifyEndpoints = [
+      ...HTTPS_API_BASES.map(b => `${b}/api/auth/verify-code`),
       "/api/auth/verify-code",
       "http://localhost:8080/api/auth/verify-code",
       "http://127.0.0.1:8080/api/auth/verify-code"
@@ -576,12 +589,13 @@
     let actualPlot = data.plot || { id: plotId, title: plotTitle, locality: data.locality, priceDisplay: data.priceDisplay };
 
     const endpoints = [
+      ...HTTPS_API_BASES.map(b => `${b}/api/plots/verify-availability-email`),
+      ...HTTPS_API_BASES.map(b => `${b}/webhook/llb-property-inquiry`),
       "/api/plots/verify-availability-email",
       "http://localhost:8080/api/plots/verify-availability-email",
       "http://127.0.0.1:8080/api/plots/verify-availability-email",
       "/webhook/llb-property-inquiry",
-      "http://localhost:8080/webhook/llb-property-inquiry",
-      "http://127.0.0.1:8080/webhook/llb-property-inquiry"
+      "http://localhost:8080/webhook/llb-property-inquiry"
     ];
 
     for (const ep of endpoints) {

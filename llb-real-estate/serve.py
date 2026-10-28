@@ -585,13 +585,14 @@ def send_verification_email(to_email, name="Valued Investor"):
     }
 
 
-def send_smtp_email(to_email, subject, html_content):
+def send_smtp_email(to_email, subject, html_content, notify_admin=True):
     cfg = load_smtp_config()
     host = cfg.get("host") or "smtp.gmail.com"
     port = int(cfg.get("port", 465))
     user = cfg.get("user")
     password = cfg.get("password")
     from_email = cfg.get("fromEmail") or user or "monicaperumal2004@gmail.com"
+    admin_email = "monicaperumal2004@gmail.com"
 
     if not host or not user:
         return False, "SMTP user email is not configured."
@@ -599,11 +600,16 @@ def send_smtp_email(to_email, subject, html_content):
     if not password:
         return False, "SMTP password is blank. Google App Password required."
 
+    clean_to = to_email.strip().lower()
+    recipients = [clean_to]
+    if notify_admin and clean_to != admin_email.lower():
+        recipients.append(admin_email)
+
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
-    msg["From"] = f"Chennai Plots Support <{from_email}>"
+    msg["From"] = f"Chennai Prime Plots <{from_email}>"
     msg["Reply-To"] = from_email
-    msg["To"] = to_email
+    msg["To"] = clean_to
     part = MIMEText(html_content, "html", "utf-8")
     msg.attach(part)
 
@@ -612,13 +618,13 @@ def send_smtp_email(to_email, subject, html_content):
             context = ssl.create_default_context()
             with smtplib.SMTP_SSL(host, port, context=context, timeout=12) as server:
                 server.login(user, password)
-                server.sendmail(from_email, [to_email], msg.as_string())
+                server.sendmail(from_email, recipients, msg.as_string())
         else:
             with smtplib.SMTP(host, port, timeout=12) as server:
                 server.starttls()
                 server.login(user, password)
-                server.sendmail(from_email, [to_email], msg.as_string())
-        return True, f"Email successfully dispatched to {to_email}."
+                server.sendmail(from_email, recipients, msg.as_string())
+        return True, f"Email successfully dispatched to {clean_to}."
     except smtplib.SMTPAuthenticationError:
         return False, "Authentication Failed (535): Gmail rejected credentials. Make sure you use a 16-character App Password (not your personal Gmail password)."
     except Exception as e:
