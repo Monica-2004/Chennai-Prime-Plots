@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Plot Availability Verified &amp; Visit Pass — CHN-GST-01</title>
+
+  <style>
+
+    body {
+
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+      background-color: #070b14;
+
+      color: #f1f5f9;
+
+      margin: 0;
+
+      padding: 30px 15px;
+
+    }
+
+    .email-wrapper {
+
+      max-width: 640px;
+
+      margin: 0 auto;
+
+      background: #0f172a;
+
+      border: 1px solid rgba(212, 175, 55, 0.45);
+
+      border-radius: 14px;
+
+      overflow: hidden;
+
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+    }
+
+    .email-header {
+
+      background: linear-gradient(135deg, #0b132b 0%, #1e293b 100%);
+
+      padding: 32px 24px;
+
+      text-align: center;
+
+      border-bottom: 2px solid #d4af37;
+
+    }
+
+    .badge-top {
+
+      display: inline-block;
+
+      background: #10b981;
+
+      color: #0b132b;
+
+      font-weight: 900;
+
+      font-size: 12px;
+
+      padding: 4px 14px;
+
+      border-radius: 20px;
+
+      letter-spacing: 1.5px;
+
+      margin-bottom: 10px;
+
+      text-transform: uppercase;
+
+    }
+
+    .logo-text {
+
+      color: #ffffff;
+
+      font-size: 24px;
+
+      font-weight: 800;
+
+      letter-spacing: 1.5px;
+
+      margin: 0;
+
+    }
+
+    .header-sub {
+
+      color: #94a3b8;
+
+      font-size: 12px;
+
+      letter-spacing: 1.5px;
+
+      text-transform: uppercase;
+
+      margin-top: 6px;
+
+    }
+
+    .email-body {
+
+      padding: 32px 24px;
+
+      line-height: 1.6;
+
+      color: #cbd5e1;
+
+      font-size: 14.5px;
+
+    }
+
+    .verify-banner {
+
+      background: linear-gradient(135deg, rgba(16,185,129,0.18) 0%, rgba(5,150,105,0.08) 100%);
+
+      border: 2px solid #10b981;
+
+      border-radius: 10px;
+
+      padding: 20px;
+
+      margin-bottom: 24px;
+
+    }
+
+    .specs-table {
+
+      width: 100%;
+
+      border-collapse: collapse;
+
+      margin: 20px 0;
+
+      background: rgba(255, 255, 255, 0.02);
+
+      border: 1px solid rgba(255, 255, 255, 0.08);
+
+      border-radius: 8px;
+
+      overflow: hidden;
+
+      font-size: 13.5px;
+
+    }
+
+    .specs-table td {
+
+      padding: 12px 14px;
+
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+    }
+
+    .specs-table tr:last-child td {
+
+      border-bottom: none;
+
+    }
+
+    .specs-label {
+
+      color: #94a3b8;
+
+      font-weight: 600;
+
+      width: 40%;
+
+      background: rgba(255, 255, 255, 0.03);
+
+    }
+
+    .specs-val {
+
+      color: #ffffff;
+
+      font-weight: 700;
+
+    }
+
+    .visit-card {
+
+      background: rgba(212, 175, 55, 0.09);
+
+      border: 2px dashed #fbbf24;
+
+      border-radius: 12px;
+
+      padding: 22px;
+
+      margin: 24px 0;
+
+      text-align: center;
+
+    }
+
+    .visit-ref-num {
+
+      font-size: 26px;
+
+      font-weight: 900;
+
+      color: #fbbf24;
+
+      font-family: 'Courier New', monospace;
+
+      letter-spacing: 4px;
+
+      margin: 8px 0;
+
+    }
+
+    .btn-action-primary {
+
+      display: inline-block;
+
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+
+      color: #ffffff !important;
+
+      text-decoration: none;
+
+      font-weight: 800;
+
+      font-size: 14.5px;
+
+      padding: 14px 26px;
+
+      border-radius: 8px;
+
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+
+      margin: 8px 6px;
+
+    }
+
+    .btn-action-gold {
+
+      display: inline-block;
+
+      background: linear-gradient(135deg, #fbbf24 0%, #d4af37 100%);
+
+      color: #0b132b !important;
+
+      text-decoration: none;
+
+      font-weight: 800;
+
+      font-size: 14.5px;
+
+      padding: 14px 26px;
+
+      border-radius: 8px;
+
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+
+      margin: 8px 6px;
+
+    }
+
+    .surveyor-box {
+
+      background: rgba(255, 255, 255, 0.03);
+
+      border-left: 4px solid #d4af37;
+
+      padding: 16px 20px;
+
+      border-radius: 0 8px 8px 0;
+
+      margin: 22px 0;
+
+      text-align: left;
+
+    }
+
+    .email-footer {
+
+      background: rgba(0, 0, 0, 0.5);
+
+      padding: 20px;
+
+      text-align: center;
+
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+      font-size: 11.5px;
+
+      color: #64748b;
+
+      line-height: 1.6;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="email-wrapper">
+
+    <div class="email-header">
+
+      <div class="badge-top">✔ Availability Verified &amp; Visit Pass</div>
+
+      <h1 class="logo-text">CHENNAI PRIME PLOTS</h1>
+
+      <div class="header-sub">CMDA &bull; DTCP &bull; TNRERA Approved &bull; 100% Clean Title Patta</div>
+
+    </div>
+
+
+
+    <div class="email-body">
+
+      <!-- Availability Stamp Banner -->
+
+      <div class="verify-banner">
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+
+          <span style="color:#34d399; font-weight:800; font-size:14px; text-transform:uppercase; letter-spacing:1px;">
+
+            🟢 Plot Status: 100% Available
+
+          </span>
+
+          <span style="color:#94a3b8; font-size:11.5px;">Ref: CHN-GST-01</span>
+
+        </div>
+
+        <div style="font-size:18px; font-weight:800; color:#ffffff; margin-bottom:6px;">
+
+          Royal Gardenia Grand Layout — Tambaram West, GST Road
+
+        </div>
+
+        <div style="color:#94a3b8; font-size:13px; line-height:1.5;">
+
+          This plot is officially verified, sovereign-title clear, and ready for immediate sale deed registration. Nil-encumbrance is certified from 1994 to 2026.
+
+        </div>
+
+      </div>
+
+
+
+      <p>Dear <strong>Dr. K. Monica (Registered Investor)</strong>,</p>
+
+      <p>
+
+        Thank you for requesting plot availability and scheduling a site inspection. Your visit voucher has been confirmed in our master site registry. Full plot sanction parameters and your site visit pass are detailed below:
+
+      </p>
+
+
+
+      <!-- Plot Specifications Table -->
+
+      <table class="specs-table">
+
+        <tr>
+
+          <td class="specs-label">Plot Reference</td>
+
+          <td class="specs-val"><span style="color:#fbbf24;">CHN-GST-01</span></td>
+
+        </tr>
+
+        <tr>
+
+          <td class="specs-label">Project &amp; Location</td>
+
+          <td class="specs-val">Royal Gardenia Grand Layout, Tambaram West, GST Road</td>
+
+        </tr>
+
+        <tr>
+
+          <td class="specs-label">Plot Dimensions &amp; Size</td>
+
+          <td class="specs-val">1,200 Sq.Ft &bull; 30 ft × 40 ft (2.75 Cents / 0.5 Ground)</td>
+
+        </tr>
+
+        <tr>
+
+          <td class="specs-label">Orientation (Vastu)</td>
+
+          <td class="specs-val"><span style="color:#34d399;">✔ North Facing (100% Vastu Compliant)</span></td>
+
+        </tr>
+
+        <tr>
+
+          <td class="specs-label">Internal Road Access</td>
+
+          <td class="specs-val">40 Feet Blacktop Road</td>
+
+        </tr>
+
+        <tr>
+
+          <td class="specs-label">Quoted Rate &amp; Price</td>
+
+          <td class="specs-val"><strong style="color:#fbbf24; font-size:15px;">₹45.60 Lakhs</strong> <span style="color:#94a3b8; font-size:12px;">(₹3,800 / sq.ft)</span></td>
+
+        </tr>
+
+        <tr>
+
+          <td class="specs-label">Sanction Orders</td>
+
+          <td class="specs-val">CMDA/TBM/2026/771 (CMDA & TNRERA)</td>
+
+        </tr>
+
+        <tr>
+
+          <td class="specs-label">TNRERA Registration</td>
+
+          <td class="specs-val">TNRERA/2026/PL-0433</td>
+
+        </tr>
+
+        <tr>
+
+          <td class="specs-label">Patta &amp; Title Guarantee</td>
+
+          <td class="specs-val"><span style="color:#10b981;">Guaranteed Clear Patta & Legal Title</span></td>
+
+        </tr>
+
+        <tr>
+
+          <td class="specs-label">Bank Loan Approvals</td>
+
+          <td class="specs-val">SBI, Indian Bank, LIC Housing Finance</td>
+
+        </tr>
+
+        <tr>
+
+          <td class="specs-label">Potable Drinking Water</td>
+
+          <td class="specs-val">Sweet Drinking Groundwater @ 24ft Depth</td>
+
+        </tr>
+
+      </table>
+
+
+
+      <!-- Confirmed Site Visit Voucher Card -->
+
+      <div class="visit-card">
+
+        <div style="color:#94a3b8; font-size:11px; text-transform:uppercase; letter-spacing:2px; font-weight:700;">
+
+          🎫 Official Site Visit Security Pass
+
+        </div>
+
+        <div class="visit-ref-num">VISIT-6AE1D779</div>
+
+        <div style="color:#94a3b8; font-size:12px; margin-bottom:14px;">Present this pass to your assigned surveyor upon arrival</div>
+
+
+
+        <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:14px; text-align:left; font-size:13px; line-height:1.7;">
+
+          <div><strong style="color:#94a3b8;">📅 Visit Date &amp; Time:</strong> <span style="color:#ffffff; font-weight:bold;">Saturday, Nov 1 - 11:00 AM at 11:00 AM</span></div>
+
+          <div><strong style="color:#94a3b8;">🚖 VIP Transport:</strong> <span style="color:#34d399; font-weight:bold;">Included (Doorstep White AC Innova / Dzire)</span></div>
+
+          <div><strong style="color:#94a3b8;">📍 Doorstep Pickup:</strong> <span style="color:#ffffff;">Tambaram Railway Station / Airport</span></div>
+
+          <div><strong style="color:#94a3b8;">👤 Registered Client:</strong> <span style="color:#ffffff;">Dr. K. Monica (Registered Investor) (+91 93450 29705)</span></div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Assigned Surveyor Box -->
+
+      <div class="surveyor-box">
+
+        <div style="color:#fbbf24; font-size:11px; text-transform:uppercase; letter-spacing:1.5px; font-weight:800; margin-bottom:4px;">
+
+          📍 Assigned Chief Land Surveyor &amp; Inspection Officer
+
+        </div>
+
+        <div style="font-size:16px; font-weight:800; color:#ffffff;">Er. K. Senthil Nathan</div>
+
+        <div style="font-size:12.5px; color:#94a3b8;">Chief Surveyor &amp; Senior Site Coordinator &bull; Office: +91 93450 29705</div>
+
+        <div style="margin-top:12px;">
+
+          <a href="tel:+919345029705" style="display:inline-block; background:#0b132b; border:1px solid #d4af37; color:#fbbf24 !important; text-decoration:none; padding:8px 14px; border-radius:6px; font-size:12.5px; font-weight:700; margin-right:8px; margin-bottom:6px;">
+
+            📞 Call +91 93450 29705
+
+          </a>
+
+          <a href="https://wa.me/919345029705?text=Hello%20Senthil,%20I%20have%20received%20visit%20pass%20VISIT-6AE1D779%20for%20Royal Gardenia Grand Layout%20(CHN-GST-01)" style="display:inline-block; background:#25d366; color:#ffffff !important; text-decoration:none; padding:8px 14px; border-radius:6px; font-size:12.5px; font-weight:700;">
+
+            💬 WhatsApp Surveyor
+
+          </a>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Action Buttons -->
+
+      <div style="text-align:center; margin:26px 0 10px;">
+
+        <a href="https://www.google.com/maps/dir/?api=1&destination=12.9249,80.1" class="btn-action-primary" target="_blank">
+
+          📍 Open GPS Driving Route (Google Maps)
+
+        </a>
+
+        <a href="https://monica-2004.github.io/Chennai-Prime-Plots/chennai-plots.html?plot=CHN-GST-01&autovision=1" class="btn-action-gold" target="_blank">
+
+          📱 3D Street Vision &amp; Virtual Tour
+
+        </a>
+
+      </div>
+
+
+
+      <div style="text-align:center; margin-top:8px;">
+
+        <a href="https://monica-2004.github.io/Chennai-Prime-Plots/app.html?plot=CHN-GST-01" style="color:#38bdf8; font-size:12px; text-decoration:underline;">
+
+          View in Mobile App (GitHub Pages)
+
+        </a>
+
+        &bull;
+
+        <a href="http://localhost:8080/app.html?plot=CHN-GST-01" style="color:#94a3b8; font-size:12px; text-decoration:underline;">
+
+          Localhost Web App
+
+        </a>
+
+      </div>
+
+
+
+      <p style="font-size:12px; color:#64748b; margin-top:24px; line-height:1.5;">
+
+        Pass issued on October 28, 2026 - 04:37 PM IST. This digital confirmation is valid for 7 calendar days. For modifications or reschedule requests, contact <a href="mailto:monicaperumal2004@gmail.com" style="color:#94a3b8;">monicaperumal2004@gmail.com</a>.
+
+      </p>
+
+    </div>
+
+
+
+    <div class="email-footer">
+
+      Chennai Prime Plots &bull; DPIIT Recognized &bull; TN RERA Registered Partner<br>
+
+      One Grand Plaza, Anna Salai / OMR Expressway, Chennai, Tamil Nadu 600028<br>
+
+      Site Coordination Helpline: +91 93450 29705 &bull; Support: monicaperumal2004@gmail.com
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>
