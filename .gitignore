@@ -33,3 +33,6 @@ Thumbs.db
 *.log
 scratch/
 
+
+pgi_backup/
+

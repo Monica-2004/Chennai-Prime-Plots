@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Realistic 3D Street Vision Test - High Fidelity</title>
+  <style>
+    body { margin: 0; padding: 0; background: #070d1d; font-family: system-ui, sans-serif; color: #fff; }
+    #canvasWrap { width: 1000px; height: 560px; margin: 20px auto; position: relative; border-radius: 14px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+    canvas { width: 100%; height: 100%; display: block; }
+    .controls { text-align: center; margin-top: 10px; }
+    button { background: #0284c7; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; margin: 0 4px; }
+  </style>
+</head>
+<body>
+  <div id="canvasWrap">
+    <canvas id="visionCanvas" width="1000" height="560"></canvas>
+  </div>
+  <div class="controls">
+    <button onclick="setCurve(-220)">⮜ Steer Hard Left</button>
+    <button onclick="setCurve(-110)">⮜ Turn Left</button>
+    <button onclick="setCurve(0)">↑ Center Straight</button>
+    <button onclick="setCurve(110)">Turn Right ⮞</button>
+    <button onclick="setCurve(220)">Steer Hard Right ⮞</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('visionCanvas');
+    const ctx = canvas.getContext('2d');
+    const w = 1000;
+    const h = 560;
+
+    let roadCurve = 0;
+    let targetCurve = 0;
+    let steeringAngle = 0;
+    let roadOffset = 0;
+    let vehicleType = "car";
+
+    function setCurve(val) {
+      targetCurve = val;
+    }
+
+    // z: 0 (horizon, far) to 1 (close, hood)
+    const scenery = [
+      { z: 0.85, side: -1, type: "villa", style: "modern", color: "#f8fafc" },
+      { z: 0.75, side: 1, type: "shop", brand: "Reliance Fresh", color: "#16a34a" },
+      { z: 0.65, side: -1, type: "palm" },
+      { z: 0.55, side: 1, type: "villa", style: "tiled", color: "#fffbeb" },
+      { z: 0.45, side: -1, type: "tree" },
+      { z: 0.38, side: 1, type: "shop", brand: "Apollo 24/7", color: "#ef4444" },
+      { z: 0.30, side: -1, type: "villa", style: "modern", color: "#f1f5f9" },
+      { z: 0.22, side: 1, type: "tree" },
+      { z: 0.16, side: -1, type: "palm" },
+      { z: 0.12, side: 1, type: "shop", brand: "Madras Coffee", color: "#d97706" }
+    ];
+
+    // Math for depth:
+    // z in [0, 1] where 0 is horizon, 1 is hood
+    function getY(z, cy) {
+      return cy + (h - cy) * Math.pow(z, 1.85);
+    }
+
+    function getRoadCenter(z, curve) {
+      // At hood (z=1), road is in center (w/2).
+      // At horizon (z=0), road deflects by curve
+      return (w * 0.5) + curve * Math.pow(1 - z, 1.7);
+    }
+
+    function getRoadHalfW(z) {
+      return (w * 0.45) * Math.pow(z, 1.3) + 5;
+    }
+
+    function drawRealisticSky(cy, cx) {
+      const sky = ctx.createLinearGradient(0, 0, 0, cy);
+      sky.addColorStop(0, "#030712");
+      sky.addColorStop(0.55, "#0b1d3a");
+      sky.addColorStop(0.85, "#15335d");
+      sky.addColorStop(1, "#1e4976");
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, w, cy);
+
+      // Atmospheric haze glow over horizon
+      const glow = ctx.createRadialGradient(cx, cy, 10, cx, cy, w * 0.7);
+      glow.addColorStop(0, "rgba(56, 189, 248, 0.4)");
+      glow.addColorStop(0.5, "rgba(14, 165, 233, 0.15)");
+      glow.addColorStop(1, "rgba(0, 0, 0, 0)");
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, cy - 65, w, 70);
+
+      // Distant Chennai skyline silhouettes & IT parks
+      ctx.fillStyle = "rgba(10, 18, 36, 0.9)";
+      const bldgs = [
+        { x: w * 0.04, bw: 32, bh: 32 }, { x: w * 0.11, bw: 42, bh: 50 },
+        { x: w * 0.20, bw: 26, bh: 28 }, { x: w * 0.28, bw: 55, bh: 40 },
+        { x: w * 0.38, bw: 36, bh: 65 }, { x: w * 0.60, bw: 48, bh: 58 },
+        { x: w * 0.72, bw: 34, bh: 35 }, { x: w * 0.82, bw: 50, bh: 62 },
+        { x: w * 0.91, bw: 28, bh: 30 }
+      ];
+      bldgs.forEach(b => {
+        ctx.fillRect(b.x, cy - b.bh, b.bw, b.bh);
+        ctx.fillStyle = "rgba(254, 240, 138, 0.4)";
+        ctx.fillRect(b.x + 5, cy - b.bh + 8, 3, 3);
+        ctx.fillRect(b.x + b.bw - 8, cy - b.bh + 16, 3, 3);
+        ctx.fillStyle = "rgba(10, 18, 36, 0.9)";
+      });
+    }
+
+    function drawCurvedRoad(cy, cx, curve) {
+      const numSlices = 42;
+      
+      // Slices from horizon (z=0) down to hood (z=1)
+      for (let i = 0; i < numSlices; i++) {
+        const z1 = i / numSlices;
+        const z2 = (i + 1) / numSlices;
+        const y1 = getY(z1, cy);
+        const y2 = getY(z2, cy);
+        const rc1 = getRoadCenter(z1, curve);
+        const rc2 = getRoadCenter(z2, curve);
+        const rw1 = getRoadHalfW(z1);
+        const rw2 = getRoadHalfW(z2);
+
+        // Ground verge: Left side (lush greenery with red Chennai earth)
+        const gLeft = ctx.createLinearGradient(0, y1, 0, y2);
+        gLeft.addColorStop(0, "#084127");
+        gLeft.addColorStop(1, "#0a5638");
+        ctx.fillStyle = gLeft;
+        ctx.beginPath();
+        ctx.moveTo(0, y1);
+        ctx.lineTo(rc1 - rw1, y1);
+        ctx.lineTo(rc2 - rw2, y2);
+        ctx.lineTo(0, y2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Ground verge: Right side
+        ctx.beginPath();
+        ctx.moveTo(rc1 + rw1, y1);
+        ctx.lineTo(w, y1);
+        ctx.lineTo(w, y2);
+        ctx.lineTo(rc2 + rw2, y2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Sidewalk / paver shoulder strips
+        const paverW1 = Math.max(1, 18 * z1);
+        const paverW2 = Math.max(1, 18 * z2);
+        ctx.fillStyle = "#334155";
+        // Left paver
+        ctx.beginPath();
+        ctx.moveTo(rc1 - rw1 - paverW1, y1);
+        ctx.lineTo(rc1 - rw1, y1);
+        ctx.lineTo(rc2 - rw2, y2);
+        ctx.lineTo(rc2 - rw2 - paverW2, y2);
+        ctx.closePath();
+        ctx.fill();
+        // Right paver
+        ctx.beginPath();
+        ctx.moveTo(rc1 + rw1, y1);
+        ctx.lineTo(rc1 + rw1 + paverW1, y1);
+        ctx.lineTo(rc2 + rw2 + paverW2, y2);
+        ctx.lineTo(rc2 + rw2, y2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Asphalt road surface
+        const aspGrad = ctx.createLinearGradient(0, y1, 0, y2);
+        const isDark = (Math.floor(i + roadOffset * 8) % 2 === 0);
+        aspGrad.addColorStop(0, isDark ? "#121824" : "#161e2b");
+        aspGrad.addColorStop(1, isDark ? "#17202d" : "#1a2536");
+        ctx.fillStyle = aspGrad;
+        ctx.beginPath();
+        ctx.moveTo(rc1 - rw1, y1);
+        ctx.lineTo(rc1 + rw1, y1);
+        ctx.lineTo(rc2 + rw2, y2);
+        ctx.lineTo(rc2 - rw2, y2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Concrete curbs (alternating red and white hazard stripes)
+        const curbW1 = Math.max(1, 10 * z1);
+        const curbW2 = Math.max(1, 10 * z2);
+        const isCurbAlt = (Math.floor(i + roadOffset * 10) % 2 === 0);
+        ctx.fillStyle = isCurbAlt ? "#ef4444" : "#f8fafc";
+
+        // Left curb
+        ctx.beginPath();
+        ctx.moveTo(rc1 - rw1 - curbW1, y1);
+        ctx.lineTo(rc1 - rw1, y1);
+        ctx.lineTo(rc2 - rw2, y2);
+        ctx.lineTo(rc2 - rw2 - curbW2, y2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Right curb
+        ctx.beginPath();
+        ctx.moveTo(rc1 + rw1, y1);
+        ctx.lineTo(rc1 + rw1 + curbW1, y1);
+        ctx.lineTo(rc2 + rw2 + curbW2, y2);
+        ctx.lineTo(rc2 + rw2, y2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Solid white outer road edge lines
+        ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+        const lineW = Math.max(1, 3.2 * z1);
+        // Left line
+        ctx.fillRect(rc1 - rw1 + 4 * z1, y1, lineW, Math.abs(y2 - y1) + 1);
+        // Right line
+        ctx.fillRect(rc1 + rw1 - 4 * z1 - lineW, y1, lineW, Math.abs(y2 - y1) + 1);
+      }
+
+      // Dashed Yellow Highway Center Lines (Moving Forward & Curving)
+      const numDashes = 10;
+      for (let d = 0; d < numDashes; d++) {
+        const z1 = ((d + roadOffset) % numDashes) / numDashes;
+        if (z1 < 0.08 || z1 > 0.95) continue;
+        const z2 = Math.min(0.98, z1 + 0.05);
+
+        const y1 = getY(z1, cy);
+        const y2 = getY(z2, cy);
+        const rc1 = getRoadCenter(z1, curve);
+        const rc2 = getRoadCenter(z2, curve);
+        const dashW1 = Math.max(1.5, 7 * z1);
+        const dashW2 = Math.max(1.5, 7 * z2);
+
+        ctx.fillStyle = "#facc15"; // Highway bright yellow
+        ctx.beginPath();
+        ctx.moveTo(rc1 - dashW1 / 2, y1);
+        ctx.lineTo(rc1 + dashW1 / 2, y1);
+        ctx.lineTo(rc2 + dashW2 / 2, y2);
+        ctx.lineTo(rc2 - dashW2 / 2, y2);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Directional Turn Arrow on the Asphalt
+      if (Math.abs(curve) > 40) {
+        const arrowZ = 0.55;
+        const ay = getY(arrowZ, cy);
+        const ax = getRoadCenter(arrowZ, curve);
+        const aScale = arrowZ * 1.3;
+        drawRoadTurnArrow(ctx, ax, ay, aScale, curve > 0 ? "right" : "left");
+      }
+    }
+
+    function drawRoadTurnArrow(ctx, x, y, scale, dir) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+      ctx.scale(dir === "left" ? -scale : scale, scale);
+
+      ctx.beginPath();
+      ctx.moveTo(-5, 24);
+      ctx.lineTo(5, 24);
+      ctx.lineTo(5, -6);
+      ctx.lineTo(18, -6);
+      ctx.lineTo(0, -28);
+      ctx.lineTo(-18, -6);
+      ctx.lineTo(-5, -6);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Realistic Villa Drawing
+    function drawRealisticVilla(ctx, x, y, scale, side, style) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      const wBox = 110 * scale;
+      const hBox = 84 * scale;
+      const depth = 28 * scale * (side > 0 ? -1 : 1);
+
+      // Contact shadow on ground
+      ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+      ctx.beginPath();
+      ctx.ellipse(0, 0, wBox * 0.7, 9 * scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Side 3D Depth Wall
+      ctx.fillStyle = "#94a3b8";
+      ctx.beginPath();
+      ctx.moveTo(side > 0 ? wBox / 2 : -wBox / 2, 0);
+      ctx.lineTo(side > 0 ? wBox / 2 + depth : -wBox / 2 + depth, -12 * scale);
+      ctx.lineTo(side > 0 ? wBox / 2 + depth : -wBox / 2 + depth, -hBox - 12 * scale);
+      ctx.lineTo(side > 0 ? wBox / 2 : -wBox / 2, -hBox);
+      ctx.closePath();
+      ctx.fill();
+
+      // Front Main Facade
+      ctx.fillStyle = (style === "tiled") ? "#fef3c7" : "#f8fafc";
+      ctx.fillRect(-wBox / 2, -hBox, wBox, hBox);
+
+      // Accent Architectural Pillar / Stone Cladding
+      ctx.fillStyle = "#334155";
+      const pillarW = wBox * 0.28;
+      const pillarX = (side > 0) ? -wBox / 2 : (wBox / 2 - pillarW);
+      ctx.fillRect(pillarX, -hBox, pillarW, hBox);
+
+      if (style === "tiled") {
+        // Sloping Terracotta Roof with Ridges
+        ctx.fillStyle = "#b45309"; // Warm terracotta
+        ctx.beginPath();
+        ctx.moveTo(-wBox / 2 - 12 * scale, -hBox);
+        ctx.lineTo(0, -hBox - 28 * scale);
+        ctx.lineTo(wBox / 2 + 12 * scale, -hBox);
+        ctx.closePath();
+        ctx.fill();
+
+        // Roof ridge lines
+        ctx.strokeStyle = "#78350f";
+        ctx.lineWidth = Math.max(1, 2 * scale);
+        for (let r = -4; r <= 4; r++) {
+          ctx.beginPath();
+          ctx.moveTo(r * 10 * scale, -hBox);
+          ctx.lineTo(0, -hBox - 28 * scale);
+          ctx.stroke();
+        }
+      } else {
+        // Modern Cantilevered Roof & Pergola
+        ctx.fillStyle = "#0284c7";
+        ctx.fillRect(-wBox / 2 - 6 * scale, -hBox - 8 * scale, wBox + 12 * scale, 6 * scale);
+
+        // Rooftop Water Tank (Sintex style) & Solar Panel
+        ctx.fillStyle = "#0f172a";
+        ctx.fillRect(wBox * 0.15, -hBox - 22 * scale, 16 * scale, 14 * scale);
+        ctx.fillStyle = "#38bdf8";
+        ctx.fillRect(-wBox * 0.35, -hBox - 18 * scale, 24 * scale, 10 * scale);
+      }
+
+      // Upper Floor Cantilevered Balcony with Glass Railing
+      ctx.fillStyle = "rgba(56, 189, 248, 0.45)";
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = Math.max(1, 1.5 * scale);
+      const balW = wBox * 0.52;
+      const balH = hBox * 0.24;
+      const balX = (side > 0) ? (wBox / 2 - balW - 6 * scale) : (-wBox / 2 + 6 * scale);
+      const balY = -hBox * 0.58;
+      ctx.fillRect(balX, balY, balW, balH);
+      ctx.strokeRect(balX, balY, balW, balH);
+
+      // Warmly Lit Picture Windows
+      ctx.fillStyle = "#fef08a";
+      ctx.fillRect(-wBox / 2 + 10 * scale, -hBox * 0.9, 20 * scale, 16 * scale);
+      ctx.fillRect(wBox / 2 - 30 * scale, -hBox * 0.9, 20 * scale, 16 * scale);
+
+      // Teakwood Entrance Door & Canopy
+      ctx.fillStyle = "#78350f";
+      const doorX = (side > 0) ? 8 * scale : -28 * scale;
+      ctx.fillRect(doorX, -32 * scale, 18 * scale, 32 * scale);
+
+      // Front Compound Wall with Gate Pillars & Bougainvillea
+      ctx.fillStyle = "#cbd5e1";
+      ctx.fillRect(-wBox / 2 - 10 * scale, -14 * scale, wBox + 20 * scale, 14 * scale);
+      // Gate pillar lamps
+      ctx.fillStyle = "#fbbf24";
+      ctx.fillRect(-wBox / 2 - 12 * scale, -18 * scale, 5 * scale, 4 * scale);
+      ctx.fillRect(wBox / 2 + 7 * scale, -18 * scale, 5 * scale, 4 * scale);
+
+      // Pink Bougainvillea Flower bush spilling over wall
+      ctx.fillStyle = "#e11d48";
+      ctx.beginPath();
+      ctx.arc(-wBox / 2 - 2 * scale, -12 * scale, 7 * scale, 0, Math.PI * 2);
+      ctx.arc(-wBox / 2 + 8 * scale, -15 * scale, 6 * scale, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // Realistic Shop Drawing
+    function drawRealisticShop(ctx, x, y, scale, side, brand, color) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      const wBox = 115 * scale;
+      const hBox = 76 * scale;
+      const depth = 24 * scale * (side > 0 ? -1 : 1);
+
+      // Contact shadow
+      ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+      ctx.beginPath();
+      ctx.ellipse(0, 0, wBox * 0.7, 9 * scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Side Wall Depth
+      ctx.fillStyle = "#64748b";
+      ctx.beginPath();
+      ctx.moveTo(side > 0 ? wBox / 2 : -wBox / 2, 0);
+      ctx.lineTo(side > 0 ? wBox / 2 + depth : -wBox / 2 + depth, -10 * scale);
+      ctx.lineTo(side > 0 ? wBox / 2 + depth : -wBox / 2 + depth, -hBox - 10 * scale);
+      ctx.lineTo(side > 0 ? wBox / 2 : -wBox / 2, -hBox);
+      ctx.closePath();
+      ctx.fill();
+
+      // Front Facade
+      ctx.fillStyle = "#e2e8f0";
+      ctx.fillRect(-wBox / 2, -hBox, wBox, hBox);
+
+      // Illuminated Marquee Billboard Sign
+      ctx.fillStyle = color || "#16a34a";
+      ctx.fillRect(-wBox / 2 - 4 * scale, -hBox - 20 * scale, wBox + 8 * scale, 20 * scale);
+
+      // Marquee Signboard Text
+      ctx.fillStyle = "#ffffff";
+      ctx.font = `bold ${Math.max(8, Math.round(11 * scale))}px system-ui, sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(brand.toUpperCase(), 0, -hBox - 10 * scale);
+
+      // Striped Awning Over Entrance
+      const numStripes = 7;
+      const sWidth = (wBox + 4 * scale) / numStripes;
+      for (let s = 0; s < numStripes; s++) {
+        ctx.fillStyle = (s % 2 === 0) ? color : "#ffffff";
+        ctx.fillRect(-wBox / 2 - 2 * scale + s * sWidth, -hBox + 2 * scale, sWidth, 14 * scale);
+      }
+
+      // Plate Glass Showroom Display Windows
+      ctx.fillStyle = "rgba(254, 240, 138, 0.85)";
+      ctx.strokeStyle = "#334155";
+      ctx.lineWidth = Math.max(1, 1.2 * scale);
+      ctx.fillRect(-wBox / 2 + 8 * scale, -hBox + 20 * scale, wBox * 0.52, 42 * scale);
+      ctx.strokeRect(-wBox / 2 + 8 * scale, -hBox + 20 * scale, wBox * 0.52, 42 * scale);
+
+      // Store Glass Entrance Door
+      ctx.fillStyle = "#0284c7";
+      ctx.fillRect(wBox * 0.12, -hBox + 20 * scale, wBox * 0.32, 54 * scale);
+
+      ctx.restore();
+    }
+
+    // Realistic Tree
+    function drawRealisticTree(ctx, x, y, scale) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      const trunkW = Math.max(3, 9 * scale);
+      const trunkH = 50 * scale;
+
+      // Contact shadow
+      ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 24 * scale, 6 * scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Textured Trunk
+      ctx.fillStyle = "#451a03";
+      ctx.fillRect(-trunkW / 2, -trunkH, trunkW, trunkH);
+
+      // Multi-layer organic foliage clusters
+      const clusters = [
+        { ox: 0, oy: -trunkH - 18 * scale, r: 28 * scale, color: "#14532d" },
+        { ox: -16 * scale, oy: -trunkH - 8 * scale, r: 22 * scale, color: "#15803d" },
+        { ox: 16 * scale, oy: -trunkH - 10 * scale, r: 24 * scale, color: "#166534" },
+        { ox: -8 * scale, oy: -trunkH - 26 * scale, r: 20 * scale, color: "#16a34a" },
+        { ox: 8 * scale, oy: -trunkH - 24 * scale, r: 18 * scale, color: "#22c55e" }
+      ];
+
+      clusters.forEach(c => {
+        ctx.fillStyle = c.color;
+        ctx.beginPath();
+        ctx.arc(c.ox, c.oy, c.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.restore();
+    }
+
+    // Realistic Coconut Palm
+    function drawRealisticPalm(ctx, x, y, scale) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      const hTrunk = 75 * scale;
+      // Shadow
+      ctx.fillStyle = "rgba(0,0,0,0.3)";
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 18 * scale, 5 * scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Curved segmented trunk
+      ctx.strokeStyle = "#5c2e0b";
+      ctx.lineWidth = Math.max(3, 6 * scale);
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(8 * scale, -hTrunk * 0.5, 4 * scale, -hTrunk);
+      ctx.stroke();
+
+      // Palm Crown Feathery Fronds
+      const crownX = 4 * scale;
+      const crownY = -hTrunk;
+      const numFronds = 9;
+      ctx.strokeStyle = "#15803d";
+      ctx.lineWidth = Math.max(1.5, 3 * scale);
+
+      for (let f = 0; f < numFronds; f++) {
+        const ang = (f / (numFronds - 1) - 0.5) * Math.PI * 0.9 - Math.PI / 2;
+        const frondLen = (28 + (f % 3) * 6) * scale;
+        ctx.beginPath();
+        ctx.moveTo(crownX, crownY);
+        ctx.quadraticCurveTo(
+          crownX + Math.cos(ang) * frondLen * 0.6,
+          crownY + Math.sin(ang) * frondLen * 0.5,
+          crownX + Math.cos(ang) * frondLen,
+          crownY + Math.sin(ang) * frondLen + 8 * scale
+        );
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    // Steering Wheel (Car)
+    function drawSteeringWheel(angle) {
+      ctx.save();
+      const cx = w * 0.5;
+      const cy = h + 20;
+      const rad = 115;
+      ctx.translate(cx, cy);
+      ctx.rotate((angle * Math.PI) / 180);
+
+      // Outer Rim
+      ctx.strokeStyle = "#0b0f19";
+      ctx.lineWidth = 20;
+      ctx.beginPath();
+      ctx.arc(0, 0, rad, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Grip Inset
+      ctx.strokeStyle = "#1e293b";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(0, 0, rad - 3, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Spokes
+      ctx.strokeStyle = "#475569";
+      ctx.lineWidth = 14;
+      // Left spoke
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-rad * 0.88, -rad * 0.16); ctx.stroke();
+      // Right spoke
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(rad * 0.88, -rad * 0.16); ctx.stroke();
+      // Bottom spoke
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, rad * 0.88); ctx.stroke();
+
+      // Center Hub
+      ctx.fillStyle = "#0f172a";
+      ctx.beginPath();
+      ctx.arc(0, 0, rad * 0.36, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#f59e0b"; // Gold ring
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      ctx.fillStyle = "#fbbf24";
+      ctx.font = "bold 20px system-ui";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("LLB", 0, 0);
+
+      ctx.restore();
+    }
+
+    // Motorcycle Handlebars (Bike mode)
+    function drawBikeHandlebars(angle) {
+      ctx.save();
+      const cx = w * 0.5;
+      const cy = h + 10;
+      ctx.translate(cx, cy);
+      ctx.rotate((angle * 0.6 * Math.PI) / 180);
+
+      // Triple clamp center
+      ctx.fillStyle = "#1e293b";
+      ctx.fillRect(-45, -35, 90, 30);
+      ctx.strokeStyle = "#f59e0b";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(-45, -35, 90, 30);
+
+      // Digital Racing Gauge
+      ctx.fillStyle = "#020617";
+      ctx.fillRect(-35, -70, 70, 32);
+      ctx.strokeStyle = "#38bdf8";
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(-35, -70, 70, 32);
+
+      ctx.fillStyle = "#38bdf8";
+      ctx.font = "bold 13px monospace";
+      ctx.textAlign = "center";
+      ctx.fillText("54 KM/H", 0, -50);
+
+      // Handlebar tubes
+      ctx.strokeStyle = "#475569";
+      ctx.lineWidth = 12;
+      ctx.beginPath();
+      ctx.moveTo(-160, -20);
+      ctx.lineTo(-30, -25);
+      ctx.lineTo(30, -25);
+      ctx.lineTo(160, -20);
+      ctx.stroke();
+
+      // Rubber Grips
+      ctx.fillStyle = "#0f172a";
+      ctx.fillRect(-175, -28, 45, 16);
+      ctx.fillRect(130, -28, 45, 16);
+
+      // Aluminum bar end weights
+      ctx.fillStyle = "#f59e0b";
+      ctx.fillRect(-185, -27, 10, 14);
+      ctx.fillRect(175, -27, 10, 14);
+
+      // Brake / clutch levers
+      ctx.strokeStyle = "#94a3b8";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(-140, -18); ctx.lineTo(-170, -4);
+      ctx.moveTo(140, -18); ctx.lineTo(170, -4);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // URL parameter reading
+    const qParams = new URLSearchParams(window.location.search);
+    if (qParams.get("curve")) {
+      const cv = parseFloat(qParams.get("curve"));
+      roadCurve = cv;
+      targetCurve = cv;
+      steeringAngle = (cv / 220) * 45;
+    }
+    if (qParams.get("vehicle")) {
+      vehicleType = qParams.get("vehicle");
+    }
+
+    // Render loop
+    function render() {
+      // Lerp curve & steering
+      roadCurve += (targetCurve - roadCurve) * 0.08;
+      const targetSteer = (roadCurve / 220) * 45;
+      steeringAngle += (targetSteer - steeringAngle) * 0.1;
+      roadOffset = (roadOffset + 0.04) % 1.0;
+
+      const cy = h * 0.40;
+      const cx = getRoadCenter(0, roadCurve);
+
+      ctx.clearRect(0, 0, w, h);
+      drawRealisticSky(cy, cx);
+      drawCurvedRoad(cy, cx, roadCurve);
+
+      // Sort scenery by depth ascending (z=0 far first, z=1 close last)
+      const sorted = [...scenery].sort((a, b) => a.z - b.z);
+      sorted.forEach(obj => {
+        const z = obj.z;
+        const scale = Math.pow(z, 1.8) * 1.5;
+        if (scale < 0.04) return;
+
+        const y = getY(z, cy);
+        const roadW = getRoadHalfW(z);
+        const roadC = getRoadCenter(z, roadCurve);
+        const lateralOffset = (18 + 75 * scale);
+        const x = roadC + obj.side * (roadW + lateralOffset);
+
+        if (obj.type === "villa") {
+          drawRealisticVilla(ctx, x, y, scale, obj.side, obj.style);
+        } else if (obj.type === "shop") {
+          drawRealisticShop(ctx, x, y, scale, obj.side, obj.brand, obj.color);
+        } else if (obj.type === "tree") {
+          drawRealisticTree(ctx, x, y, scale);
+        } else if (obj.type === "palm") {
+          drawRealisticPalm(ctx, x, y, scale);
+        }
+      });
+
+      if (vehicleType === "bike") {
+        drawBikeHandlebars(steeringAngle);
+      } else {
+        drawSteeringWheel(steeringAngle);
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    render();
+
+    window.setCurve = setCurve;
+  </script>
+</body>
+</html>

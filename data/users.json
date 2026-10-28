@@ -1,0 +1,31 @@
+[
+  {
+    "id": "USR-VIP-001",
+    "name": "Praveen Kumar",
+    "email": "vip@client.com",
+    "phone": "+91 98401 23456",
+    "password": "password123",
+    "role": "VIP Investor",
+    "savedPlots": [
+      "CHN-OMR-01",
+      "CHN-ECR-01",
+      "CHN-GST-01"
+    ],
+    "myListings": [],
+    "createdAt": "2026-10-20T10:00:00"
+  },
+  {
+    "id": "USR-BUY-002",
+    "name": "Ananya Ramesh",
+    "email": "buyer@chennai.com",
+    "phone": "+91 94440 98765",
+    "password": "buyer123",
+    "role": "Home Buyer",
+    "savedPlots": [
+      "CHN-OMR-02",
+      "CHN-GST-02"
+    ],
+    "myListings": [],
+    "createdAt": "2026-10-22T14:30:00"
+  }
+]

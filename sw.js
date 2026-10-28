@@ -7,6 +7,8 @@ const CACHE_NAME = 'chennai-plots-cache-v1';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
+  './app.html',
+  './mobile.html',
   './chennai-plots.html',
   './chennai-plots.js',
   './chennai-plots.css',

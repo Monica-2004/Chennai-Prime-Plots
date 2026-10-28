@@ -87,6 +87,9 @@
         <button class="btn btn-primary btn-sm nav-action-cab" onclick="window.openBookingModal('General-Cab-Booking')" title="Free Cab Visit">
           <i class="fas fa-car"></i> <span class="nav-btn-text">Free Cab</span>
         </button>
+        <a href="app.html" class="btn btn-sm nav-action-app-badge" style="background:linear-gradient(135deg, #d4af37, #b45309); color:#070b14; font-weight:800; border:none; text-decoration:none; display:inline-flex; align-items:center; gap:5px; padding:6px 10px; border-radius:8px;" title="Open NoBroker & OLX Style Mobile App">
+          <i class="fas fa-mobile-alt"></i> <span class="nav-btn-text">Mobile App</span>
+        </a>
       </div>
     </div>
   </header>
@@ -406,6 +409,11 @@
               </button>
             </div>
 
+            <!-- Show All 20 Plots Overview Button -->
+            <button type="button" class="btn btn-sm btn-show-all-plots" id="btnFitAllPlots" onclick="window.fitAllPlotsOnMap()" title="Fit all 20 Chennai Plots on screen at once">
+              <i class="fas fa-globe-asia" style="color:#10b981;"></i> <span>All 20 Plots</span>
+            </button>
+
             <!-- Dedicated Drive / Pause Path Controller -->
             <button type="button" class="btn btn-sm btn-drive-action" id="btnMapDriveToggle" onclick="window.toggleNavDriveState()" title="Drive Car or Bike along route directions">
               <i class="fas fa-play" id="mapDriveToggleIcon"></i> <span id="mapDriveToggleText">Drive Path</span>
@@ -711,6 +719,65 @@
               <span style="font-size:0.9rem;">🎯</span>
               <span>Pulsing Radar indicates live sale</span>
             </div>
+          </div>
+        </div>
+
+        <!-- Mobile One-by-One Plots Stepper Card (Docked Over Map on Mobile) -->
+        <div class="mobile-plot-stepper-card" id="mobilePlotStepperCard">
+          <div class="stepper-header-row">
+            <button type="button" class="btn-stepper-arrow prev" onclick="window.stepMobilePlot(-1)" aria-label="Previous Plot" title="Previous Plot">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="stepper-counter-wrap">
+              <span class="stepper-count-badge" id="stepperCountBadge">
+                <i class="fas fa-map-pin text-gold"></i> Plot <strong id="stepperCurrentIndex">1</strong> of <strong id="stepperTotalPlots">20</strong>
+              </span>
+              <button type="button" class="btn-stepper-quick" onclick="window.fitAllPlotsOnMap()" title="Fit all 20 Chennai plots on screen">
+                <i class="fas fa-globe-asia" style="color:#10b981;"></i> Show All (20)
+              </button>
+              <button type="button" class="btn-stepper-quick" onclick="window.toggleAllPlotsLinearDrawer()" title="View All 20 Plots in One Clean List">
+                <i class="fas fa-th-list" style="color:#38bdf8;"></i> List (20)
+              </button>
+            </div>
+            <button type="button" class="btn-stepper-arrow next" onclick="window.stepMobilePlot(1)" aria-label="Next Plot" title="Next Plot">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <!-- Active Plot Card Banner -->
+          <div class="stepper-plot-details" id="stepperPlotDetails" onclick="window.openCurrentStepperPlotDetails()" title="Tap to open full details">
+            <div class="stepper-plot-thumb-wrap">
+              <img id="stepperPlotImg" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=400&q=80" alt="Plot Thumbnail" class="stepper-plot-thumb">
+              <span class="stepper-plot-status-tag" id="stepperPlotStatus">Available</span>
+            </div>
+            <div class="stepper-plot-info">
+              <div class="stepper-title-row">
+                <h4 class="stepper-plot-title" id="stepperPlotTitle">Emerald Crest Villa Plots</h4>
+                <span class="stepper-plot-price" id="stepperPlotPrice">₹48.0 L</span>
+              </div>
+              <div class="stepper-plot-locality" id="stepperPlotLocality">
+                <i class="fas fa-map-marker-alt" style="color:#d97706;"></i> Sholinganallur, OMR &bull; 1,500 sq.ft &bull; CMDA
+              </div>
+            </div>
+          </div>
+
+          <!-- ALL OPTIONS VISIBLE IN LINE -->
+          <div class="stepper-actions-line" id="stepperActionsLine">
+            <button type="button" class="btn-stepper-action route" onclick="window.triggerRouteForCurrentStepperPlot()" title="Get Turn-by-Turn Driving Directions">
+              <i class="fas fa-directions"></i> <span>Directions</span>
+            </button>
+            <button type="button" class="btn-stepper-action vision" onclick="window.triggerVisionForCurrentStepperPlot()" title="Open 3D Street Turning Vision">
+              <i class="fas fa-vr-cardboard"></i> <span>3D View</span>
+            </button>
+            <button type="button" class="btn-stepper-action cab" onclick="window.triggerCabForCurrentStepperPlot()" title="Book Free VIP Cab Visit">
+              <i class="fas fa-car-side"></i> <span>Free Cab</span>
+            </button>
+            <button type="button" class="btn-stepper-action dossier" onclick="window.openCurrentStepperPlotDetails()" title="View Complete Legal Dossier">
+              <i class="fas fa-file-contract"></i> <span>Dossier</span>
+            </button>
+            <button type="button" class="btn-stepper-action whatsapp" onclick="window.triggerWhatsAppForCurrentStepperPlot()" title="Chat with Relationship Manager">
+              <i class="fab fa-whatsapp"></i> <span>WhatsApp</span>
+            </button>
           </div>
         </div>
       </div>
@@ -1467,6 +1534,10 @@
       <i class="fas fa-street-view"></i>
       <span>3D Vision</span>
     </button>
+    <a href="app.html" class="mobile-nav-item" id="mobileNavApp" title="NoBroker & OLX Mobile App Mode" style="color:#fbbf24;">
+      <i class="fas fa-mobile-alt"></i>
+      <span>App Mode</span>
+    </a>
     <button class="mobile-nav-item mobile-nav-highlight" id="mobileNavCab" onclick="window.openCabBookingForActivePlot()" title="Book Free VIP Site Visit Cab">
       <i class="fas fa-car-side"></i>
       <span>Free Cab</span>
@@ -1476,6 +1547,39 @@
       <span>WhatsApp</span>
     </a>
   </nav>
+
+
+  <!-- One-by-One All 20 Plots Linear Directory Modal / Bottom Drawer -->
+  <div class="modal-backdrop" id="allPlotsLinearDrawerModal" style="display:none; z-index:99998;">
+    <div class="modal-window all-plots-linear-window" style="max-width: 720px; max-height: 88vh; display: flex; flex-direction: column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #0b132b, #1e293b); border-bottom: 2px solid #d4af37; padding: 14px 18px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <i class="fas fa-th-list" style="color:#fbbf24; font-size:1.2rem;"></i>
+          <div>
+            <h3 style="color:#ffffff; font-size:1.1rem; margin:0; font-weight:800;">All 20 Chennai Prime Plots</h3>
+            <p style="color:#94a3b8; font-size:0.75rem; margin:0;">Browse sequentially one by one with all options in line</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="window.toggleAllPlotsLinearDrawer()" aria-label="Close">&times;</button>
+      </div>
+
+      <!-- Quick Search & Filter Header inside Drawer -->
+      <div style="padding: 10px 16px; background: #070b14; border-bottom: 1px solid rgba(255,255,255,0.08); display:flex; gap:8px; align-items:center;">
+        <div style="position:relative; flex:1;">
+          <i class="fas fa-search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#94a3b8; font-size:0.85rem;"></i>
+          <input type="text" id="linearDrawerSearchInput" oninput="window.filterLinearPlotsDrawer(this.value)" placeholder="Search plots by locality, zone or name..." style="width:100%; padding:8px 12px 8px 34px; background:#0f172a; border:1px solid rgba(212,175,55,0.3); border-radius:8px; color:#ffffff; font-size:0.85rem; outline:none;">
+        </div>
+        <button class="btn btn-sm btn-gold" onclick="window.fitAllPlotsOnMap(); window.toggleAllPlotsLinearDrawer();" style="white-space:nowrap; padding:8px 12px; font-size:0.78rem;">
+          <i class="fas fa-globe-asia"></i> Show All on Map
+        </button>
+      </div>
+
+      <!-- Linear List of All 20 Plots -->
+      <div class="modal-body" style="overflow-y:auto; padding: 14px; background: #070b14; flex:1;" id="allPlotsLinearContainer">
+        <!-- Dynamically rendered one-by-one plot items -->
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

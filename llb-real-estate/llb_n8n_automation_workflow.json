@@ -1,0 +1,157 @@
+{
+  "name": "LLB Real Estate - Automated Registration Confirmation Email Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "### 🚀 STEP 1: WEBHOOK SETUP\n1. Double-click **1. Inbound Registration Webhook** below.\n2. Copy the **Production URL** (or **Test URL** for debugging).\n3. Open your LLB website, click **n8n Setup** in top nav, and paste the URL.\n4. Save and click **Send Live Test Lead**!",
+        "height": 180,
+        "width": 280,
+        "color": 4
+      },
+      "id": "sticky-webhook-guide-01",
+      "name": "Sticky Note - Webhook Guide",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        180,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ✉️ STEP 2: SMTP SETUP (EMAIL & PASSWORD)\n1. Double-click **3. Send Confirmation Email to Registered Client** below.\n2. Under **Credential for SMTP**, click **Create New Credential** (or select existing).\n3. Fill in your email credentials:\n   - **User:** Your email (e.g. `yourname@gmail.com`)\n   - **Password:** Your App Password (for Gmail: Google Account > Security > App Passwords)\n   - **Host:** `smtp.gmail.com` (Gmail) or your host\n   - **Port:** `465` (SSL/TLS turned ON) or `587`\n4. Under **From Email** in the node, enter your email address.\n5. Click **Save** and toggle workflow to **ACTIVE** in the top-right corner!\n\n✅ That is all! Every new client registration will receive this luxury confirmation email instantly.",
+        "height": 300,
+        "width": 420,
+        "color": 6
+      },
+      "id": "sticky-smtp-guide-02",
+      "name": "Sticky Note - SMTP Guide",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        680,
+        -140
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "llb-property-inquiry",
+        "responseMode": "responseNode",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Methods",
+                "value": "POST, OPTIONS"
+              },
+              {
+                "name": "Access-Control-Allow-Headers",
+                "value": "Content-Type, Authorization"
+              }
+            ]
+          }
+        }
+      },
+      "id": "node-webhook-001",
+      "name": "1. Inbound Registration Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        220,
+        300
+      ],
+      "webhookId": "llb-lead-inbound-webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract registration payload from LLB Real Estate website\nconst inputData = $input.first().json.body || $input.first().json;\n\n// Registered client information\nconst registeredEmail = (inputData.email || '').trim().toLowerCase();\nconst fullName = inputData.fullName || inputData.name || 'Valued Client';\nconst phone = inputData.phone || 'Not Provided';\nconst inquiryType = inputData.inquiryType || 'VIP Client Registration';\nconst propertyTitle = inputData.propertyTitle || 'Prime Luxury Portfolio Selection';\nconst budget = inputData.budget || '$3,000,000 - $5,000,000';\nconst timeline = inputData.timeline || 'Immediate (Next 30 Days)';\nconst userMessage = inputData.message || 'Requesting full property dossier and legal clearance sheet.';\nconst leadId = 'LLB-' + Date.now().toString(36).toUpperCase();\nconst timestamp = new Date().toISOString();\nconst formattedDate = new Date().toLocaleDateString('en-US', {\n  year: 'numeric',\n  month: 'long',\n  day: 'numeric',\n  hour: '2-digit',\n  minute: '2-digit'\n});\n\nconst emailSubject = `VIP Registration Confirmed: ${propertyTitle} [Ref: ${leadId}]`;\n\n// Bespoke Luxury 80% White / 20% Obsidian Black Confirmation HTML Email\nconst emailHtml = `\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>${emailSubject}</title>\n  <style>\n    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8f9fa; color: #1e293b; margin: 0; padding: 24px; }\n    .container { max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }\n    .header { background: #0b0f19; padding: 36px 30px; text-align: center; border-bottom: 2px solid #b8860b; }\n    .logo-badge { display: inline-block; background: #b8860b; color: #0b0f19; font-weight: 900; font-size: 16px; padding: 4px 10px; border-radius: 4px; letter-spacing: 1px; margin-bottom: 8px; }\n    .logo-text { color: #ffffff; font-size: 24px; font-weight: 800; letter-spacing: 1px; margin: 0; text-transform: uppercase; }\n    .tagline { color: #94a3b8; font-size: 12px; margin-top: 6px; letter-spacing: 1.5px; text-transform: uppercase; }\n    .body-content { padding: 36px 30px; line-height: 1.7; color: #334155; font-size: 15px; }\n    .ref-pill { display: inline-block; background: #f1f4f8; color: #0b0f19; border: 1px solid #cbd5e1; font-weight: 700; font-size: 12px; padding: 4px 12px; border-radius: 20px; margin-bottom: 15px; }\n    .details-table { width: 100%; border-collapse: collapse; margin: 24px 0; background: #f8f9fa; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; font-size: 14px; }\n    .details-table td { padding: 12px 16px; border-bottom: 1px solid #e2e8f0; }\n    .details-table td:first-child { font-weight: 700; color: #0b0f19; width: 38%; }\n    .legal-box { background: rgba(5, 150, 105, 0.08); border-left: 4px solid #059669; padding: 16px 20px; border-radius: 4px; margin: 24px 0; }\n    .legal-title { color: #065f46; font-weight: 700; font-size: 13px; text-transform: uppercase; margin-bottom: 4px; }\n    .legal-text { color: #047857; font-size: 13px; margin: 0; }\n    .btn-action { display: inline-block; background: #0b0f19; color: #ffffff !important; text-decoration: none; padding: 14px 28px; font-weight: 700; font-size: 14px; border-radius: 6px; margin: 20px 0 10px; }\n    .footer { background: #0b0f19; color: #94a3b8; padding: 24px 30px; text-align: center; font-size: 12px; line-height: 1.6; }\n    .footer a { color: #b8860b; text-decoration: none; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <div class=\"logo-badge\">LLB</div>\n      <h1 class=\"logo-text\">LLB REAL ESTATE</h1>\n      <div class=\"tagline\">Luxury • Legal • Bespoke</div>\n    </div>\n    <div class=\"body-content\">\n      <span class=\"ref-pill\">Ref ID: ${leadId}</span>\n      <h2 style=\"margin: 0 0 12px; font-size: 20px; color: #0b0f19;\">VIP Registration Confirmed</h2>\n      <p>Dear <strong>${fullName}</strong>,</p>\n      <p>Thank you for registering with <strong>LLB Real Estate</strong>. Your property acquisition inquiry has been registered with our Senior Legal & Advisory team.</p>\n      \n      <table class=\"details-table\">\n        <tr><td>Interested Property</td><td><strong>${propertyTitle}</strong></td></tr>\n        <tr><td>Registration Type</td><td>${inquiryType}</td></tr>\n        <tr><td>Target Budget</td><td>${budget}</td></tr>\n        <tr><td>Preferred Timeline</td><td>${timeline}</td></tr>\n        <tr><td>Registered Email</td><td>${registeredEmail}</td></tr>\n        <tr><td>Registered Phone</td><td>${phone}</td></tr>\n        <tr><td>Registration Date</td><td>${formattedDate}</td></tr>\n        <tr><td>Client Requirements</td><td>${userMessage}</td></tr>\n      </table>\n      \n      <div class=\"legal-box\">\n        <div class=\"legal-title\">🛡️ Sovereign Legal Title Guarantee</div>\n        <p class=\"legal-text\">All assets in the LLB luxury registry are subjected to strict municipal due diligence, 100% sovereign title deeds, and certified encumbrance-free.</p>\n      </div>\n      \n      <p>One of our designated property attorneys has been assigned to your registration and will contact you directly via this email within 60 minutes.</p>\n      \n      <center>\n        <a href=\"mailto:inquiries@llbrealestate.com?subject=Re:%20VIP%20Inquiry%20${leadId}\" class=\"btn-action\">Reply to VIP Advisory Desk</a>\n      </center>\n    </div>\n    <div class=\"footer\">\n      LLB Real Estate Group LLC • One Grand Plaza, Suite 4800, Financial District<br>\n      Direct VIP Desk: +1 (800) 552-7325 • <a href=\"mailto:inquiries@llbrealestate.com\">inquiries@llbrealestate.com</a><br>\n      Licensed Real Estate Brokerage RERA RE-LIC-849204\n    </div>\n  </div>\n</body>\n</html>\n`;\n\nreturn [{\n  json: {\n    leadId,\n    fullName,\n    email: registeredEmail,\n    phone,\n    inquiryType,\n    propertyTitle,\n    budget,\n    timeline,\n    userMessage,\n    emailSubject,\n    emailHtml,\n    timestamp,\n    formattedDate\n  }\n}];"
+      },
+      "id": "node-code-002",
+      "name": "2. Format Confirmation Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "inquiries@llbrealestate.com",
+        "toEmail": "={{ $json.email }}",
+        "subject": "={{ $json.emailSubject }}",
+        "html": "={{ $json.emailHtml }}",
+        "options": {
+          "senderName": "LLB Real Estate VIP Desk"
+        }
+      },
+      "id": "node-email-client-003",
+      "name": "3. Send Confirmation Email to Registered Client",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        740,
+        200
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "smtp-account-llb",
+          "name": "SMTP account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"success\",\n  \"leadId\": \"{{ $json.leadId }}\",\n  \"recipient\": \"{{ $json.email }}\",\n  \"message\": \"VIP Registration received. Confirmation email dispatched to {{ $json.email }}\",\n  \"timestamp\": \"{{ $json.timestamp }}\"\n}",
+        "options": {}
+      },
+      "id": "node-response-004",
+      "name": "4. Instant 200 OK Response to Website",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        740,
+        400
+      ]
+    }
+  ],
+  "connections": {
+    "1. Inbound Registration Webhook": {
+      "main": [
+        [
+          {
+            "node": "2. Format Confirmation Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Format Confirmation Email": {
+      "main": [
+        [
+          {
+            "node": "3. Send Confirmation Email to Registered Client",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "4. Instant 200 OK Response to Website",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

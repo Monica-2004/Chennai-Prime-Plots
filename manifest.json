@@ -1,14 +1,14 @@
 {
-  "name": "Chennai Prime Plots - 3D Street Vision",
-  "short_name": "Chennai Plots",
-  "description": "3D Street Vision, Satellite Road Navigation, and CMDA/DTCP Approved Prime Plots in Chennai.",
-  "start_url": "./index.html",
+  "name": "Chennai Prime Plots & Homes - NoBroker Mobile App",
+  "short_name": "PrimePlots",
+  "description": "0% Brokerage Mobile App for CMDA/DTCP Prime Plots and Home Designs in Chennai.",
+  "start_url": "./app.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "any",
-  "background_color": "#090e17",
-  "theme_color": "#0b132b",
-  "categories": ["real estate", "navigation", "business"],
+  "orientation": "portrait-primary",
+  "background_color": "#070b14",
+  "theme_color": "#d4af37",
+  "categories": ["real estate", "shopping", "business"],
   "icons": [
     {
       "src": "assets/architectural-glass-tower.jpg",
@@ -25,14 +25,19 @@
   ],
   "shortcuts": [
     {
-      "name": "3D Street Vision",
-      "url": "./index.html?vision=1",
-      "description": "Launch 3D Street View with turning roads"
+      "name": "Mobile App Feed",
+      "url": "./app.html",
+      "description": "Open NoBroker-style property feed"
     },
     {
-      "name": "Book Free Cab",
-      "url": "./index.html?book=1",
-      "description": "Schedule a complimentary site inspection cab"
+      "name": "Post Free Ad",
+      "url": "./app.html?sell=1",
+      "description": "Post your plot or home with 0% brokerage"
+    },
+    {
+      "name": "3D Interactive Map",
+      "url": "./chennai-plots.html",
+      "description": "Explore 20 plots on 3D Map"
     }
   ]
 }

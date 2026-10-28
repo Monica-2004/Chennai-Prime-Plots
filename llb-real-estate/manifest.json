@@ -1,0 +1,43 @@
+{
+  "name": "Chennai Prime Plots & Homes - NoBroker Mobile App",
+  "short_name": "PrimePlots",
+  "description": "0% Brokerage Mobile App for CMDA/DTCP Prime Plots and Home Designs in Chennai.",
+  "start_url": "./app.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#070b14",
+  "theme_color": "#d4af37",
+  "categories": ["real estate", "shopping", "business"],
+  "icons": [
+    {
+      "src": "assets/architectural-glass-tower.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/hero-luxury-real-estate.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Mobile App Feed",
+      "url": "./app.html",
+      "description": "Open NoBroker-style property feed"
+    },
+    {
+      "name": "Post Free Ad",
+      "url": "./app.html?sell=1",
+      "description": "Post your plot or home with 0% brokerage"
+    },
+    {
+      "name": "3D Interactive Map",
+      "url": "./chennai-plots.html",
+      "description": "Explore 20 plots on 3D Map"
+    }
+  ]
+}

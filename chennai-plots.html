@@ -87,6 +87,9 @@
         <button class="btn btn-primary btn-sm nav-action-cab" onclick="window.openBookingModal('General-Cab-Booking')" title="Free Cab Visit">
           <i class="fas fa-car"></i> <span class="nav-btn-text">Free Cab</span>
         </button>
+        <a href="app.html" class="btn btn-sm nav-action-app-badge" style="background:linear-gradient(135deg, #d4af37, #b45309); color:#070b14; font-weight:800; border:none; text-decoration:none; display:inline-flex; align-items:center; gap:5px; padding:6px 10px; border-radius:8px;" title="Open NoBroker & OLX Style Mobile App">
+          <i class="fas fa-mobile-alt"></i> <span class="nav-btn-text">Mobile App</span>
+        </a>
       </div>
     </div>
   </header>
@@ -317,11 +320,10 @@
                   <i class="fas fa-search-plus"></i> <span id="navZoomBtnLabel">Zoom In</span>
                 </button>
                 <div class="nav-speed-wrap">
-                  <select class="nav-speed-select" id="navSpeedSelect" title="Simulation Speed">
-                    <option value="1">1x Speed</option>
-                    <option value="2" selected>2x Speed</option>
+                  <select class="nav-speed-select" id="navSpeedSelect" title="Simulation Speed" onchange="window.setNavSpeed(this.value)">
+                    <option value="1" selected>1x Speed (Normal)</option>
+                    <option value="2">2x Speed</option>
                     <option value="4">4x Speed</option>
-                    <option value="8">8x Speed</option>
                   </select>
                 </div>
               </div>
@@ -359,6 +361,10 @@
 
             <!-- Action Buttons: Google Maps External, Cab Booking & Separate View Dossier -->
             <div class="gmaps-action-btns">
+              <button type="button" class="btn-gmaps-zoom-close" onclick="window.zoomCloseToDestinationPlot()" title="Zoom closely into the destination plot at street level">
+                <i class="fas fa-search-location" style="color:#fbbf24;"></i> <span>Zoom Close (18x)</span>
+              </button>
+
               <a href="#" target="_blank" rel="noopener" class="btn-gmaps-external" id="openExternalGoogleMapsBtn" title="Launch official Google Maps App">
                 <i class="fab fa-google"></i> Google Maps App
               </a>
@@ -406,6 +412,11 @@
               </button>
             </div>
 
+            <!-- Show All 20 Plots Overview Button -->
+            <button type="button" class="btn btn-sm btn-show-all-plots" id="btnFitAllPlots" onclick="window.fitAllPlotsOnMap()" title="Fit all 20 Chennai Plots on screen at once">
+              <i class="fas fa-globe-asia" style="color:#10b981;"></i> <span>All 20 Plots</span>
+            </button>
+
             <!-- Dedicated Drive / Pause Path Controller -->
             <button type="button" class="btn btn-sm btn-drive-action" id="btnMapDriveToggle" onclick="window.toggleNavDriveState()" title="Drive Car or Bike along route directions">
               <i class="fas fa-play" id="mapDriveToggleIcon"></i> <span id="mapDriveToggleText">Drive Path</span>
@@ -443,70 +454,107 @@
           </div>
         </div>
 
-        <!-- Live Google Maps GPS Navigation HUD Banner -->
+        <!-- Live Google Maps GPS Navigation HUD Banner (With Instant Minimize & Behind-Option Visibility) -->
         <div class="gmaps-live-nav-hud" id="gmapsLiveNavHud" style="display:none;">
-          <div class="hud-main-banner">
-            <!-- Left: Big Turn Direction Arrow -->
-            <div class="hud-turn-icon-box" id="hudTurnIconBox">
-              <i class="fas fa-arrow-up" id="hudTurnIcon"></i>
+          <!-- Top Control Header Bar: Status Badge + Direct Minimize & Close Buttons -->
+          <div class="hud-top-bar" id="hudTopBar">
+            <div class="hud-status-badge">
+              <span class="hud-live-dot"></span>
+              <span id="hudStatusTitle">GPS LIVE NAVIGATION</span>
             </div>
-            <!-- Center: Maneuver instruction and road name -->
-            <div class="hud-turn-info">
-              <div class="hud-turn-distance" id="hudTurnDistance">Head toward destination</div>
-              <div class="hud-turn-instruction" id="hudTurnInstruction">Departing along corridor</div>
-            </div>
-            <!-- Right: Live Vehicle Telemetry & Quick Controls -->
-            <div class="hud-telemetry-box">
-              <div class="hud-speed-badge">
-                <span id="hudVehicleIcon"><i class="fas fa-car"></i></span>
-                <span class="hud-speed-val" id="hudSpeedVal">48</span>
-                <span class="hud-speed-unit">km/h</span>
-              </div>
-              <div class="hud-eta-pill">
-                <span id="hudRemainingDist">-- km</span> &bull; <span id="hudRemainingEta">-- min</span>
-              </div>
-            </div>
-
-            <!-- Mobile Quick Controls (Expand/Collapse Controls & Direct Exit) -->
-            <div class="hud-mobile-quick-actions" id="hudMobileQuickActions">
-              <button type="button" class="btn-hud-mobile-toggle" id="btnHudMobileToggle" onclick="window.toggleMobileHudControls()" aria-label="Toggle Navigation Controls" title="More Options">
-                <i class="fas fa-chevron-down" id="hudMobileToggleIcon"></i>
+            <div class="hud-top-actions">
+              <button type="button" class="btn-hud-min-toggle" id="btnHudMinimizeTop" onclick="window.toggleHudMinimize(event)" title="Minimize notification bar to uncover behind options">
+                <i class="fas fa-minus" id="hudMinIcon"></i> <span id="hudMinText">Minimize</span>
               </button>
-              <button type="button" class="btn-hud-mobile-close" id="btnHudMobileClose" onclick="window.resetRouteNavigation()" aria-label="Exit Navigation" title="Exit Navigation">
+              <button type="button" class="btn-hud-close-direct" onclick="window.dismissLiveNavHud(event)" title="Stop & Close Navigation Banner">
                 <i class="fas fa-times"></i>
               </button>
             </div>
           </div>
 
-          <!-- Bottom Micro Progress & Control Strip -->
-          <div class="hud-progress-strip">
-            <div class="hud-progress-bar-wrap">
-              <div class="hud-progress-bar" id="hudProgressBar" style="width: 0%;"></div>
+          <!-- Minimized Ultra-Slim Floating Pill (Shown when minimized so behind options are 100% visible) -->
+          <div class="hud-minimized-pill" id="hudMinimizedPill" onclick="window.toggleHudMinimize(event)">
+            <div class="hud-min-left">
+              <span id="hudMinVehicleIcon"><i class="fas fa-car" style="color:#38bdf8;"></i></span>
+              <span class="hud-min-cardinal" id="hudMinCardinal">🧭 NORTH</span>
+              <span class="hud-min-status" id="hudMinStatusText">Navigating</span>
+              <span class="hud-min-eta" id="hudMinEtaText">1x &bull; 17.3 km &bull; 24 min</span>
             </div>
-            <div class="hud-strip-controls">
-              <span class="hud-destination-name"><i class="fas fa-flag-checkered text-gold"></i> <strong id="hudDestPlotTitle">Plot Destination</strong></span>
-              <div class="hud-mini-actions">
-                <button type="button" class="btn-hud-stop" id="btnHudStopJourney" onclick="window.stopRouteNavigation()" title="Stop Journey">
-                  <i class="fas fa-stop-circle"></i> Stop Journey
+            <div class="hud-min-right">
+              <button type="button" class="btn-hud-min-recenter" id="hudMinRecenter" onclick="event.stopPropagation(); window.recenterOnCar(event);" title="Re-center screen on moving car" style="display:none;">
+                <i class="fas fa-crosshairs"></i> Re-center
+              </button>
+              <button type="button" class="btn-hud-speed-min" id="btnHudSpeedMin" onclick="event.stopPropagation(); window.cycleNavSpeed(event);" title="Toggle 1x / 2x / 4x Speed">
+                <span id="hudMinSpeedText">1x</span>
+              </button>
+              <button type="button" class="btn-hud-expand-pill" onclick="window.toggleHudMinimize(event)">
+                <i class="fas fa-chevron-down"></i> Expand
+              </button>
+              <button type="button" class="btn-hud-stop-pill" onclick="event.stopPropagation(); window.stopRouteNavigation(); window.dismissLiveNavHud(event);" title="Close Notification">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Expanded Body Content -->
+          <div class="hud-expanded-content" id="hudExpandedContent">
+            <div class="hud-main-banner">
+              <!-- Left: Big Turn Direction Arrow -->
+              <div class="hud-turn-icon-box" id="hudTurnIconBox">
+                <i class="fas fa-arrow-up" id="hudTurnIcon"></i>
+              </div>
+              <!-- Center: Maneuver instruction and road name with Cardinal Direction -->
+              <div class="hud-turn-info">
+                <div class="hud-turn-head-row">
+                  <div class="hud-turn-distance" id="hudTurnDistance">Head North &bull; In 17.3 km</div>
+                  <span class="hud-cardinal-badge" id="hudCardinalBadge"><i class="fas fa-compass"></i> NORTH</span>
+                </div>
+                <div class="hud-turn-instruction" id="hudTurnInstruction">Head North on Rajiv Gandhi IT Expressway (OMR)</div>
+              </div>
+              <!-- Right: Live Vehicle Telemetry & 1x Speed Control -->
+              <div class="hud-telemetry-box">
+                <button type="button" class="hud-speed-pill-btn" id="hudSpeedToggleBtn" onclick="window.cycleNavSpeed(event)" title="Simulation Speed: Click to cycle 1x / 2x / 4x">
+                  <i class="fas fa-gauge-high"></i> <span id="hudSpeedPillText">1x Speed</span>
                 </button>
-                <button type="button" class="btn-hud-overview" id="btnHudReturnOverview" onclick="window.returnToChennaiOverview()" title="Return to Chennai Overview">
-                  <i class="fas fa-city"></i> Overview
-                </button>
-                <button type="button" class="btn-hud-vision" id="btnHudStreetVisionToggle" title="Open 3D Realistic Driver's Eye View (Houses, Shops, Trees)">
-                  <i class="fas fa-vr-cardboard"></i> <span id="hudVisionBtnLabel">3D Street View</span>
-                </button>
-                <button type="button" class="btn-hud-vehicle-toggle" id="btnHudVehicleToggle" title="Toggle Car or Bike">
-                  <i class="fas fa-motorcycle"></i> Switch to Bike
-                </button>
-                <button type="button" class="btn-hud-zoom" id="btnHudZoomToggle" title="Toggle Close-up Street View (16x) / Route Overview">
-                  <i class="fas fa-search-plus"></i> <span id="hudZoomLabel">16x Zoom</span>
-                </button>
-                <button type="button" class="btn-hud-camera active" id="btnHudCameraFollow" title="Auto-pan map with vehicle / Re-center">
-                  <i class="fas fa-video"></i> <span id="hudCameraText">Follow</span>
-                </button>
-                <button type="button" class="btn-hud-close" id="btnHudClose" title="Exit Live Navigation">
-                  <i class="fas fa-times"></i>
-                </button>
+                <div class="hud-eta-pill">
+                  <span id="hudRemainingDist">-- km</span> &bull; <span id="hudRemainingEta">-- min</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Micro Progress & Control Strip -->
+            <div class="hud-progress-strip">
+              <div class="hud-progress-bar-wrap">
+                <div class="hud-progress-bar" id="hudProgressBar" style="width: 0%;"></div>
+              </div>
+              <div class="hud-strip-controls">
+                <span class="hud-destination-name"><i class="fas fa-flag-checkered text-gold"></i> <strong id="hudDestPlotTitle">Plot Destination</strong></span>
+                <div class="hud-mini-actions">
+                  <button type="button" class="btn-hud-recenter" id="btnHudRecenter" onclick="window.recenterOnCar(event)" title="Re-center screen on moving car">
+                    <i class="fas fa-crosshairs"></i> Re-center
+                  </button>
+                  <button type="button" class="btn-hud-stop" id="btnHudStopJourney" onclick="window.stopRouteNavigation()" title="Stop Journey">
+                    <i class="fas fa-stop-circle"></i> Stop Journey
+                  </button>
+                  <button type="button" class="btn-hud-overview" id="btnHudReturnOverview" onclick="window.returnToChennaiOverview()" title="Return to Chennai Overview">
+                    <i class="fas fa-city"></i> Overview
+                  </button>
+                  <button type="button" class="btn-hud-vision" id="btnHudStreetVisionToggle" title="Open 3D Realistic Driver's Eye View (Houses, Shops, Trees)">
+                    <i class="fas fa-vr-cardboard"></i> <span id="hudVisionBtnLabel">3D Street View</span>
+                  </button>
+                  <button type="button" class="btn-hud-vehicle-toggle" id="btnHudVehicleToggle" title="Toggle Car or Bike">
+                    <i class="fas fa-motorcycle"></i> Switch to Bike
+                  </button>
+                  <button type="button" class="btn-hud-min-btn" onclick="window.toggleHudMinimize(event)" title="Minimize notification bar to see options behind">
+                    <i class="fas fa-compress-alt"></i> Minimize Bar
+                  </button>
+                  <button type="button" class="btn-hud-zoom" id="btnHudZoomToggle" title="Toggle Close-up Street View (16x) / Route Overview">
+                    <i class="fas fa-search-plus"></i> <span id="hudZoomLabel">16x Zoom</span>
+                  </button>
+                  <button type="button" class="btn-hud-close" id="btnHudClose" onclick="window.dismissLiveNavHud(event)" title="Exit Live Navigation">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -622,6 +670,35 @@
         <!-- Leaflet Map Container -->
         <div id="chennaiLeafletMap"></div>
 
+        <!-- Google Maps Interactive Compass Rose Widget (North, East, South, West) -->
+        <div class="gmaps-compass-widget" id="gmapsCompassWidget" onclick="window.resetMapNorth(event)" title="Compass: Click to align North-Up (Google Maps style)">
+          <div class="compass-dial" id="compassDial">
+            <span class="compass-cardinal-letter north">N</span>
+            <span class="compass-cardinal-letter east">E</span>
+            <span class="compass-cardinal-letter south">S</span>
+            <span class="compass-cardinal-letter west">W</span>
+            <div class="compass-needle-pivot" id="compassNeedlePivot">
+              <div class="compass-needle-n"></div>
+              <div class="compass-needle-s"></div>
+              <div class="compass-pivot-pin"></div>
+            </div>
+          </div>
+          <div class="compass-heading-tag" id="compassHeadingTag">
+            <span id="compassHeadingText">NORTH 0°</span>
+          </div>
+        </div>
+
+        <!-- Floating Close-Up Street Zoom Toggle for Mobile Directions -->
+        <button type="button" class="floating-mobile-zoom-toggle" id="floatingRouteZoomBtn" onclick="window.toggleMobileRouteZoom()" title="Toggle between close-up street zoom and city overview">
+          <i class="fas fa-search-location"></i> <span id="floatingRouteZoomText">Zoom Close (18x Street)</span>
+        </button>
+
+        <!-- Floating Google Maps Re-Center Button (Screen moves along with car in center) -->
+        <button type="button" class="floating-recenter-btn" id="floatingRecenterBtn" onclick="window.recenterOnCar(event)" title="Re-center screen on car (Google Maps style)" style="display:none;">
+          <i class="fas fa-crosshairs"></i> <span id="recenterBtnText">Re-center</span>
+        </button>
+
+
         <!-- Floating Map Destination Arrived Showcase Card Overlay -->
         <div class="map-destination-arrived-overlay" id="mapDestinationArrivedOverlay" style="display:none;">
           <div class="arrived-card-inner">
@@ -711,6 +788,65 @@
               <span style="font-size:0.9rem;">🎯</span>
               <span>Pulsing Radar indicates live sale</span>
             </div>
+          </div>
+        </div>
+
+        <!-- Mobile One-by-One Plots Stepper Card (Docked Over Map on Mobile) -->
+        <div class="mobile-plot-stepper-card" id="mobilePlotStepperCard">
+          <div class="stepper-header-row">
+            <button type="button" class="btn-stepper-arrow prev" onclick="window.stepMobilePlot(-1)" aria-label="Previous Plot" title="Previous Plot">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="stepper-counter-wrap">
+              <span class="stepper-count-badge" id="stepperCountBadge">
+                <i class="fas fa-map-pin text-gold"></i> Plot <strong id="stepperCurrentIndex">1</strong> of <strong id="stepperTotalPlots">20</strong>
+              </span>
+              <button type="button" class="btn-stepper-quick" onclick="window.fitAllPlotsOnMap()" title="Fit all 20 Chennai plots on screen">
+                <i class="fas fa-globe-asia" style="color:#10b981;"></i> Show All (20)
+              </button>
+              <button type="button" class="btn-stepper-quick" onclick="window.toggleAllPlotsLinearDrawer()" title="View All 20 Plots in One Clean List">
+                <i class="fas fa-th-list" style="color:#38bdf8;"></i> List (20)
+              </button>
+            </div>
+            <button type="button" class="btn-stepper-arrow next" onclick="window.stepMobilePlot(1)" aria-label="Next Plot" title="Next Plot">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <!-- Active Plot Card Banner -->
+          <div class="stepper-plot-details" id="stepperPlotDetails" onclick="window.openCurrentStepperPlotDetails()" title="Tap to open full details">
+            <div class="stepper-plot-thumb-wrap">
+              <img id="stepperPlotImg" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=400&q=80" alt="Plot Thumbnail" class="stepper-plot-thumb">
+              <span class="stepper-plot-status-tag" id="stepperPlotStatus">Available</span>
+            </div>
+            <div class="stepper-plot-info">
+              <div class="stepper-title-row">
+                <h4 class="stepper-plot-title" id="stepperPlotTitle">Emerald Crest Villa Plots</h4>
+                <span class="stepper-plot-price" id="stepperPlotPrice">₹48.0 L</span>
+              </div>
+              <div class="stepper-plot-locality" id="stepperPlotLocality">
+                <i class="fas fa-map-marker-alt" style="color:#d97706;"></i> Sholinganallur, OMR &bull; 1,500 sq.ft &bull; CMDA
+              </div>
+            </div>
+          </div>
+
+          <!-- ALL OPTIONS VISIBLE IN LINE -->
+          <div class="stepper-actions-line" id="stepperActionsLine">
+            <button type="button" class="btn-stepper-action route" onclick="window.triggerRouteForCurrentStepperPlot()" title="Get Turn-by-Turn Driving Directions">
+              <i class="fas fa-directions"></i> <span>Directions</span>
+            </button>
+            <button type="button" class="btn-stepper-action vision" onclick="window.triggerVisionForCurrentStepperPlot()" title="Open 3D Street Turning Vision">
+              <i class="fas fa-vr-cardboard"></i> <span>3D View</span>
+            </button>
+            <button type="button" class="btn-stepper-action cab" onclick="window.triggerCabForCurrentStepperPlot()" title="Book Free VIP Cab Visit">
+              <i class="fas fa-car-side"></i> <span>Free Cab</span>
+            </button>
+            <button type="button" class="btn-stepper-action dossier" onclick="window.openCurrentStepperPlotDetails()" title="View Complete Legal Dossier">
+              <i class="fas fa-file-contract"></i> <span>Dossier</span>
+            </button>
+            <button type="button" class="btn-stepper-action whatsapp" onclick="window.triggerWhatsAppForCurrentStepperPlot()" title="Chat with Relationship Manager">
+              <i class="fab fa-whatsapp"></i> <span>WhatsApp</span>
+            </button>
           </div>
         </div>
       </div>
@@ -1467,6 +1603,10 @@
       <i class="fas fa-street-view"></i>
       <span>3D Vision</span>
     </button>
+    <a href="app.html" class="mobile-nav-item" id="mobileNavApp" title="NoBroker & OLX Mobile App Mode" style="color:#fbbf24;">
+      <i class="fas fa-mobile-alt"></i>
+      <span>App Mode</span>
+    </a>
     <button class="mobile-nav-item mobile-nav-highlight" id="mobileNavCab" onclick="window.openCabBookingForActivePlot()" title="Book Free VIP Site Visit Cab">
       <i class="fas fa-car-side"></i>
       <span>Free Cab</span>
@@ -1476,6 +1616,39 @@
       <span>WhatsApp</span>
     </a>
   </nav>
+
+
+  <!-- One-by-One All 20 Plots Linear Directory Modal / Bottom Drawer -->
+  <div class="modal-backdrop" id="allPlotsLinearDrawerModal" style="display:none; z-index:99998;">
+    <div class="modal-window all-plots-linear-window" style="max-width: 720px; max-height: 88vh; display: flex; flex-direction: column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #0b132b, #1e293b); border-bottom: 2px solid #d4af37; padding: 14px 18px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <i class="fas fa-th-list" style="color:#fbbf24; font-size:1.2rem;"></i>
+          <div>
+            <h3 style="color:#ffffff; font-size:1.1rem; margin:0; font-weight:800;">All 20 Chennai Prime Plots</h3>
+            <p style="color:#94a3b8; font-size:0.75rem; margin:0;">Browse sequentially one by one with all options in line</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="window.toggleAllPlotsLinearDrawer()" aria-label="Close">&times;</button>
+      </div>
+
+      <!-- Quick Search & Filter Header inside Drawer -->
+      <div style="padding: 10px 16px; background: #070b14; border-bottom: 1px solid rgba(255,255,255,0.08); display:flex; gap:8px; align-items:center;">
+        <div style="position:relative; flex:1;">
+          <i class="fas fa-search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#94a3b8; font-size:0.85rem;"></i>
+          <input type="text" id="linearDrawerSearchInput" oninput="window.filterLinearPlotsDrawer(this.value)" placeholder="Search plots by locality, zone or name..." style="width:100%; padding:8px 12px 8px 34px; background:#0f172a; border:1px solid rgba(212,175,55,0.3); border-radius:8px; color:#ffffff; font-size:0.85rem; outline:none;">
+        </div>
+        <button class="btn btn-sm btn-gold" onclick="window.fitAllPlotsOnMap(); window.toggleAllPlotsLinearDrawer();" style="white-space:nowrap; padding:8px 12px; font-size:0.78rem;">
+          <i class="fas fa-globe-asia"></i> Show All on Map
+        </button>
+      </div>
+
+      <!-- Linear List of All 20 Plots -->
+      <div class="modal-body" style="overflow-y:auto; padding: 14px; background: #070b14; flex:1;" id="allPlotsLinearContainer">
+        <!-- Dynamically rendered one-by-one plot items -->
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

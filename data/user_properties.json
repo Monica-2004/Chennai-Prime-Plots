@@ -1,0 +1,30 @@
+[
+  {
+    "id": "USER-POST-01",
+    "title": "Perungudi OMR Prime Corner Villa Plot",
+    "locality": "Perungudi, OMR",
+    "zone": "omr",
+    "zoneLabel": "OMR IT Corridor",
+    "category": "plot",
+    "homeDesign": "modern_duplex",
+    "bhk": "3 BHK",
+    "designTitle": "3BHK Contemporary Villa Layout",
+    "facing": "North-East",
+    "price": 5400000,
+    "priceDisplay": "\u20b954.00 Lakhs",
+    "plotSizeSqft": 1500,
+    "brokerage": "0% Brokerage (Direct Owner)",
+    "approvalType": "CMDA Approved",
+    "contactPhone": "+91 98401 23456",
+    "status": "Available",
+    "badge": "Direct Owner Ad (OLX Style)",
+    "featured": true,
+    "images": [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "description": "Direct owner listing with zero brokerage! Just 500m from RMZ Millenia IT Park. Crystal clear patta and CMDA sanction for immediate house construction.",
+    "postedBy": "USR-VIP-001",
+    "postedDate": "2026-10-27"
+  }
+]

@@ -6723,3 +6723,1084 @@ html, body {
     bottom: calc(74px + env(safe-area-inset-bottom)) !important;
   }
 }
+
+
+/* ==========================================================================
+   MOBILE ONE-BY-ONE PLOT STEPPER & ALL OPTIONS VISIBLE IN LINE
+   ========================================================================== */
+
+/* 1. Show All Plots Button in Map Toolbar */
+.btn-show-all-plots {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
+  font-weight: 700 !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-show-all-plots:hover {
+  background: #059669 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* 2. Mobile Plot Stepper Card (Docked Over Map on Mobile & Tablet) */
+.mobile-plot-stepper-card {
+  position: absolute;
+  bottom: 12px;
+  left: 10px;
+  right: 10px;
+  z-index: 450;
+  background: rgba(11, 19, 43, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(212, 175, 55, 0.5);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75), 0 0 16px rgba(212, 175, 55, 0.2);
+  padding: 8px 10px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+/* Keep stepper permanently visible and interactive on mobile & tablet view */
+.mobile-plot-stepper-card {
+  display: flex !important;
+}
+
+.stepper-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.btn-stepper-arrow {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(212, 175, 55, 0.2);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  color: #fbbf24;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.btn-stepper-arrow:hover {
+  background: #fbbf24;
+  color: #0b132b;
+  transform: scale(1.05);
+}
+
+.stepper-counter-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stepper-count-badge {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: rgba(15, 23, 42, 0.8);
+  padding: 3px 8px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  white-space: nowrap;
+}
+
+.btn-stepper-quick {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  color: #cbd5e1;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-stepper-quick:hover {
+  background: rgba(212, 175, 55, 0.25);
+  border-color: #fbbf24;
+  color: #ffffff;
+}
+
+/* Stepper Plot Details Row */
+.stepper-plot-details {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px;
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.stepper-plot-details:hover {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.stepper-plot-thumb-wrap {
+  position: relative;
+  width: 52px;
+  height: 44px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+.stepper-plot-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stepper-plot-status-tag {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(16, 185, 129, 0.9);
+  color: #ffffff;
+  font-size: 0.55rem;
+  font-weight: 800;
+  text-align: center;
+  padding: 1px 0;
+  text-transform: uppercase;
+}
+
+.stepper-plot-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.stepper-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.stepper-plot-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stepper-plot-price {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #fbbf24;
+  white-space: nowrap;
+}
+
+.stepper-plot-locality {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+/* ALL OPTIONS VISIBLE IN LINE */
+.stepper-actions-line {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-top: 2px;
+  scrollbar-width: none;
+}
+
+.stepper-actions-line::-webkit-scrollbar {
+  display: none;
+}
+
+.btn-stepper-action {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 4px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(15, 23, 42, 0.8);
+  color: #ffffff;
+  font-size: 0.66rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-stepper-action.route {
+  background: rgba(26, 115, 232, 0.3);
+  border-color: rgba(26, 115, 232, 0.6);
+  color: #93c5fd;
+}
+.btn-stepper-action.route:hover {
+  background: #1a73e8;
+  color: #ffffff;
+}
+
+.btn-stepper-action.vision {
+  background: rgba(139, 92, 246, 0.3);
+  border-color: rgba(139, 92, 246, 0.6);
+  color: #c4b5fd;
+}
+.btn-stepper-action.vision:hover {
+  background: #8b5cf6;
+  color: #ffffff;
+}
+
+.btn-stepper-action.cab {
+  background: rgba(217, 119, 6, 0.3);
+  border-color: rgba(217, 119, 6, 0.6);
+  color: #fde68a;
+}
+.btn-stepper-action.cab:hover {
+  background: #d97706;
+  color: #ffffff;
+}
+
+.btn-stepper-action.dossier {
+  background: rgba(56, 189, 248, 0.25);
+  border-color: rgba(56, 189, 248, 0.5);
+  color: #7dd3fc;
+}
+.btn-stepper-action.dossier:hover {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+.btn-stepper-action.whatsapp {
+  background: rgba(37, 211, 102, 0.25);
+  border-color: rgba(37, 211, 102, 0.5);
+  color: #86efac;
+}
+.btn-stepper-action.whatsapp:hover {
+  background: #25d366;
+  color: #ffffff;
+}
+
+/* 3. Linear Drawer (All 20 Plots Listed One by One) */
+.linear-plot-row-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.linear-plot-row-item:hover,
+.linear-plot-row-item.active {
+  border-color: rgba(212, 175, 55, 0.6);
+  background: rgba(15, 23, 42, 0.98);
+}
+
+.linear-plot-top {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.linear-plot-thumb {
+  width: 64px;
+  height: 52px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+}
+
+.linear-plot-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.linear-plot-num {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #fbbf24;
+  text-transform: uppercase;
+}
+
+.linear-plot-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.linear-plot-locality {
+  font-size: 0.74rem;
+  color: #94a3b8;
+}
+
+.linear-plot-price {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fbbf24;
+  white-space: nowrap;
+  margin-left: 6px;
+}
+
+.linear-plot-actions-line {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.btn-linear-action {
+  flex: 1 1 calc(33.333% - 4px);
+  min-width: 80px;
+  padding: 6px 4px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f1f5f9;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-linear-action:hover {
+  background: rgba(212, 175, 55, 0.3);
+  border-color: #fbbf24;
+  color: #ffffff;
+}
+
+/* On mobile (<= 768px), keep legend pill positioned top-right so bottom stepper has full space */
+@media (max-width: 768px) {
+  .map-legend-floating {
+    top: 10px !important;
+    bottom: auto !important;
+    right: 10px !important;
+    left: auto !important;
+  }
+}
+
+/* ==========================================================================
+   MOBILE CLOSE-UP ZOOM & DIRECTIONS TOGGLES
+   ========================================================================== */
+.floating-mobile-zoom-toggle {
+  position: absolute;
+  top: 76px;
+  right: 14px;
+  z-index: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(11, 19, 43, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #fbbf24;
+  border: 1.5px solid #d4af37;
+  border-radius: 30px;
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 12px rgba(212, 175, 55, 0.3);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.floating-mobile-zoom-toggle:hover {
+  background: #d4af37;
+  color: #0b132b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5);
+}
+
+.floating-mobile-zoom-toggle.zoomed-in {
+  background: rgba(16, 185, 129, 0.92);
+  border-color: #34d399;
+  color: #ffffff;
+}
+
+.btn-gmaps-zoom-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #1e293b;
+  color: #fbbf24;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-gmaps-zoom-close:hover {
+  background: #d4af37;
+  color: #070b14;
+}
+
+@media (max-width: 768px) {
+  .floating-mobile-zoom-toggle {
+    top: 68px;
+    right: 10px;
+    padding: 7px 12px;
+    font-size: 0.78rem;
+  }
+}
+
+
+/* ==========================================================================
+   MINIMIZABLE JOURNEY HUD BAR (Uncovers Behind Options & Map Controls)
+   ========================================================================== */
+
+/* Top bar with Status + Minimize + Close */
+.hud-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px 4px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hud-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #34d399;
+  text-transform: uppercase;
+}
+
+.hud-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: pulseLiveHud 1.5s infinite;
+}
+
+@keyframes pulseLiveHud {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+.hud-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-hud-min-toggle {
+  background: rgba(251, 191, 36, 0.18);
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  color: #fbbf24;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+
+.btn-hud-min-toggle:hover {
+  background: #fbbf24;
+  color: #070b14;
+  border-color: #fbbf24;
+}
+
+.btn-hud-close-direct {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.25);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #fca5a5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.74rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-hud-close-direct:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* In-strip minimize button */
+.btn-hud-min-btn {
+  background: rgba(251, 191, 36, 0.16) !important;
+  border: 1px solid rgba(251, 191, 36, 0.45) !important;
+  color: #fbbf24 !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  padding: 5px 10px !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+
+.btn-hud-min-btn:hover {
+  background: #fbbf24 !important;
+  color: #070b14 !important;
+}
+
+/* Minimized Floating Pill Mode */
+.gmaps-live-nav-hud:not(.minimized) .hud-minimized-pill {
+  display: none !important;
+}
+
+.gmaps-live-nav-hud.minimized .hud-top-bar,
+.gmaps-live-nav-hud.minimized .hud-expanded-content {
+  display: none !important;
+}
+
+.gmaps-live-nav-hud.minimized {
+  width: auto !important;
+  max-width: calc(100% - 24px) !important;
+  padding: 4px 10px !important;
+  border-radius: 28px !important;
+  background: rgba(7, 11, 20, 0.94) !important;
+  border: 1.5px solid #fbbf24 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(251, 191, 36, 0.35) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  overflow: visible !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  pointer-events: auto !important;
+}
+
+.hud-minimized-pill {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  cursor: pointer !important;
+  padding: 2px 4px !important;
+}
+
+.hud-min-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 0.78rem !important;
+  color: #ffffff !important;
+  white-space: nowrap !important;
+}
+
+.hud-min-status {
+  font-weight: 800 !important;
+  color: #fbbf24 !important;
+}
+
+.hud-min-eta {
+  font-size: 0.72rem !important;
+  color: #94a3b8 !important;
+}
+
+.hud-min-right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.btn-hud-expand-pill {
+  background: rgba(251, 191, 36, 0.2) !important;
+  border: 1px solid rgba(251, 191, 36, 0.5) !important;
+  color: #fbbf24 !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  padding: 3px 10px !important;
+  border-radius: 12px !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-hud-expand-pill:hover {
+  background: #fbbf24 !important;
+  color: #070b14 !important;
+}
+
+.btn-hud-stop-pill {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 50% !important;
+  background: rgba(239, 68, 68, 0.25) !important;
+  border: 1px solid rgba(239, 68, 68, 0.6) !important;
+  color: #fca5a5 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.7rem !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-hud-stop-pill:hover {
+  background: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+@media (max-width: 768px) {
+  .gmaps-live-nav-hud.minimized {
+    top: 54px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
+
+/* ==========================================================================
+   GOOGLE MAPS COMPASS ROSE WIDGET (North, East, South, West Directions)
+   ========================================================================== */
+.gmaps-compass-widget {
+  position: absolute;
+  top: 76px;
+  left: 14px;
+  z-index: 800;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gmaps-compass-widget:hover {
+  transform: scale(1.08);
+}
+
+.compass-dial {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(11, 19, 43, 0.94);
+  border: 1.5px solid rgba(56, 189, 248, 0.65);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.55), 0 0 15px rgba(56, 189, 248, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compass-cardinal-letter {
+  position: absolute;
+  font-size: 0.64rem;
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.compass-cardinal-letter.north {
+  top: 3px;
+  color: #ef4444;
+  font-weight: 900;
+  font-size: 0.68rem;
+}
+
+.compass-cardinal-letter.east {
+  right: 4px;
+  color: #38bdf8;
+}
+
+.compass-cardinal-letter.south {
+  bottom: 3px;
+  color: #94a3b8;
+}
+
+.compass-cardinal-letter.west {
+  left: 4px;
+  color: #38bdf8;
+}
+
+.compass-needle-pivot {
+  position: absolute;
+  width: 6px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: center center;
+  transition: transform 0.15s ease-out;
+}
+
+.compass-needle-n {
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 13px solid #ef4444;
+}
+
+.compass-needle-s {
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 13px solid #f8fafc;
+}
+
+.compass-pivot-pin {
+  position: absolute;
+  top: 13px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fbbf24;
+  box-shadow: 0 0 6px rgba(251, 191, 36, 0.9);
+}
+
+.compass-heading-tag {
+  background: rgba(11, 19, 43, 0.92);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  border-radius: 12px;
+  padding: 2px 7px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #38bdf8;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* HUD Banner Head Row & Cardinal Badge */
+.hud-turn-head-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.hud-cardinal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.6);
+  color: #38bdf8;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  flex-shrink: 0;
+}
+
+.hud-cardinal-badge.cardinal-n {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.7);
+  color: #f87171;
+}
+
+.hud-cardinal-badge.cardinal-ne, .hud-cardinal-badge.cardinal-e {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: rgba(56, 189, 248, 0.7);
+  color: #38bdf8;
+}
+
+.hud-cardinal-badge.cardinal-se, .hud-cardinal-badge.cardinal-s {
+  background: rgba(251, 191, 36, 0.2);
+  border-color: rgba(251, 191, 36, 0.7);
+  color: #fbbf24;
+}
+
+.hud-cardinal-badge.cardinal-sw, .hud-cardinal-badge.cardinal-w, .hud-cardinal-badge.cardinal-nw {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: rgba(168, 85, 247, 0.7);
+  color: #c084fc;
+}
+
+/* 1x / 2x Speed Button on HUD */
+.hud-speed-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(16, 185, 129, 0.22);
+  border: 1px solid rgba(52, 211, 153, 0.6);
+  color: #34d399;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.hud-speed-pill-btn:hover {
+  background: rgba(16, 185, 129, 0.38);
+  transform: scale(1.05);
+}
+
+.btn-hud-speed-min {
+  background: rgba(16, 185, 129, 0.25);
+  border: 1px solid rgba(52, 211, 153, 0.6);
+  color: #34d399;
+  border-radius: 12px;
+  padding: 2px 7px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  cursor: pointer;
+  margin-right: 4px;
+}
+
+.hud-min-cardinal {
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #38bdf8;
+  margin-right: 4px;
+  white-space: nowrap;
+}
+
+/* Cardinal step pills in Google Maps directions list */
+.step-cardinal-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 22px;
+  border-radius: 5px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: #1e293b;
+  border: 1px solid #475569;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+.step-cardinal-pill.card-n {
+  background: rgba(239, 68, 68, 0.35);
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+
+.step-cardinal-pill.card-ne, .step-cardinal-pill.card-e {
+  background: rgba(56, 189, 248, 0.35);
+  border-color: #38bdf8;
+  color: #7dd3fc;
+}
+
+.step-cardinal-pill.card-se, .step-cardinal-pill.card-s {
+  background: rgba(251, 191, 36, 0.35);
+  border-color: #fbbf24;
+  color: #fde047;
+}
+
+.step-cardinal-pill.card-sw, .step-cardinal-pill.card-w, .step-cardinal-pill.card-nw {
+  background: rgba(168, 85, 247, 0.35);
+  border-color: #a855f7;
+  color: #d8b4fe;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+  .gmaps-compass-widget {
+    top: 68px;
+    left: 10px;
+  }
+  .compass-dial {
+    width: 42px;
+    height: 42px;
+  }
+  .compass-needle-pivot {
+    height: 26px;
+  }
+  .compass-needle-n, .compass-needle-s {
+    border-bottom-width: 11px;
+    border-top-width: 11px;
+  }
+  .compass-pivot-pin {
+    top: 11px;
+  }
+  .hud-turn-distance {
+    font-size: 0.95rem !important;
+  }
+  .hud-cardinal-badge {
+    font-size: 0.65rem !important;
+    padding: 1px 6px !important;
+  }
+  .hud-speed-pill-btn {
+    padding: 3px 8px !important;
+    font-size: 0.7rem !important;
+  }
+}
+
+
+/* ==========================================================================
+   GOOGLE MAPS RE-CENTER BUTTON (Locks Screen onto Moving Car)
+   ========================================================================== */
+.floating-recenter-btn {
+  position: absolute;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 850;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #1a73e8;
+  color: #ffffff;
+  border: 1.5px solid #60a5fa;
+  border-radius: 28px;
+  padding: 10px 22px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  box-shadow: 0 6px 25px rgba(26, 115, 232, 0.55), 0 0 15px rgba(96, 165, 250, 0.4);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: pulseRecenter 1.8s infinite ease-in-out;
+}
+
+.floating-recenter-btn:hover {
+  background: #1557b0;
+  transform: translateX(-50%) scale(1.06);
+  box-shadow: 0 8px 30px rgba(26, 115, 232, 0.75);
+}
+
+.floating-recenter-btn i {
+  font-size: 1.05rem;
+  color: #93c5fd;
+}
+
+@keyframes pulseRecenter {
+  0%, 100% {
+    box-shadow: 0 6px 22px rgba(26, 115, 232, 0.5), 0 0 0 0 rgba(26, 115, 232, 0.4);
+  }
+  50% {
+    box-shadow: 0 8px 28px rgba(26, 115, 232, 0.75), 0 0 0 8px rgba(26, 115, 232, 0);
+  }
+}
+
+.btn-hud-recenter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(26, 115, 232, 0.25);
+  border: 1px solid #3b82f6;
+  color: #60a5fa;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-hud-recenter.needs-recenter {
+  background: #1a73e8;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(26, 115, 232, 0.7);
+}
+
+.btn-hud-min-recenter {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #1a73e8;
+  color: #ffffff;
+  border: 1px solid #60a5fa;
+  border-radius: 14px;
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  cursor: pointer;
+  margin-right: 4px;
+  box-shadow: 0 0 8px rgba(26, 115, 232, 0.6);
+}
+
+@media (max-width: 768px) {
+  .floating-recenter-btn {
+    bottom: 74px;
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+}
+
+
+/* Centered vs Needs-Recenter Pill Styles */
+.floating-recenter-btn.is-centered {
+  background: rgba(11, 19, 43, 0.92) !important;
+  color: #f8fafc !important;
+  border: 1.5px solid rgba(52, 211, 153, 0.6) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5), 0 0 12px rgba(52, 211, 153, 0.25) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  animation: none !important;
+}
+
+.floating-recenter-btn.is-centered:hover {
+  background: rgba(16, 185, 129, 0.3) !important;
+  transform: translateX(-50%) scale(1.04) !important;
+}
+
+.floating-recenter-btn.needs-recenter {
+  background: #1a73e8 !important;
+  color: #ffffff !important;
+  border: 1.5px solid #60a5fa !important;
+  box-shadow: 0 6px 25px rgba(26, 115, 232, 0.65), 0 0 18px rgba(96, 165, 250, 0.5) !important;
+  animation: pulseRecenter 1.6s infinite ease-in-out !important;
+}
+
+.text-emerald {
+  color: #34d399 !important;
+}

@@ -1,0 +1,12 @@
+{
+  "appId": "com.chennaiprimeplots.app",
+  "appName": "Chennai Prime Plots",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "server": {
+    "cleartext": true
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}

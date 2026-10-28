@@ -46,11 +46,11 @@
 
   // 3D MapLibre First-Person Road Navigation State
 
-  let cameraMode = "driver"; // "driver" (68°), "chase" (48°), "birdseye" (0°)
+  let cameraMode = "gmaps"; // "gmaps" (Google Maps: Car moves on steady map), "follow", "driver"
 
   let currentSmoothedBearing = 0;
 
-  let currentSmoothedPitch = 60;
+  let currentSmoothedPitch = 0;
 
   let activeMapLibreMarkers = [];
 
@@ -80,7 +80,7 @@
 
   let navAnimFrameId = null;
 
-  let navSpeed = 2; // Multiplier: 1, 2, 4, 8
+  let navSpeed = 1; // Multiplier: 1 (1x Real-Time Speed), 2, 4 // Multiplier: 1, 2, 4, 8
 
   let navFollowCamera = true;
 
@@ -184,6 +184,240 @@
     }
   };
 
+  
+  // =========================================================================
+  // ONE-BY-ONE CHENNAI PLOT STEPPER & ALL-OPTIONS ENGINE
+  // =========================================================================
+
+  let currentStepperIndex = 0;
+
+  // 1. Fit all 20 Chennai plots within the mobile camera viewport
+  window.fitAllPlotsOnMap = function() {
+    if (!mapInstance || !allPlotsList || allPlotsList.length === 0) return;
+    let minLat = 90, maxLat = -90, minLng = 180, maxLng = -180;
+    allPlotsList.forEach(p => {
+      if (p.coords && p.coords.length === 2) {
+        const lat = p.coords[0];
+        const lng = p.coords[1];
+        if (lat < minLat) minLat = lat;
+        if (lat > maxLat) maxLat = lat;
+        if (lng < minLng) minLng = lng;
+        if (lng > maxLng) maxLng = lng;
+      }
+    });
+
+    const isMobile = window.innerWidth <= 768;
+    mapInstance.fitBounds([[minLng, minLat], [maxLng, maxLat]], {
+      padding: isMobile ? { top: 50, bottom: 150, left: 18, right: 18 } : { top: 80, bottom: 80, left: 60, right: 60 },
+      maxZoom: 12.2,
+      pitch: 0,
+      bearing: 0,
+      duration: 1200
+    });
+
+    document.querySelectorAll(".nav-dimmed-marker").forEach(el => el.classList.remove("nav-dimmed-marker"));
+
+    if (window.showToast) {
+      window.showToast("🌐 Showing all 20 Chennai plots across North, South, East & West!");
+    }
+  };
+
+  // 2. Step through plots one by one in line
+  window.stepMobilePlot = function(delta) {
+    if (!allPlotsList || allPlotsList.length === 0) return;
+    currentStepperIndex = (currentStepperIndex + delta + allPlotsList.length) % allPlotsList.length;
+    updateMobilePlotStepperUI(currentStepperIndex);
+    focusPlotOnMap(currentStepperIndex);
+  };
+
+  // 3. Jump directly to plot by ID
+  window.selectStepperPlotById = function(plotId) {
+    if (!allPlotsList || allPlotsList.length === 0) return;
+    const idx = allPlotsList.findIndex(p => p.id === plotId);
+    if (idx !== -1) {
+      currentStepperIndex = idx;
+      updateMobilePlotStepperUI(idx);
+      focusPlotOnMap(idx);
+    }
+  };
+
+  // 4. Update the stepper card UI with active plot details
+  function updateMobilePlotStepperUI(idx) {
+    const plot = allPlotsList[idx];
+    if (!plot) return;
+
+    const countIdx = document.getElementById("stepperCurrentIndex");
+    const countTotal = document.getElementById("stepperTotalPlots");
+    const titleEl = document.getElementById("stepperPlotTitle");
+    const priceEl = document.getElementById("stepperPlotPrice");
+    const locEl = document.getElementById("stepperPlotLocality");
+    const imgEl = document.getElementById("stepperPlotImg");
+    const statusEl = document.getElementById("stepperPlotStatus");
+
+    if (countIdx) countIdx.textContent = (idx + 1);
+    if (countTotal) countTotal.textContent = allPlotsList.length;
+    if (titleEl) titleEl.textContent = plot.title;
+    if (priceEl) priceEl.textContent = plot.priceDisplay || "₹48.0 L";
+    if (locEl) locEl.innerHTML = `<i class="fas fa-map-marker-alt text-gold"></i> ${plot.locality} &bull; ${plot.sqft || '1,500'} sq.ft &bull; ${plot.approval || 'CMDA'}`;
+    if (statusEl) {
+      statusEl.textContent = plot.status || "Available";
+      statusEl.style.background = (plot.status === "Sold") ? "#ef4444" : "#10b981";
+    }
+    if (imgEl && plot.images && plot.images.length > 0) {
+      imgEl.src = plot.images[0];
+    }
+  }
+
+  // 5. Smoothly focus the map on the selected plot
+  function focusPlotOnMap(idx) {
+    const plot = allPlotsList[idx];
+    if (!plot || !mapInstance) return;
+
+    currentDestPlotId = plot.id;
+    window.currentDestPlotCoords = [plot.coords[1], plot.coords[0]];
+
+    // Smoothly fly close to the plot (Street level on mobile)
+    const isMobile = window.innerWidth <= 768;
+    mapInstance.flyTo({
+      center: [plot.coords[1], plot.coords[0]],
+      zoom: isMobile ? 18.2 : 16.5,
+      pitch: isMobile ? 40 : 35,
+      bearing: 0,
+      duration: 1000
+    });
+
+    // Pulse the active marker
+    Object.keys(activePlotMarkers).forEach(id => {
+      const marker = activePlotMarkers[id];
+      if (marker && marker.getElement) {
+        const el = marker.getElement();
+        if (id === plot.id) {
+          el.classList.add("stepper-active-marker");
+          el.scrollIntoView && el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        } else {
+          el.classList.remove("stepper-active-marker");
+        }
+      }
+    });
+  }
+
+  // 6. Action Triggers for Active Stepper Plot (All Options Visible in Line)
+  window.triggerRouteForCurrentStepperPlot = function() {
+    const plot = allPlotsList[currentStepperIndex];
+    if (plot) {
+      window.triggerRouteToPlot(plot.id);
+    }
+  };
+
+  window.triggerVisionForCurrentStepperPlot = function() {
+    const plot = allPlotsList[currentStepperIndex];
+    if (plot) {
+      window.triggerRouteToPlot(plot.id);
+      setTimeout(() => {
+        if (typeof window.openDriverStreetVision === "function") {
+          window.openDriverStreetVision();
+        }
+      }, 700);
+    }
+  };
+
+  window.triggerCabForCurrentStepperPlot = function() {
+    const plot = allPlotsList[currentStepperIndex];
+    if (plot && typeof window.openBookingModal === "function") {
+      window.openBookingModal(plot.id);
+    }
+  };
+
+  window.openCurrentStepperPlotDetails = function() {
+    const plot = allPlotsList[currentStepperIndex];
+    if (plot && typeof window.openPlotDetailView === "function") {
+      window.openPlotDetailView(plot.id);
+    }
+  };
+
+  window.triggerWhatsAppForCurrentStepperPlot = function() {
+    const plot = allPlotsList[currentStepperIndex];
+    if (plot && typeof window.openWhatsAppInquiry === "function") {
+      window.openWhatsAppInquiry(plot.id);
+    }
+  };
+
+  // 7. Linear All 20 Plots Drawer Controls
+  window.toggleAllPlotsLinearDrawer = function() {
+    const modal = document.getElementById("allPlotsLinearDrawerModal");
+    if (!modal) return;
+    if (modal.style.display === "none" || !modal.style.display) {
+      modal.style.display = "flex";
+      renderAllPlotsLinearList();
+    } else {
+      modal.style.display = "none";
+    }
+  };
+
+  window.renderAllPlotsLinearList = function(filterQuery = "") {
+    const container = document.getElementById("allPlotsLinearContainer");
+    if (!container || !allPlotsList) return;
+
+    const q = filterQuery.toLowerCase().trim();
+    const filtered = allPlotsList.filter(p => {
+      if (!q) return true;
+      return (p.title && p.title.toLowerCase().includes(q)) ||
+             (p.locality && p.locality.toLowerCase().includes(q)) ||
+             (p.zone && p.zone.toLowerCase().includes(q)) ||
+             (p.id && p.id.toLowerCase().includes(q));
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = `<div style="text-align:center; padding:30px; color:#94a3b8;">No plots match "${filterQuery}".</div>`;
+      return;
+    }
+
+    container.innerHTML = filtered.map((plot, i) => {
+      const img = (plot.images && plot.images.length > 0) ? plot.images[0] : "";
+      const isActive = (plot.id === (allPlotsList[currentStepperIndex] && allPlotsList[currentStepperIndex].id));
+
+      return `
+        <div class="linear-plot-row-item ${isActive ? 'active' : ''}" id="linear-plot-${plot.id}">
+          <div class="linear-plot-top">
+            <img src="${img}" alt="${plot.title}" class="linear-plot-thumb" onclick="window.selectStepperPlotById('${plot.id}'); window.toggleAllPlotsLinearDrawer();">
+            <div class="linear-plot-info" onclick="window.selectStepperPlotById('${plot.id}'); window.toggleAllPlotsLinearDrawer();" style="cursor:pointer;">
+              <span class="linear-plot-num"><i class="fas fa-map-pin"></i> Plot #${i + 1} of ${allPlotsList.length} &bull; ${plot.zone.toUpperCase()}</span>
+              <h4 class="linear-plot-title">${plot.title}</h4>
+              <div class="linear-plot-locality">📍 ${plot.locality} &bull; ${plot.sqft || '1,500'} sq.ft &bull; <strong style="color:#10b981;">${plot.approval || 'CMDA Approved'}</strong></div>
+            </div>
+            <div class="linear-plot-price">${plot.priceDisplay}</div>
+          </div>
+
+          <!-- ALL OPTIONS VISIBLE IN LINE FOR THIS PLOT -->
+          <div class="linear-plot-actions-line">
+            <button type="button" class="btn-linear-action" onclick="window.selectStepperPlotById('${plot.id}'); window.toggleAllPlotsLinearDrawer();" style="color:#38bdf8;">
+              <i class="fas fa-map-marker-alt"></i> View on Map
+            </button>
+            <button type="button" class="btn-linear-action" onclick="window.triggerRouteToPlot('${plot.id}'); window.toggleAllPlotsLinearDrawer();" style="color:#60a5fa;">
+              <i class="fas fa-directions"></i> Directions
+            </button>
+            <button type="button" class="btn-linear-action" onclick="window.triggerRouteToPlot('${plot.id}'); setTimeout(window.openDriverStreetVision, 700); window.toggleAllPlotsLinearDrawer();" style="color:#c084fc;">
+              <i class="fas fa-vr-cardboard"></i> 3D Vision
+            </button>
+            <button type="button" class="btn-linear-action" onclick="window.openBookingModal('${plot.id}'); window.toggleAllPlotsLinearDrawer();" style="color:#fbbf24;">
+              <i class="fas fa-car"></i> Book Cab
+            </button>
+            <button type="button" class="btn-linear-action" onclick="window.openPlotDetailView('${plot.id}'); window.toggleAllPlotsLinearDrawer();" style="color:#34d399;">
+              <i class="fas fa-file-contract"></i> Dossier
+            </button>
+            <button type="button" class="btn-linear-action" onclick="window.openWhatsAppInquiry('${plot.id}')" style="color:#4ade80;">
+              <i class="fab fa-whatsapp"></i> WhatsApp
+            </button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  };
+
+  window.filterLinearPlotsDrawer = function(q) {
+    renderAllPlotsLinearList(q);
+  };
+
   document.addEventListener("DOMContentLoaded", () => {
 
     initDataset();
@@ -193,6 +427,7 @@
     initHeroQuickSearch();
 
     renderPlotCards(allPlotsList);
+    updateMobilePlotStepperUI(0);
 
     initLayoutMasterplan();
 
@@ -435,6 +670,7 @@
           ],
 
           tileSize: 256,
+          maxzoom: 21,
 
           attribution: '&copy; Google Maps &bull; High-Resolution Satellite Hybrid Imagery'
 
@@ -476,7 +712,10 @@
 
       maxPitch: 85,
 
-      antialias: true
+      antialias: true,
+      maxZoom: 21,
+      minZoom: 9,
+      touchZoomRotate: true
 
     });
 
@@ -1015,6 +1254,7 @@
           ],
 
           tileSize: 256,
+          maxzoom: 21,
 
           attribution: '&copy; Google Maps &bull; High-Resolution Satellite Hybrid Imagery'
 
@@ -3016,23 +3256,17 @@
           if (r.legs && r.legs[0] && r.legs[0].steps) {
 
             turnSteps = r.legs[0].steps.slice(0, 8).map(st => {
-
               const distStep = st.distance > 1000 ? `${(st.distance / 1000).toFixed(1)} km` : `${Math.round(st.distance)} m`;
-
               let stepName = st.name || "Connecting Road";
-
               let modifier = st.maneuver ? st.maneuver.modifier || st.maneuver.type : "proceed";
-
+              let bearing = (st.maneuver && st.maneuver.bearing_after !== undefined) ? st.maneuver.bearing_after : 0;
+              const cardinal = getCardinalDirection(bearing);
               return {
-
-                instruction: formatStepInstruction(st.maneuver ? st.maneuver.type : "continue", modifier, stepName),
-
+                instruction: formatStepInstruction(st.maneuver ? st.maneuver.type : "continue", modifier, stepName, cardinal),
                 distance: distStep,
-
-                type: modifier
-
+                type: modifier,
+                cardinal: cardinal
               };
-
             });
 
           }
@@ -3181,20 +3415,48 @@
 
       });
 
-      if (minLng !== Infinity) {
+            if (minLng !== Infinity) {
+        window.currentRouteBounds = [[minLng, minLat], [maxLng, maxLat]];
+        window.currentDestPlotCoords = [endCoords[1], endCoords[0]]; // [lng, lat]
+        window.currentDestPlotObj = destPlot;
 
-        mapInstance.fitBounds([[minLng, minLat], [maxLng, maxLat]], {
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+          // On mobile, show route overview bounds briefly, then smoothly zoom close to the plot
+          mapInstance.fitBounds([[minLng, minLat], [maxLng, maxLat]], {
+            padding: { top: 60, bottom: 180, left: 20, right: 20 },
+            pitch: 20,
+            bearing: 0,
+            duration: 800
+          });
 
-          padding: 60,
+          if (typeof window.updateRouteZoomToggleBtn === "function") {
+            window.updateRouteZoomToggleBtn(false);
+          }
 
-          pitch: 20,
-
-          bearing: 0,
-
-          duration: 1200
-
-        });
-
+          // Smoothly fly into the plot at 18.2x Street Zoom for close directions
+          setTimeout(() => {
+            if (mapInstance && window.currentDestPlotCoords) {
+              mapInstance.flyTo({
+                center: window.currentDestPlotCoords,
+                zoom: 18.2,
+                pitch: 45,
+                bearing: 0,
+                duration: 1300
+              });
+              if (typeof window.updateRouteZoomToggleBtn === "function") {
+                window.updateRouteZoomToggleBtn(true);
+              }
+            }
+          }, 1100);
+        } else {
+          mapInstance.fitBounds([[minLng, minLat], [maxLng, maxLat]], {
+            padding: 60,
+            pitch: 20,
+            bearing: 0,
+            duration: 1200
+          });
+        }
       }
 
     } catch(e) {}
@@ -3452,13 +3714,10 @@
           return `
 
             <div class="gmaps-step-item">
-
+              <span class="step-cardinal-pill card-${st.cardinal ? st.cardinal.code.toLowerCase() : 'n'}">${st.cardinal ? st.cardinal.code : 'DIR'}</span>
               <i class="fas ${iconClass}"></i>
-
               <div class="gmaps-step-text">${i + 1}. ${st.instruction}</div>
-
               <div class="gmaps-step-dist">${st.distance}</div>
-
             </div>
 
           `;
@@ -3487,18 +3746,13 @@
 
   // Format Turn-by-Turn Instruction Text
 
-  function formatStepInstruction(type, modifier, name) {
-
-    if (type === "arrive") return `Arrive at destination (${name})`;
-
-    if (modifier.includes("right")) return `Turn right onto <strong>${name}</strong>`;
-
-    if (modifier.includes("left")) return `Turn left onto <strong>${name}</strong>`;
-
-    if (type.includes("fork")) return `Take the fork onto <strong>${name}</strong>`;
-
-    return `Continue on <strong>${name}</strong>`;
-
+  function formatStepInstruction(type, modifier, name, cardinal) {
+    const cardLabel = cardinal ? cardinal.label : "North";
+    if (type === "arrive") return `Arrive <strong>${cardLabel}</strong> at destination (${name})`;
+    if (modifier.includes("right")) return `Turn <strong>Right (${cardLabel})</strong> onto <strong>${name}</strong>`;
+    if (modifier.includes("left")) return `Turn <strong>Left (${cardLabel})</strong> onto <strong>${name}</strong>`;
+    if (type.includes("fork")) return `Take the fork <strong>${cardLabel}</strong> onto <strong>${name}</strong>`;
+    return `Head <strong>${cardLabel}</strong> on <strong>${name}</strong>`;
   }
 
   // Generate realistic curved route waypoints between 2 points in Chennai
@@ -3822,6 +4076,21 @@
     return (theta * toDeg + 360) % 360;
   }
 
+  // Calculate cardinal direction from bearing (0-360) for Google Maps navigation
+  function getCardinalDirection(bearing) {
+    if (isNaN(bearing)) bearing = 0;
+    const norm = ((bearing % 360) + 360) % 360;
+    if (norm >= 337.5 || norm < 22.5) return { code: 'N', label: 'North', symbol: '⬆', desc: 'Head North' };
+    if (norm >= 22.5 && norm < 67.5) return { code: 'NE', label: 'North-East', symbol: '↗', desc: 'Head North-East' };
+    if (norm >= 67.5 && norm < 112.5) return { code: 'E', label: 'East', symbol: '➡', desc: 'Turn East' };
+    if (norm >= 112.5 && norm < 157.5) return { code: 'SE', label: 'South-East', symbol: '↘', desc: 'Head South-East' };
+    if (norm >= 157.5 && norm < 202.5) return { code: 'S', label: 'South', symbol: '⬇', desc: 'Head South' };
+    if (norm >= 202.5 && norm < 247.5) return { code: 'SW', label: 'South-West', symbol: '↙', desc: 'Head South-West' };
+    if (norm >= 247.5 && norm < 292.5) return { code: 'W', label: 'West', symbol: '⬅', desc: 'Turn West' };
+    return { code: 'NW', label: 'North-West', symbol: '↖', desc: 'Head North-West' };
+  }
+  window.getCardinalDirection = getCardinalDirection;
+
   function getAngleDelta(angle1, angle2) {
 
     return (angle2 - angle1 + 540) % 360 - 180;
@@ -3906,60 +4175,43 @@
 
     const corridorName = destPlot.locality || "arterial expressway";
 
-    // Tag Turn Maneuvers along the densified trajectory
-
+    // Tag Turn Maneuvers along the densified trajectory with Cardinal Directions
     for (let i = 0; i < totalCount; i++) {
+      const currPt = points[i];
+      const cardinal = getCardinalDirection(currPt.bearing);
+      currPt.cardinal = cardinal;
 
       if (i >= totalCount - 5) {
-
-        points[i].maneuver = "arrived";
-
-        points[i].instruction = `Arrive at destination: ${destPlot.title}`;
-
-        points[i].distToManeuver = 0;
-
+        currPt.maneuver = "arrived";
+        currPt.instruction = `Arrive ${cardinal.label} at destination: ${destPlot.title}`;
+        currPt.distToManeuver = 0;
+        currPt.turnCardinal = cardinal;
         continue;
-
       }
 
       // Check upcoming heading 8-12 points (~150-200m) ahead
-
       const lookAheadIdx = Math.min(i + 10, totalCount - 1);
-
-      const currBearing = points[i].bearing;
-
+      const currBearing = currPt.bearing;
       const aheadBearing = points[lookAheadIdx].bearing;
-
       const angleDiff = getAngleDelta(currBearing, aheadBearing);
+      const aheadCardinal = getCardinalDirection(aheadBearing);
+      const distToTurn = Math.max(25, Math.round(points[lookAheadIdx].cumDistMeters - currPt.cumDistMeters));
 
-      const distToTurn = Math.max(25, Math.round(points[lookAheadIdx].cumDistMeters - points[i].cumDistMeters));
+      currPt.turnCardinal = aheadCardinal;
 
       if (angleDiff < -14) {
-
-        points[i].maneuver = "turn-left";
-
-        points[i].instruction = `In ${distToTurn}m, Turn Left toward ${destPlot.locality}`;
-
-        points[i].distToManeuver = distToTurn;
-
+        currPt.maneuver = "turn-left";
+        currPt.instruction = `In ${distToTurn}m, Turn Left towards ${aheadCardinal.label} (${destPlot.locality})`;
+        currPt.distToManeuver = distToTurn;
       } else if (angleDiff > 14) {
-
-        points[i].maneuver = "turn-right";
-
-        points[i].instruction = `In ${distToTurn}m, Turn Right onto expressway`;
-
-        points[i].distToManeuver = distToTurn;
-
+        currPt.maneuver = "turn-right";
+        currPt.instruction = `In ${distToTurn}m, Turn Right towards ${aheadCardinal.label} (${corridorName})`;
+        currPt.distToManeuver = distToTurn;
       } else {
-
-        points[i].maneuver = "straight";
-
-        points[i].instruction = `Continue straight on ${corridorName}`;
-
-        points[i].distToManeuver = 0;
-
+        currPt.maneuver = "straight";
+        currPt.instruction = `Head ${cardinal.label} along ${corridorName}`;
+        currPt.distToManeuver = 0;
       }
-
     }
 
     return points;
@@ -4174,12 +4426,17 @@
           }
         }
 
-        // Automatically start driving vehicle through the path along directions!
-        setTimeout(() => {
-          if (navDensifiedPoints && navDensifiedPoints.length > 1 && navState !== "playing") {
-            startRouteNavigation();
-          }
-        }, 450);
+        // Automatically start driving vehicle ONLY if user explicitly triggered drive or via url parameter
+        const urlCheckParams = new URLSearchParams(window.location.search);
+        const shouldAutoStartDrive = urlCheckParams.get("drive") === "1" || urlCheckParams.get("autodrive") === "1" || window.__userRequestedDrive === true;
+        if (shouldAutoStartDrive) {
+          window.__userRequestedDrive = false;
+          setTimeout(() => {
+            if (navDensifiedPoints && navDensifiedPoints.length > 1 && navState !== "playing") {
+              startRouteNavigation();
+            }
+          }, 450);
+        }
 
       }
 
@@ -4192,26 +4449,81 @@
   }
 
   function updateCameraFollowButtonUI() {
+    const recenterBtn = document.getElementById("floatingRecenterBtn");
+    const btnHudRecenter = document.getElementById("btnHudRecenter");
+    const hudMinRecenter = document.getElementById("hudMinRecenter");
 
-    const btnHudCamera = document.getElementById("btnHudCameraFollow");
-
-    const hudCameraText = document.getElementById("hudCameraText");
-
-    if (!btnHudCamera) return;
-
-    btnHudCamera.classList.toggle("active", navFollowCamera);
-
-    btnHudCamera.classList.toggle("recenter-needed", !navFollowCamera);
-
-    if (hudCameraText) {
-
-      hudCameraText.textContent = navFollowCamera ? "Follow" : "Re-center";
-
+    if (recenterBtn) {
+      if (navState === "playing" || navState === "paused") {
+        recenterBtn.style.display = "inline-flex";
+        if (navFollowCamera) {
+          recenterBtn.classList.remove("needs-recenter");
+          recenterBtn.classList.add("is-centered");
+          recenterBtn.innerHTML = '<i class="fas fa-check-circle text-emerald"></i> <span>Centered on Car</span>';
+          recenterBtn.title = "Screen locked on car in center (Click to re-center)";
+        } else {
+          recenterBtn.classList.add("needs-recenter");
+          recenterBtn.classList.remove("is-centered");
+          recenterBtn.innerHTML = '<i class="fas fa-crosshairs"></i> <span>Re-center on Car</span>';
+          recenterBtn.title = "Click to re-center screen on moving car";
+        }
+      } else {
+        recenterBtn.style.display = "none";
+      }
     }
 
-    btnHudCamera.title = navFollowCamera ? "Camera locked on vehicle (Follow)" : "Click to re-center on vehicle";
+    if (btnHudRecenter) {
+      btnHudRecenter.classList.toggle("needs-recenter", !navFollowCamera);
+      btnHudRecenter.style.display = (navState === "playing" || navState === "paused") ? "inline-flex" : "none";
+      btnHudRecenter.innerHTML = navFollowCamera
+        ? '<i class="fas fa-check-circle text-emerald"></i> Centered'
+        : '<i class="fas fa-crosshairs"></i> Re-center';
+    }
 
+    if (hudMinRecenter) {
+      hudMinRecenter.style.display = (navState === "playing" || navState === "paused") ? "inline-flex" : "none";
+      hudMinRecenter.innerHTML = navFollowCamera
+        ? '<i class="fas fa-check-circle text-emerald"></i> Centered'
+        : '<i class="fas fa-crosshairs"></i> Re-center';
+    }
   }
+
+  // Google Maps Re-center on Car function
+  window.recenterOnCar = function(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    navFollowCamera = true;
+    updateCameraFollowButtonUI();
+
+    if (!mapInstance) return;
+
+    let targetCoords = null;
+    if (navDensifiedPoints && navDensifiedPoints.length > 0) {
+      const currPt = navDensifiedPoints[Math.floor(navCurrentIndex)] || navDensifiedPoints[0];
+      if (currPt) targetCoords = [currPt.lng, currPt.lat];
+    }
+    if (!targetCoords && window.navVehicleMarker) {
+      const pos = window.navVehicleMarker.getLngLat();
+      if (pos) targetCoords = [pos.lng, pos.lat];
+    }
+    if (!targetCoords) {
+      targetCoords = window.currentDestPlotCoords || [80.18, 12.98];
+    }
+
+    const isMobile = window.innerWidth <= 768;
+    const targetZoom = isMobile ? 16.5 : 15.8;
+
+    mapInstance.easeTo({
+      center: targetCoords,
+      zoom: targetZoom,
+      bearing: 0,
+      pitch: 0,
+      duration: 500
+    });
+
+    if (window.showToast) {
+      window.showToast("🎯 Re-centered: Screen locked on moving car");
+    }
+  };
 
   function updateZoomButtonsUI() {
 
@@ -4409,26 +4721,30 @@
     const initialBearing = calculateBearing([startPt.lat, startPt.lng], [leadPt.lat, leadPt.lng]);
 
     currentSmoothedBearing = initialBearing;
-
-    currentSmoothedPitch = cameraMode === 'driver' ? 60 : (cameraMode === 'chase' ? 48 : 0);
+    currentSmoothedPitch = (cameraMode === 'gmaps') ? 0 : (cameraMode === 'driver' ? 60 : 48);
 
     if (mapInstance && startPt) {
-
       isNavZoomingIn = true;
-
-      mapInstance.flyTo({
-
-        center: [startPt.lng, startPt.lat],
-
-        zoom: cameraMode === 'driver' ? 17.4 : 16.6,
-
-        pitch: currentSmoothedPitch,
-
-        bearing: currentSmoothedBearing,
-
-        duration: 1200
-
-      });
+      if (cameraMode === 'gmaps') {
+        // GOOGLE MAPS DESIGN: Map stays North-Up (bearing: 0, pitch: 0)
+        // User clearly sees the car ready to drive along the road!
+        const isMobile = window.innerWidth <= 768;
+        mapInstance.flyTo({
+          center: [startPt.lng, startPt.lat],
+          zoom: isMobile ? 16.5 : 15.8,
+          pitch: 0,
+          bearing: 0,
+          duration: 900
+        });
+      } else {
+        mapInstance.flyTo({
+          center: [startPt.lng, startPt.lat],
+          zoom: cameraMode === 'driver' ? 17.4 : 16.6,
+          pitch: currentSmoothedPitch,
+          bearing: currentSmoothedBearing,
+          duration: 1200
+        });
+      }
 
       setTimeout(() => {
 
@@ -4688,7 +5004,8 @@
     }
 
     if (triggerRoute) {
-      if (typeof executeRouteCalculation === "function") {
+      window.__userRequestedDrive = true;
+        if (typeof executeRouteCalculation === "function") {
         executeRouteCalculation();
       } else if (navDensifiedPoints && navDensifiedPoints.length > 1) {
         startRouteNavigation();
@@ -4745,7 +5062,8 @@
 
     }
 
-    const basePointsPerSec = currentVehicleType === "bike" ? 28 : 24;
+    // Calibrated 1x real-time simulation speed (smooth, readable Google Maps car movement)
+    const basePointsPerSec = currentVehicleType === "bike" ? 9 : 8;
 
     const pointsToAdvance = basePointsPerSec * navSpeed * speedMultiplier * deltaTime;
 
@@ -4825,24 +5143,14 @@
 
     currentSmoothedPitch += (targetPitch - currentSmoothedPitch) * 0.12;
 
-    // 1. DRIVE THE MAP CAMERA (Stage D: Road Journey)!
-
+    // 1. GOOGLE MAPS DESIGN: SCREEN MOVES ALONG WITH CAR IN CENTER!
+    // The map stays steady North-Up (bearing: 0, pitch: 0), smoothly keeping the car centered at all times!
     if (mapInstance && navFollowCamera && !isNavZoomingIn) {
-
-      const targetZoom = cameraMode === 'driver' ? 17.4 : (cameraMode === 'chase' ? 16.6 : 15.5);
-
       mapInstance.jumpTo({
-
         center: [lng, lat],
-
-        bearing: currentSmoothedBearing,
-
-        pitch: currentSmoothedPitch,
-
-        zoom: targetZoom
-
+        bearing: 0,
+        pitch: 0
       });
-
     }
 
     // 2. Update Traveled Road Ribbon GeoJSON (Neon Green #10b981)
@@ -4943,60 +5251,67 @@
 
     }
 
-    // 5. Update HUD Banner
-
+    // 5. Update HUD Banner with Live Cardinal Directions & Speed
     const hudTurnIconBox = document.getElementById("hudTurnIconBox");
-
     const hudTurnIcon = document.getElementById("hudTurnIcon");
-
     const hudTurnDist = document.getElementById("hudTurnDistance");
-
     const hudTurnInst = document.getElementById("hudTurnInstruction");
-
     const hudSpeedVal = document.getElementById("hudSpeedVal");
-
     const hudRemDist = document.getElementById("hudRemainingDist");
-
     const hudRemEta = document.getElementById("hudRemainingEta");
-
     const hudProgBar = document.getElementById("hudProgressBar");
+    const hudCardinalBadge = document.getElementById("hudCardinalBadge");
+    const hudMinCardinal = document.getElementById("hudMinCardinal");
+    const hudSpeedPillText = document.getElementById("hudSpeedPillText");
+    const hudMinSpeedText = document.getElementById("hudMinSpeedText");
+
+    // Live Cardinal Direction
+    const currentCardinal = getCardinalDirection(currentSmoothedBearing);
+    const turnCardinal = currentPt.turnCardinal || currentCardinal;
+
+    if (hudCardinalBadge) {
+      hudCardinalBadge.innerHTML = `<i class="fas fa-compass"></i> ${currentCardinal.label.toUpperCase()}`;
+      hudCardinalBadge.className = `hud-cardinal-badge cardinal-${currentCardinal.code.toLowerCase()}`;
+    }
+    if (hudMinCardinal) {
+      hudMinCardinal.innerHTML = `🧭 ${currentCardinal.code} (${currentCardinal.label})`;
+    }
+    if (hudSpeedPillText) {
+      hudSpeedPillText.textContent = `${navSpeed}x Speed`;
+    }
+    if (hudMinSpeedText) {
+      hudMinSpeedText.textContent = `${navSpeed}x`;
+    }
+
+    // Update Interactive Google Maps Compass Rose Widget on Map
+    const compassNeedlePivot = document.getElementById("compassNeedlePivot");
+    const compassHeadingText = document.getElementById("compassHeadingText");
+    if (compassNeedlePivot) {
+      compassNeedlePivot.style.transform = `rotate(${Math.round(currentSmoothedBearing)}deg)`;
+    }
+    if (compassHeadingText) {
+      compassHeadingText.textContent = `${currentCardinal.label.toUpperCase()} • ${Math.round(currentSmoothedBearing)}°`;
+    }
 
     if (maneuver === "turn-left") {
-
       if (hudTurnIconBox) hudTurnIconBox.className = "hud-turn-icon-box turning-left";
-
       if (hudTurnIcon) hudTurnIcon.className = "fas fa-arrow-left";
-
-      if (hudTurnDist) hudTurnDist.textContent = `Turn Left in ${currentPt.distToManeuver} m`;
-
+      if (hudTurnDist) hudTurnDist.innerHTML = `Turn <strong>Left (${turnCardinal.label})</strong> in ${currentPt.distToManeuver} m`;
     } else if (maneuver === "turn-right") {
-
       if (hudTurnIconBox) hudTurnIconBox.className = "hud-turn-icon-box turning-right";
-
       if (hudTurnIcon) hudTurnIcon.className = "fas fa-arrow-right";
-
-      if (hudTurnDist) hudTurnDist.textContent = `Turn Right in ${currentPt.distToManeuver} m`;
-
+      if (hudTurnDist) hudTurnDist.innerHTML = `Turn <strong>Right (${turnCardinal.label})</strong> in ${currentPt.distToManeuver} m`;
     } else if (maneuver === "arrived") {
-
       if (hudTurnIconBox) hudTurnIconBox.className = "hud-turn-icon-box arrived";
-
       if (hudTurnIcon) hudTurnIcon.className = "fas fa-flag-checkered";
-
-      if (hudTurnDist) hudTurnDist.textContent = "You Have Arrived!";
-
+      if (hudTurnDist) hudTurnDist.innerHTML = `Arrived <strong>${currentCardinal.label}</strong> at Destination!`;
     } else {
-
       if (hudTurnIconBox) hudTurnIconBox.className = "hud-turn-icon-box";
-
       if (hudTurnIcon) hudTurnIcon.className = "fas fa-arrow-up";
-
       const totalDistMeters = navDensifiedPoints[totalPoints - 1].cumDistMeters;
-
       const remM = Math.max(0, totalDistMeters - currentPt.cumDistMeters);
-
-      if (hudTurnDist) hudTurnDist.textContent = remM > 1000 ? `In ${(remM / 1000).toFixed(1)} km` : `In ${Math.round(remM)} m`;
-
+      const remStr = remM > 1000 ? `In ${(remM / 1000).toFixed(1)} km` : `In ${Math.round(remM)} m`;
+      if (hudTurnDist) hudTurnDist.innerHTML = `Head <strong>${currentCardinal.label}</strong> &bull; ${remStr}`;
     }
 
     if (hudTurnInst) hudTurnInst.textContent = currentPt.instruction;
@@ -5095,7 +5410,7 @@
 
           pitch: 48,
 
-          bearing: (currentSmoothedBearing + 15) % 360,
+          bearing: 0,
 
           duration: 1500
 
@@ -5379,15 +5694,17 @@
     if (mapInstance) {
 
       mapInstance.on("dragstart", () => {
-
-        if (navState === "playing" && navFollowCamera) {
-
+        if (navState === "playing") {
           navFollowCamera = false;
-
           updateCameraFollowButtonUI();
-
         }
+      });
 
+      mapInstance.on("touchstart", (e) => {
+        if (navState === "playing" && e.touches && e.touches.length === 1) {
+          navFollowCamera = false;
+          updateCameraFollowButtonUI();
+        }
       });
 
       mapInstance.on("zoomend", () => {
@@ -7567,43 +7884,37 @@
     filterAndRenderPlots();
 
     try {
-
-      fetch("/webhook/llb-property-inquiry", {
-
-        method: "POST",
-
-        headers: { "Content-Type": "application/json" },
-
-        body: JSON.stringify({
-
+      if (window.UniversalDispatcher && typeof window.UniversalDispatcher.dispatchInquiry === "function") {
+        window.UniversalDispatcher.dispatchInquiry({
           fullName: ownerName,
-
           email: email,
-
           phone: phone,
-
           inquiryType: "Sell Plot Listing",
-
           propertyTitle: title + " (" + locality + ")",
-
           propertyId: newPlot.id,
-
           budget: `₹${priceLakhs} Lakhs`,
-
           notes: `Size: ${sizeSqft} sqft, Facing: ${facing}, Approval: ${approval}`
-
-        })
-
-      }).then(res => res.json()).then(data => {
-
-        if (data && data.emailSent) {
-
-          showToast(`✉️ Confirmation email dispatched to ${email}!`);
-
-        }
-
-      }).catch(() => {});
-
+        }).then(data => {
+          if (data && data.emailSent) {
+            showToast(`✉️ Confirmation email dispatched to ${email}!`);
+          }
+        }).catch(() => {});
+      } else {
+        fetch("/webhook/llb-property-inquiry", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fullName: ownerName,
+            email: email,
+            phone: phone,
+            inquiryType: "Sell Plot Listing",
+            propertyTitle: title + " (" + locality + ")",
+            propertyId: newPlot.id,
+            budget: `₹${priceLakhs} Lakhs`,
+            notes: `Size: ${sizeSqft} sqft, Facing: ${facing}, Approval: ${approval}`
+          })
+        }).catch(() => {});
+      }
     } catch (e) {}
 
     closeModal("sellPlotModal");
@@ -7908,6 +8219,9 @@ Please share the approved layout blueprint, CMDA/DTCP order copy, and schedule a
         alpha: true,
 
         antialias: true,
+      maxZoom: 21,
+      minZoom: 9,
+      touchZoomRotate: true,
 
         powerPreference: "high-performance"
 
@@ -8757,7 +9071,10 @@ Please share the approved layout blueprint, CMDA/DTCP order copy, and schedule a
 
         alpha: true,
 
-        antialias: true
+        antialias: true,
+      maxZoom: 21,
+      minZoom: 9,
+      touchZoomRotate: true
 
       });
 
@@ -9293,6 +9610,60 @@ Please share the approved layout blueprint, CMDA/DTCP order copy, and schedule a
 
   window.getNavState = () => ({ navState, navCurrentIndex, currentVehicleType });
 
+  // =========================================================================
+  // SPEED CONTROL (1X REAL-TIME / 2X / 4X) & GOOGLE MAPS COMPASS NORTH
+  // =========================================================================
+  window.setNavSpeed = function(val) {
+    navSpeed = parseInt(val, 10) || 1;
+    updateSpeedControlsUI();
+  };
+
+  window.cycleNavSpeed = function(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    if (navSpeed === 1) {
+      navSpeed = 2;
+    } else if (navSpeed === 2) {
+      navSpeed = 4;
+    } else {
+      navSpeed = 1;
+    }
+    updateSpeedControlsUI();
+    if (window.showToast) {
+      window.showToast(`Simulation speed: ${navSpeed}x ${navSpeed === 1 ? '(Normal Real-Time Speed)' : ''}`);
+    }
+  };
+
+  function updateSpeedControlsUI() {
+    const sel = document.getElementById("navSpeedSelect");
+    if (sel) sel.value = String(navSpeed);
+    const pillTxt = document.getElementById("hudSpeedPillText");
+    if (pillTxt) pillTxt.textContent = `${navSpeed}x Speed`;
+    const minTxt = document.getElementById("hudMinSpeedText");
+    if (minTxt) minTxt.textContent = `${navSpeed}x`;
+  }
+  window.updateSpeedControlsUI = updateSpeedControlsUI;
+
+  window.resetMapNorth = function(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    if (!mapInstance) return;
+    const center = (window.navVehicleMarker && window.navVehicleMarker.getLngLat())
+      ? [window.navVehicleMarker.getLngLat().lng, window.navVehicleMarker.getLngLat().lat]
+      : (window.currentDestPlotCoords || [80.18, 12.98]);
+    mapInstance.easeTo({
+      center: center,
+      bearing: 0,
+      pitch: 0,
+      duration: 800
+    });
+    const needle = document.getElementById("compassNeedlePivot");
+    if (needle) needle.style.transform = "rotate(0deg)";
+    const headingText = document.getElementById("compassHeadingText");
+    if (headingText) headingText.textContent = "NORTH • 0°";
+    if (window.showToast) {
+      window.showToast("🧭 Compass: Map aligned North-Up (Google Maps style)");
+    }
+  };
+
 })();
 
 
@@ -9402,3 +9773,120 @@ Please share the approved layout blueprint, CMDA/DTCP order copy, and schedule a
       });
     }
   });
+
+  // =========================================================================
+  // MOBILE CLOSE-UP ZOOM & DIRECTIONS HELPERS
+  // =========================================================================
+  window.zoomCloseToDestinationPlot = function() {
+    if (!mapInstance) return;
+    const coords = window.currentDestPlotCoords || (allPlotsList && allPlotsList[currentStepperIndex] && [allPlotsList[currentStepperIndex].coords[1], allPlotsList[currentStepperIndex].coords[0]]);
+    if (coords) {
+      mapInstance.flyTo({
+        center: coords,
+        zoom: 18.2,
+        pitch: 45,
+        bearing: 0,
+        duration: 1200
+      });
+      window.updateRouteZoomToggleBtn(true);
+      if (window.showToast) {
+        window.showToast("🔍 Zoomed close to plot & street directions (18x)!");
+      }
+    }
+  };
+
+  window.zoomToRouteOverview = function() {
+    if (!mapInstance) return;
+    if (window.currentRouteBounds) {
+      mapInstance.fitBounds(window.currentRouteBounds, {
+        padding: { top: 60, bottom: 180, left: 20, right: 20 },
+        pitch: 20,
+        bearing: 0,
+        duration: 1000
+      });
+    } else {
+      window.fitAllPlotsOnMap();
+    }
+    window.updateRouteZoomToggleBtn(false);
+  };
+
+  window.toggleMobileRouteZoom = function() {
+    if (!mapInstance) return;
+    const currZoom = mapInstance.getZoom();
+    if (currZoom >= 17) {
+      window.zoomToRouteOverview();
+    } else {
+      window.zoomCloseToDestinationPlot();
+    }
+  };
+
+  window.updateRouteZoomToggleBtn = function(isZoomedIn) {
+    const btn = document.getElementById("floatingRouteZoomBtn");
+    const txt = document.getElementById("floatingRouteZoomText");
+    if (!btn || !txt) return;
+    btn.style.display = "inline-flex";
+    if (isZoomedIn) {
+      txt.textContent = "Route Overview";
+      btn.classList.add("zoomed-in");
+    } else {
+      txt.textContent = "Zoom Close (18x)";
+      btn.classList.remove("zoomed-in");
+    }
+  };
+
+
+  // =========================================================================
+  // JOURNEY NOTIFICATION BAR MINIMIZE & DISMISS SYSTEM
+  // =========================================================================
+  window.toggleHudMinimize = function(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    const hud = document.getElementById("gmapsLiveNavHud");
+    if (!hud) return;
+
+    hud.classList.toggle("minimized");
+    const isMin = hud.classList.contains("minimized");
+
+    const minText = document.getElementById("hudMinText");
+    const minIcon = document.getElementById("hudMinIcon");
+    if (minText) minText.textContent = isMin ? "Expand" : "Minimize";
+    if (minIcon) minIcon.className = isMin ? "fas fa-chevron-down" : "fas fa-minus";
+
+    // Sync minimized pill texts
+    const distEl = document.getElementById("hudRemainingDist");
+    const etaEl = document.getElementById("hudRemainingEta");
+    const minEtaText = document.getElementById("hudMinEtaText");
+    const minStatusText = document.getElementById("hudMinStatusText");
+    const turnDist = document.getElementById("hudTurnDistance");
+
+    if (minEtaText && distEl && etaEl) {
+      minEtaText.innerHTML = `${distEl.textContent} &bull; ${etaEl.textContent}`;
+    }
+    if (minStatusText) {
+      if (turnDist && turnDist.textContent.includes("Paused")) {
+        minStatusText.textContent = "Journey Paused";
+      } else if (navState === "stopped" || navState === "paused") {
+        minStatusText.textContent = "Journey Paused";
+      } else {
+        minStatusText.textContent = "Navigating";
+      }
+    }
+
+    if (window.showToast) {
+      window.showToast(isMin ? "Notification minimized. Behind options are visible!" : "Notification expanded");
+    }
+  };
+
+  window.dismissLiveNavHud = function(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    const hud = document.getElementById("gmapsLiveNavHud");
+    if (hud) {
+      hud.style.display = "none";
+      hud.classList.remove("minimized");
+    }
+    if (typeof window.stopRouteNavigation === "function") {
+      window.stopRouteNavigation();
+    }
+    if (window.showToast) {
+      window.showToast("Navigation notification closed");
+    }
+  };

@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chennai Prime Plots — Interactive Map & Animated Plot Showcase | CMDA & DTCP Approved</title>
+  <meta name="description" content="Buy and sell verified residential and commercial plots across all Chennai areas. Interactive map with pointed plot pins, animated drone images, CMDA/DTCP approvals, and instant WhatsApp booking.">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230b132b'/><text x='50%' y='65%' font-size='50' font-weight='900' fill='%23d4af37' text-anchor='middle'>📍</text></svg>">
+
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- MapLibre GL 3D Map CSS -->
+  <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- PWA & Mobile App Settings -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0b132b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Chennai Plots">
+  <link rel="apple-touch-icon" href="assets/architectural-glass-tower.jpg">
+
+  <!-- Chennai Plots Custom Stylesheet -->
+  <link rel="stylesheet" href="chennai-plots.css">
+</head>
+<body>
+  <!-- Full-Page Interactive 3D Terrain & Particle Universe Canvas -->
+  <canvas id="aesthetic3DCanvas" class="aesthetic-3d-bg"></canvas>
+
+  <!-- Top Announcement Strip -->
+  <aside class="top-notice-bar">
+    <div class="container top-notice-inner">
+      <div class="notice-pill">
+        <i class="fas fa-shield-alt"></i> 100% CMDA & DTCP Approved • Guaranteed Individual Patta
+      </div>
+      <div class="notice-links">
+        <a href="#mapSection"><i class="fas fa-map-marked-alt"></i> Pointed Location Map</a>
+        <a href="mobile.html" target="_blank" title="Scan QR Code or Open on Phone Browser"><i class="fas fa-mobile-alt" style="color:#fbbf24;"></i> Mobile Access & QR</a>
+        <a href="tel:+919345029705"><i class="fas fa-phone-alt"></i> +91 93450 29705</a>
+        <a href="javascript:void(0)" onclick="window.openEmailEnquiryModal('General Support')">
+          <i class="fas fa-envelope" style="color:#38bdf8;"></i> Email Support (Instant Reply)
+        </a>
+        <a href="javascript:void(0)" onclick="window.openWhatsAppInquiry('General-Inquiry')">
+          <i class="fab fa-whatsapp" style="color:#25d366;"></i> WhatsApp Support
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Sticky Navbar -->
+  <header class="site-nav">
+    <div class="container nav-container">
+      <a href="chennai-plots.html" class="brand">
+        <div class="brand-icon">
+          <i class="fas fa-map-pin"></i>
+        </div>
+        <div class="brand-text">
+          <h1>Chennai<span>Plots</span></h1>
+          <p>All Chennai Areas • CMDA Approved</p>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="#mapSection" class="nav-link active">Interactive Map</a>
+        <a href="#showcaseSection" class="nav-link">Selling Plots</a>
+        <a href="#blueprintSection" class="nav-link">Layout Masterplan</a>
+        <a href="#converterSection" class="nav-link">Land Converter</a>
+        <a href="portal.html" class="nav-link">Luxury Homes</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn btn-outline btn-sm nav-action-email" onclick="window.openEmailEnquiryModal('General Support')" title="Email Support">
+          <i class="fas fa-envelope" style="color:#38bdf8;"></i> <span class="nav-btn-text">Email Support</span>
+        </button>
+        <button class="btn btn-outline btn-sm nav-action-sell" id="openSellPlotModalBtn" title="Sell Your Plot">
+          <i class="fas fa-plus-circle" style="color:#d97706;"></i> <span class="nav-btn-text">Sell Plot</span>
+        </button>
+        <button class="btn btn-primary btn-sm nav-action-cab" onclick="window.openBookingModal('General-Cab-Booking')" title="Free Cab Visit">
+          <i class="fas fa-car"></i> <span class="nav-btn-text">Free Cab</span>
+        </button>
+        <a href="app.html" class="btn btn-sm nav-action-app-badge" style="background:linear-gradient(135deg, #d4af37, #b45309); color:#070b14; font-weight:800; border:none; text-decoration:none; display:inline-flex; align-items:center; gap:5px; padding:6px 10px; border-radius:8px;" title="Open NoBroker & OLX Style Mobile App">
+          <i class="fas fa-mobile-alt"></i> <span class="nav-btn-text">Mobile App</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-pattern-bg"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-map-marker-alt"></i> Covering All Chennai Zones — OMR, ECR, GST, West, Central & North
+        </div>
+        <h1 class="hero-title">
+          Buy & Sell Verified Plots in <span>Chennai</span>
+        </h1>
+        <p class="hero-subtitle">
+          Explore sanctioned residential villa plots and commercial land with accurate pointed map coordinates, animated aerial imagery, CMDA/DTCP sanction orders, and instant site visit booking.
+        </p>
+
+        <!-- Key Real Estate Metrics -->
+        <div class="hero-stats-row">
+          <div class="hero-stat-card">
+            <div class="hero-stat-number">18+</div>
+            <div class="hero-stat-label">Chennai Localities</div>
+          </div>
+          <div class="hero-stat-card">
+            <div class="hero-stat-number">100%</div>
+            <div class="hero-stat-label">Clear Title Patta</div>
+          </div>
+          <div class="hero-stat-card">
+            <div class="hero-stat-number">CMDA</div>
+            <div class="hero-stat-label">& DTCP Sanctioned</div>
+          </div>
+          <div class="hero-stat-card">
+            <div class="hero-stat-number">₹0</div>
+            <div class="hero-stat-label">Zero Brokerage Option</div>
+          </div>
+        </div>
+
+        <!-- Quick Search Bar -->
+        <div class="hero-search-box">
+          <div class="search-field">
+            <label><i class="fas fa-search"></i> Search Area / Locality</label>
+            <input type="text" id="heroSearchArea" placeholder="e.g. Sholinganallur, Tambaram, Porur...">
+          </div>
+          <div class="search-field">
+            <label><i class="fas fa-map-signs"></i> Chennai Zone</label>
+            <select id="heroZoneSelect">
+              <option value="all">All Chennai Zones</option>
+              <option value="omr">OMR (IT Corridor)</option>
+              <option value="ecr">ECR (Coastal Strip)</option>
+              <option value="gst">South Chennai & GST Road</option>
+              <option value="west">West Chennai (Porur/Poonamallee)</option>
+              <option value="central">Central Chennai (Velachery/Anna Nagar)</option>
+              <option value="north">North Chennai (Ambattur/Avadi)</option>
+            </select>
+          </div>
+          <div class="search-field">
+            <label><i class="fas fa-wallet"></i> Budget Range</label>
+            <select id="heroBudgetSelect">
+              <option value="all">Any Budget</option>
+              <option value="under30">Under ₹30 Lakhs</option>
+              <option value="30to60">₹30L - ₹60 Lakhs</option>
+              <option value="60to1cr">₹60L - ₹1.00 Crore</option>
+              <option value="above1cr">Above ₹1.00 Crore</option>
+            </select>
+          </div>
+          <div class="search-field">
+            <label><i class="fas fa-compass"></i> Facing</label>
+            <select id="heroFacingSelect">
+              <option value="all">Any Facing</option>
+              <option value="north">North Facing</option>
+              <option value="east">East Facing</option>
+              <option value="corner">Corner Plots</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" id="heroSearchBtn">
+            <i class="fas fa-search"></i> Search Plots
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE CHENNAI MAP SECTION WITH POINTED SYMBOLS -->
+  <section class="map-section" id="mapSection">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fas fa-satellite"></i> Interactive Map Access</span>
+        <h2 class="section-title">Chennai Master Plot Map with Pointed Markers</h2>
+        <p class="section-desc">
+          Click on any pointed needle marker to inspect plot details, live price, CMDA approval, and ground dimensions. Zoom and explore all Chennai key growth corridors.
+        </p>
+      </div>
+
+      <div class="map-wrapper">
+        <!-- Google Maps Model Direction & Distance Calculator Panel -->
+        <div class="gmaps-directions-panel" id="gmapsDirectionsPanel">
+          <div class="gmaps-panel-header">
+            <div class="gmaps-brand-tag">
+              <div class="gmaps-brand-icon"><i class="fas fa-directions"></i></div>
+              <span>Google Maps Modeled Route</span>
+            </div>
+            <button class="gmaps-toggle-btn" id="gmapsToggleBtn" aria-label="Minimize directions panel">
+              <i class="fas fa-chevron-up"></i> <span id="gmapsToggleText">Minimize</span>
+            </button>
+          </div>
+
+          <div class="gmaps-panel-body" id="gmapsPanelBody">
+            <!-- Travel Mode Switcher (Google Maps Style) -->
+            <div class="gmaps-mode-tabs">
+              <button class="gmaps-mode-btn active" data-mode="driving" title="Driving by Car / Cab">
+                <i class="fas fa-car"></i>
+                <span>Drive</span>
+              </button>
+              <button class="gmaps-mode-btn" data-mode="bike" title="Two-Wheeler / Bike">
+                <i class="fas fa-motorcycle"></i>
+                <span>Bike</span>
+              </button>
+              <button class="gmaps-mode-btn" data-mode="transit" title="Metro / Suburban Transit">
+                <i class="fas fa-subway"></i>
+                <span>Transit</span>
+              </button>
+              <button class="gmaps-mode-btn" data-mode="walking" title="Walking">
+                <i class="fas fa-walking"></i>
+                <span>Walk</span>
+              </button>
+            </div>
+
+            <!-- Location Inputs with Google Connector -->
+            <div class="gmaps-inputs-wrap">
+              <!-- Origin (Point A) -->
+              <div class="gmaps-input-row">
+                <div class="gmaps-point-indicator origin">
+                  <i class="fas fa-circle"></i>
+                </div>
+                <select class="gmaps-select-box" id="routeOriginSelect">
+                  <optgroup label="Popular Chennai Starting Points">
+                    <option value="airport" selected>✈️ Chennai International Airport (MAA)</option>
+                    <option value="central">🚆 Chennai Central Railway Station</option>
+                    <option value="tidel">💻 Tidel Park & Ascendas IT SEZ, OMR</option>
+                    <option value="phoenix">🏬 Phoenix Marketcity, Velachery</option>
+                    <option value="kilambakkam">🚌 Kilambakkam Bus Terminus (KCBT)</option>
+                    <option value="koyambedu">🚌 Koyambedu CMBT & Metro</option>
+                    <option value="porur_junction">🏥 Porur Junction / Ramachandra</option>
+                    <option value="anna_arch">👑 Anna Nagar Tower Park</option>
+                    <option value="guindy">🏢 Guindy Kathipara Flyover</option>
+                  </optgroup>
+                  <optgroup label="Or From Another Plot" id="routeOriginPlotsOptgroup">
+                    <!-- Populated dynamically -->
+                  </optgroup>
+                  <option value="current_gps">🎯 Use My Live GPS Location</option>
+                </select>
+              </div>
+
+              <button class="gmaps-swap-btn" id="swapRoutePointsBtn" title="Swap Origin & Destination">
+                <i class="fas fa-arrows-alt-v"></i>
+              </button>
+
+              <!-- Destination (Point B) -->
+              <div class="gmaps-input-row">
+                <div class="gmaps-point-indicator destination">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <select class="gmaps-select-box" id="routeDestinationSelect">
+                  <!-- Populated dynamically with all plots -->
+                </select>
+              </div>
+            </div>
+
+            <!-- Destination Property Preview Card with Particular Property Image -->
+            <div class="gmaps-selected-plot-card" id="gmapsSelectedPlotCard">
+              <div class="gmaps-plot-thumb-wrap" id="gmapsPlotThumbWrap" title="Click to view full separate plot dossier">
+                <img id="gmapsPlotThumb" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80" alt="Destination Plot" class="gmaps-plot-thumb">
+                <span class="gmaps-plot-badge" id="gmapsPlotApprovalBadge"><i class="fas fa-shield-alt"></i> CMDA Approved</span>
+                <span class="gmaps-plot-zone-badge" id="gmapsPlotZoneBadge">OMR IT Corridor</span>
+              </div>
+              <div class="gmaps-plot-info">
+                <div class="gmaps-plot-target-label"><i class="fas fa-flag-checkered text-gold"></i> Destination Property</div>
+                <h4 class="gmaps-plot-title" id="gmapsPlotTitle" title="Click to open Full Separate View">Emerald Crest Villa Plots</h4>
+                <div class="gmaps-plot-locality" id="gmapsPlotLocality"><i class="fas fa-map-marker-alt" style="color:#d97706;"></i> Sholinganallur, OMR, Chennai</div>
+                <div class="gmaps-plot-price-row">
+                  <span class="gmaps-plot-price" id="gmapsPlotPrice">₹48.00 Lakhs</span>
+                  <span class="gmaps-plot-size" id="gmapsPlotSize"><i class="fas fa-ruler-combined"></i> 1,200 sq.ft (30×40)</span>
+                </div>
+                <div class="gmaps-plot-actions-row">
+                  <button type="button" class="btn-gmaps-card-view" id="gmapsCardSeparateViewBtn" title="Open Complete Separate View Dossier">
+                    <i class="fas fa-expand-alt"></i> Separate View
+                  </button>
+                  <button type="button" class="btn-gmaps-card-cab" id="gmapsCardBookCabBtn" title="Book Free Cab to this Plot">
+                    <i class="fas fa-car"></i> Free Cab
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive Vehicle Navigation Simulation Hub (Car & Bike Left/Right Navigation) -->
+            <div class="gmaps-nav-sim-hub" id="gmapsNavSimHub">
+              <div class="nav-sim-header">
+                <div class="nav-sim-title">
+                  <span class="live-nav-dot"></span>
+                  <span>Vehicle Route Navigation</span>
+                </div>
+                <!-- Vehicle Selector: Car vs Bike -->
+                <div class="nav-sim-vehicle-picker" id="navVehiclePicker">
+                  <button type="button" class="vehicle-pick-btn active" data-vehicle="car" id="pickVehicleCar" title="Navigate with Luxury Car">
+                    <i class="fas fa-car"></i> Car
+                  </button>
+                  <button type="button" class="vehicle-pick-btn" data-vehicle="bike" id="pickVehicleBike" title="Navigate with Two-Wheeler / Bike">
+                    <i class="fas fa-motorcycle"></i> Bike
+                  </button>
+                </div>
+              </div>
+
+              <!-- Navigation Controls Row: Start/Drive, Pause, Reset, Speed -->
+              <div class="nav-sim-ctrl-row">
+                <button type="button" class="btn-start-nav" id="btnStartNavSimulation" title="Start real-time animated vehicle navigation along route">
+                  <i class="fas fa-play" id="navPlayIcon"></i>
+                  <span id="navStartBtnText">Start Car Navigation</span>
+                </button>
+                <button type="button" class="btn-pause-nav" id="btnPauseNavSimulation" style="display:none;" title="Pause / Resume">
+                  <i class="fas fa-pause" id="navPauseIcon"></i>
+                </button>
+                <button type="button" class="btn-reset-nav" id="btnResetNavSimulation" title="Restart route from origin">
+                  <i class="fas fa-redo-alt"></i>
+                </button>
+                <button type="button" class="btn-nav-zoom" id="btnNavStreetZoom" title="Toggle Close-up Street View (16x) / Route Overview">
+                  <i class="fas fa-search-plus"></i> <span id="navZoomBtnLabel">Zoom In</span>
+                </button>
+                <div class="nav-speed-wrap">
+                  <select class="nav-speed-select" id="navSpeedSelect" title="Simulation Speed" onchange="window.setNavSpeed(this.value)">
+                    <option value="1" selected>1x Speed (Normal)</option>
+                    <option value="2">2x Speed</option>
+                    <option value="4">4x Speed</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Route Metrics Card (ETA & Distance) -->
+            <div class="gmaps-route-card" id="gmapsRouteCard">
+              <div class="gmaps-route-main-metrics">
+                <div>
+                  <span style="font-size:0.75rem; color:#64748b; font-weight:700;">ESTIMATED TIME</span>
+                  <div class="gmaps-eta-time" id="gmapsEtaTime">-- min</div>
+                </div>
+                <div style="text-align:right;">
+                  <span style="font-size:0.75rem; color:#64748b; font-weight:700;">TOTAL DISTANCE</span>
+                  <div class="gmaps-eta-distance" id="gmapsEtaDistance">-- km</div>
+                </div>
+              </div>
+
+              <div class="gmaps-traffic-badge" id="gmapsTrafficBadge">
+                <i class="fas fa-check-circle"></i> Fastest route with typical Chennai traffic
+              </div>
+
+              <div class="gmaps-route-corridor" id="gmapsRouteCorridor">
+                Select points above to compute route corridor
+              </div>
+
+              <!-- Turn-by-Turn Directions Expandable Accordion -->
+              <button class="gmaps-steps-toggle-btn" id="gmapsStepsToggleBtn">
+                <i class="fas fa-list-ol"></i> <span>View Turn-by-Turn Directions</span> <i class="fas fa-chevron-down" style="font-size:0.65rem;"></i>
+              </button>
+              <div class="gmaps-steps-container" id="gmapsStepsContainer">
+                <!-- Dynamically populated steps -->
+              </div>
+            </div>
+
+            <!-- Action Buttons: Google Maps External, Cab Booking & Separate View Dossier -->
+            <div class="gmaps-action-btns">
+              <button type="button" class="btn-gmaps-zoom-close" onclick="window.zoomCloseToDestinationPlot()" title="Zoom closely into the destination plot at street level">
+                <i class="fas fa-search-location" style="color:#fbbf24;"></i> <span>Zoom Close (18x)</span>
+              </button>
+
+              <a href="#" target="_blank" rel="noopener" class="btn-gmaps-external" id="openExternalGoogleMapsBtn" title="Launch official Google Maps App">
+                <i class="fab fa-google"></i> Google Maps App
+              </a>
+              <button class="btn-gmaps-cab" id="bookCabFromRouteBtn">
+                <i class="fas fa-car"></i> Free Cab Visit
+              </button>
+              <button class="btn-gmaps-view-plot" id="viewPlotFromRouteBtn" title="Open full separate view dossier for this plot">
+                <i class="fas fa-expand-alt"></i> Separate View
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Map Controls & Area Quick-Jumps -->
+        <div class="map-header-bar">
+          <div class="map-header-left">
+            <div class="map-header-title">
+              <i class="fas fa-map-marked-alt" style="color:#d97706;"></i> Chennai Real Estate Map
+            </div>
+            <div class="map-plots-counter" id="mapPlotsCounter">
+              <span class="pulse-dot-green"></span> <strong>18</strong> Plots Available
+            </div>
+          </div>
+
+          <!-- Quick Jump Zone Pills -->
+          <div class="map-zone-pills">
+            <button class="zone-pill active" data-zone="all"><i class="fas fa-globe-asia"></i> All Chennai</button>
+            <button class="zone-pill" data-zone="omr">OMR (IT Corridor)</button>
+            <button class="zone-pill" data-zone="ecr">ECR (Coastal)</button>
+            <button class="zone-pill" data-zone="gst">Tambaram & GST</button>
+            <button class="zone-pill" data-zone="west">Porur & West</button>
+            <button class="zone-pill" data-zone="central">Central (Anna Nagar)</button>
+            <button class="zone-pill" data-zone="north">North (Ambattur)</button>
+            <button class="zone-pill" data-zone="sriperumbudur">Sriperumbudur Hub</button>
+          </div>
+
+          <div class="map-layer-toggles">
+            <!-- Vehicle Selection: Car vs Bike (Directly on Map Toolbar) -->
+            <div class="map-vehicle-switch-pill" title="Choose Vehicle to Drive along the Directions">
+              <button type="button" class="btn-vehicle-select car active" id="btnMapSelectCar" onclick="window.setVehicleType('car', true)" title="Drive as Luxury Car along route">
+                <i class="fas fa-car"></i> <span>Car</span>
+              </button>
+              <button type="button" class="btn-vehicle-select bike" id="btnMapSelectBike" onclick="window.setVehicleType('bike', true)" title="Ride as Bike along route">
+                <i class="fas fa-motorcycle"></i> <span>Bike</span>
+              </button>
+            </div>
+
+            <!-- Show All 20 Plots Overview Button -->
+            <button type="button" class="btn btn-sm btn-show-all-plots" id="btnFitAllPlots" onclick="window.fitAllPlotsOnMap()" title="Fit all 20 Chennai Plots on screen at once">
+              <i class="fas fa-globe-asia" style="color:#10b981;"></i> <span>All 20 Plots</span>
+            </button>
+
+            <!-- Dedicated Drive / Pause Path Controller -->
+            <button type="button" class="btn btn-sm btn-drive-action" id="btnMapDriveToggle" onclick="window.toggleNavDriveState()" title="Drive Car or Bike along route directions">
+              <i class="fas fa-play" id="mapDriveToggleIcon"></i> <span id="mapDriveToggleText">Drive Path</span>
+            </button>
+
+            <!-- 3D Camera Perspective Controls -->
+            <div class="cam-perspective-group" title="First-Person Road Driving Camera Angle">
+              <button type="button" class="cam-perspective-btn active" id="btnCamDriverEye" title="Driver's Eye (68° Low-Angle Road View)">
+                <i class="fas fa-car-side"></i> <span>Driver (68°)</span>
+              </button>
+              <button type="button" class="cam-perspective-btn" id="btnCamChase" title="Low-Angle Chase Drone (48° Pitch)">
+                <i class="fas fa-drone"></i> <span>Chase (48°)</span>
+              </button>
+              <button type="button" class="cam-perspective-btn" id="btnCamOverview" title="Top-Down Bird's Eye Overview (0° Pitch)">
+                <i class="fas fa-map"></i> <span>2D Overview</span>
+              </button>
+            </div>
+
+            <!-- 3D Vector City with Extrusions Toggle -->
+            <button class="btn btn-outline btn-sm" id="toggle3DVectorCityBtn" title="Switch between 3D Satellite Hybrid and 3D Extruded Buildings">
+              <i class="fas fa-city"></i> <span id="vectorCityToggleText">3D Buildings</span>
+            </button>
+            <button class="btn btn-outline btn-sm btn-satellite-active" id="toggleSatelliteBtn" title="Switch between Satellite Image Map and Street View">
+              <i class="fas fa-satellite"></i> <span id="satelliteToggleText">Satellite Map: ON</span>
+            </button>
+            <button class="btn btn-outline btn-sm" id="btnStopJourneyGlobal" title="Stop Road Journey" onclick="window.stopRouteNavigation()">
+              <i class="fas fa-stop-circle" style="color:#ef4444;"></i> <span>Stop Journey</span>
+            </button>
+            <button class="btn btn-outline btn-sm" id="btnReturnOverviewGlobal" title="Return to Chennai Overview" onclick="window.returnToChennaiOverview()">
+              <i class="fas fa-city" style="color:#38bdf8;"></i> <span>Overview</span>
+            </button>
+            <button class="btn btn-outline btn-sm" id="resetMapViewBtn" title="Reset Camera">
+              <i class="fas fa-crosshairs"></i> Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Google Maps GPS Navigation HUD Banner (With Instant Minimize & Behind-Option Visibility) -->
+        <div class="gmaps-live-nav-hud" id="gmapsLiveNavHud" style="display:none;">
+          <!-- Top Control Header Bar: Status Badge + Direct Minimize & Close Buttons -->
+          <div class="hud-top-bar" id="hudTopBar">
+            <div class="hud-status-badge">
+              <span class="hud-live-dot"></span>
+              <span id="hudStatusTitle">GPS LIVE NAVIGATION</span>
+            </div>
+            <div class="hud-top-actions">
+              <button type="button" class="btn-hud-min-toggle" id="btnHudMinimizeTop" onclick="window.toggleHudMinimize(event)" title="Minimize notification bar to uncover behind options">
+                <i class="fas fa-minus" id="hudMinIcon"></i> <span id="hudMinText">Minimize</span>
+              </button>
+              <button type="button" class="btn-hud-close-direct" onclick="window.dismissLiveNavHud(event)" title="Stop & Close Navigation Banner">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Minimized Ultra-Slim Floating Pill (Shown when minimized so behind options are 100% visible) -->
+          <div class="hud-minimized-pill" id="hudMinimizedPill" onclick="window.toggleHudMinimize(event)">
+            <div class="hud-min-left">
+              <span id="hudMinVehicleIcon"><i class="fas fa-car" style="color:#38bdf8;"></i></span>
+              <span class="hud-min-cardinal" id="hudMinCardinal">🧭 NORTH</span>
+              <span class="hud-min-status" id="hudMinStatusText">Navigating</span>
+              <span class="hud-min-eta" id="hudMinEtaText">1x &bull; 17.3 km &bull; 24 min</span>
+            </div>
+            <div class="hud-min-right">
+              <button type="button" class="btn-hud-min-recenter" id="hudMinRecenter" onclick="event.stopPropagation(); window.recenterOnCar(event);" title="Re-center screen on moving car" style="display:none;">
+                <i class="fas fa-crosshairs"></i> Re-center
+              </button>
+              <button type="button" class="btn-hud-speed-min" id="btnHudSpeedMin" onclick="event.stopPropagation(); window.cycleNavSpeed(event);" title="Toggle 1x / 2x / 4x Speed">
+                <span id="hudMinSpeedText">1x</span>
+              </button>
+              <button type="button" class="btn-hud-expand-pill" onclick="window.toggleHudMinimize(event)">
+                <i class="fas fa-chevron-down"></i> Expand
+              </button>
+              <button type="button" class="btn-hud-stop-pill" onclick="event.stopPropagation(); window.stopRouteNavigation(); window.dismissLiveNavHud(event);" title="Close Notification">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Expanded Body Content -->
+          <div class="hud-expanded-content" id="hudExpandedContent">
+            <div class="hud-main-banner">
+              <!-- Left: Big Turn Direction Arrow -->
+              <div class="hud-turn-icon-box" id="hudTurnIconBox">
+                <i class="fas fa-arrow-up" id="hudTurnIcon"></i>
+              </div>
+              <!-- Center: Maneuver instruction and road name with Cardinal Direction -->
+              <div class="hud-turn-info">
+                <div class="hud-turn-head-row">
+                  <div class="hud-turn-distance" id="hudTurnDistance">Head North &bull; In 17.3 km</div>
+                  <span class="hud-cardinal-badge" id="hudCardinalBadge"><i class="fas fa-compass"></i> NORTH</span>
+                </div>
+                <div class="hud-turn-instruction" id="hudTurnInstruction">Head North on Rajiv Gandhi IT Expressway (OMR)</div>
+              </div>
+              <!-- Right: Live Vehicle Telemetry & 1x Speed Control -->
+              <div class="hud-telemetry-box">
+                <button type="button" class="hud-speed-pill-btn" id="hudSpeedToggleBtn" onclick="window.cycleNavSpeed(event)" title="Simulation Speed: Click to cycle 1x / 2x / 4x">
+                  <i class="fas fa-gauge-high"></i> <span id="hudSpeedPillText">1x Speed</span>
+                </button>
+                <div class="hud-eta-pill">
+                  <span id="hudRemainingDist">-- km</span> &bull; <span id="hudRemainingEta">-- min</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Micro Progress & Control Strip -->
+            <div class="hud-progress-strip">
+              <div class="hud-progress-bar-wrap">
+                <div class="hud-progress-bar" id="hudProgressBar" style="width: 0%;"></div>
+              </div>
+              <div class="hud-strip-controls">
+                <span class="hud-destination-name"><i class="fas fa-flag-checkered text-gold"></i> <strong id="hudDestPlotTitle">Plot Destination</strong></span>
+                <div class="hud-mini-actions">
+                  <button type="button" class="btn-hud-recenter" id="btnHudRecenter" onclick="window.recenterOnCar(event)" title="Re-center screen on moving car">
+                    <i class="fas fa-crosshairs"></i> Re-center
+                  </button>
+                  <button type="button" class="btn-hud-stop" id="btnHudStopJourney" onclick="window.stopRouteNavigation()" title="Stop Journey">
+                    <i class="fas fa-stop-circle"></i> Stop Journey
+                  </button>
+                  <button type="button" class="btn-hud-overview" id="btnHudReturnOverview" onclick="window.returnToChennaiOverview()" title="Return to Chennai Overview">
+                    <i class="fas fa-city"></i> Overview
+                  </button>
+                  <button type="button" class="btn-hud-vision" id="btnHudStreetVisionToggle" title="Open 3D Realistic Driver's Eye View (Houses, Shops, Trees)">
+                    <i class="fas fa-vr-cardboard"></i> <span id="hudVisionBtnLabel">3D Street View</span>
+                  </button>
+                  <button type="button" class="btn-hud-vehicle-toggle" id="btnHudVehicleToggle" title="Toggle Car or Bike">
+                    <i class="fas fa-motorcycle"></i> Switch to Bike
+                  </button>
+                  <button type="button" class="btn-hud-min-btn" onclick="window.toggleHudMinimize(event)" title="Minimize notification bar to see options behind">
+                    <i class="fas fa-compress-alt"></i> Minimize Bar
+                  </button>
+                  <button type="button" class="btn-hud-zoom" id="btnHudZoomToggle" title="Toggle Close-up Street View (16x) / Route Overview">
+                    <i class="fas fa-search-plus"></i> <span id="hudZoomLabel">16x Zoom</span>
+                  </button>
+                  <button type="button" class="btn-hud-close" id="btnHudClose" onclick="window.dismissLiveNavHud(event)" title="Exit Live Navigation">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Realistic 3D Driver's Eye Street & Road Vision Cockpit -->
+        <div class="driver-street-vision-container" id="driverStreetVisionContainer" style="display:none;">
+          <div class="vision-header-bar">
+            <div class="vision-title-group">
+              <span class="vision-live-tag"><span class="pulse-dot-red"></span> 3D STREET NAVIGATION</span>
+              <h3 class="vision-road-name" id="visionRoadName">Rajiv Gandhi Salai (OMR) &bull; Towards Sholinganallur</h3>
+            </div>
+            <div class="vision-header-controls">
+              <button type="button" class="btn-vision-mode active" id="btnVisionSplitMode" title="Side-by-Side Map & Street Vision">
+                <i class="fas fa-columns"></i> Split Mode
+              </button>
+              <button type="button" class="btn-vision-mode" id="btnVisionFullMode" title="Expand Full View">
+                <i class="fas fa-expand"></i> Theater View
+              </button>
+              <button type="button" class="btn-vision-close" id="btnVisionClose" title="Minimize Street Vision">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Canvas Rendering Viewport -->
+          <div class="vision-viewport-wrap" id="visionViewportWrap">
+            <canvas id="driverVisionCanvas" class="driver-vision-canvas"></canvas>
+
+            <!-- Overlay Turn Maneuver Direction Banner -->
+            <div class="vision-maneuver-overlay" id="visionManeuverOverlay">
+              <div class="vision-turn-icon" id="visionTurnIcon">
+                <i class="fas fa-arrow-up"></i>
+              </div>
+              <div class="vision-turn-details">
+                <div class="vision-turn-label" id="visionTurnLabel">Continue Straight</div>
+                <div class="vision-turn-sub" id="visionTurnSub">Next turn in 250 m</div>
+              </div>
+            </div>
+
+            <!-- Roadside Landmark Spotter Radar Card -->
+            <div class="vision-landmark-radar" id="visionLandmarkRadar">
+              <div class="radar-tag"><i class="fas fa-map-pin"></i> PASSING ROADSIDE LANDMARK</div>
+              <div class="radar-landmark-name" id="radarLandmarkName">🏪 Reliance Fresh Supermarket</div>
+              <div class="radar-landmark-dist" id="radarLandmarkDist">Passing on your left</div>
+            </div>
+
+            <!-- Destination Arrival Showcase Banner (Shows Plot Image & Details) -->
+            <div class="vision-destination-arch-banner" id="visionDestArchBanner" style="display:none;">
+              <div class="arch-banner-top">
+                <div class="arch-badge"><i class="fas fa-flag-checkered"></i> DESTINATION ARRIVED</div>
+                <button type="button" class="btn-arch-close" id="btnCloseArchBanner" title="Dismiss"><i class="fas fa-times"></i></button>
+              </div>
+              <div class="arch-plot-card-body">
+                <div class="arch-plot-thumb" onclick="if(window.currentDestPlotId) window.openPlotDetailView(window.currentDestPlotId)" title="Click to view full dossier">
+                  <img id="visionDestPlotImg" src="" alt="Plot Image">
+                  <span class="arch-plot-tag" id="visionDestPlotTag">CMDA Approved</span>
+                </div>
+                <div class="arch-plot-info">
+                  <h3 class="arch-title" id="visionDestPlotName">Emerald Crest Villa Plots</h3>
+                  <div class="arch-sub" id="visionDestPlotLocality"><i class="fas fa-map-marker-alt text-gold"></i> Sholinganallur, OMR</div>
+                  <div class="arch-specs">
+                    <span class="arch-price" id="visionDestPlotPrice">₹42 Lakhs</span>
+                    <span class="arch-dot">&bull;</span>
+                    <span class="arch-size" id="visionDestPlotSize">1,500 sq.ft</span>
+                  </div>
+                  <div class="arch-actions">
+                    <button type="button" class="btn-arch-action cab" onclick="if(window.currentDestPlotId) window.openBookingModal(window.currentDestPlotId)">
+                      <i class="fas fa-car"></i> Free Cab
+                    </button>
+                    <button type="button" class="btn-arch-action view" onclick="if(window.currentDestPlotId) window.openPlotDetailView(window.currentDestPlotId)">
+                      <i class="fas fa-expand-alt"></i> Dossier
+                    </button>
+                    <button type="button" class="btn-arch-action chat" onclick="if(window.currentDestPlotId) window.openWhatsAppInquiry(window.currentDestPlotId)">
+                      <i class="fab fa-whatsapp"></i> Chat
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Realistic Vehicle Dashboard / Cockpit Controls -->
+            <div class="vision-cockpit-hud">
+              <div class="cockpit-dash-cluster">
+                <!-- Left: Turn Signal Blinker -->
+                <div class="dash-blinker left" id="dashBlinkerLeft">
+                  <i class="fas fa-arrow-left"></i>
+                </div>
+
+                <!-- Center: Digital Speedometer & Gear -->
+                <div class="dash-speed-dial">
+                  <div class="speed-number" id="dashSpeedNumber">48</div>
+                  <div class="speed-unit">KM/H</div>
+                  <div class="speed-gear" id="dashGear">D4</div>
+                </div>
+
+                <!-- Right: Turn Signal Blinker -->
+                <div class="dash-blinker right" id="dashBlinkerRight">
+                  <i class="fas fa-arrow-right"></i>
+                </div>
+              </div>
+
+              <!-- Telemetry Metrics Bar -->
+              <div class="cockpit-telemetry-bar">
+                <span><i class="fas fa-compass"></i> Bearing: <strong id="dashBearing">162° SE</strong></span>
+                <span><i class="fas fa-road"></i> Remaining: <strong id="dashRemainingDist">17.6 km</strong></span>
+                <span><i class="fas fa-clock"></i> ETA: <strong id="dashEta">24 min</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leaflet Map Container -->
+        <div id="chennaiLeafletMap"></div>
+
+        <!-- Google Maps Interactive Compass Rose Widget (North, East, South, West) -->
+        <div class="gmaps-compass-widget" id="gmapsCompassWidget" onclick="window.resetMapNorth(event)" title="Compass: Click to align North-Up (Google Maps style)">
+          <div class="compass-dial" id="compassDial">
+            <span class="compass-cardinal-letter north">N</span>
+            <span class="compass-cardinal-letter east">E</span>
+            <span class="compass-cardinal-letter south">S</span>
+            <span class="compass-cardinal-letter west">W</span>
+            <div class="compass-needle-pivot" id="compassNeedlePivot">
+              <div class="compass-needle-n"></div>
+              <div class="compass-needle-s"></div>
+              <div class="compass-pivot-pin"></div>
+            </div>
+          </div>
+          <div class="compass-heading-tag" id="compassHeadingTag">
+            <span id="compassHeadingText">NORTH 0°</span>
+          </div>
+        </div>
+
+        <!-- Floating Close-Up Street Zoom Toggle for Mobile Directions -->
+        <button type="button" class="floating-mobile-zoom-toggle" id="floatingRouteZoomBtn" onclick="window.toggleMobileRouteZoom()" title="Toggle between close-up street zoom and city overview">
+          <i class="fas fa-search-location"></i> <span id="floatingRouteZoomText">Zoom Close (18x Street)</span>
+        </button>
+
+        <!-- Floating Google Maps Re-Center Button (Screen moves along with car in center) -->
+        <button type="button" class="floating-recenter-btn" id="floatingRecenterBtn" onclick="window.recenterOnCar(event)" title="Re-center screen on car (Google Maps style)" style="display:none;">
+          <i class="fas fa-crosshairs"></i> <span id="recenterBtnText">Re-center</span>
+        </button>
+
+
+        <!-- Floating Map Destination Arrived Showcase Card Overlay -->
+        <div class="map-destination-arrived-overlay" id="mapDestinationArrivedOverlay" style="display:none;">
+          <div class="arrived-card-inner">
+            <div class="arrived-card-top-bar">
+              <div class="arrived-status-pill">
+                <span class="arrived-pulse-dot"></span>
+                <i class="fas fa-flag-checkered"></i> DESTINATION ARRIVED
+              </div>
+              <button type="button" class="btn-arrived-card-close" id="btnCloseMapArrivedCard" title="Dismiss">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <div class="arrived-card-content">
+              <div class="arrived-photo-container" id="arrivedPhotoContainer" onclick="if(window.currentDestPlotId) window.openPlotDetailView(window.currentDestPlotId)" style="cursor:pointer;" title="Click for 360° Photo Dossier & Blueprint">
+                <img id="arrivedPlotHeroImg" src="" alt="Plot Image" class="arrived-hero-photo">
+                <div class="arrived-photo-overlay-badges">
+                  <span class="arrived-badge-approval" id="arrivedApprovalBadge"><i class="fas fa-shield-alt"></i> CMDA Approved</span>
+                  <span class="arrived-badge-status" id="arrivedStatusBadge">Available</span>
+                </div>
+                <div class="arrived-photo-hint"><i class="fas fa-expand-alt"></i> Click to Open Full Separate View</div>
+              </div>
+
+              <div class="arrived-details-container">
+                <h3 class="arrived-plot-title" id="arrivedPlotTitle" onclick="if(window.currentDestPlotId) window.openPlotDetailView(window.currentDestPlotId)" style="cursor:pointer;">Emerald Crest Villa Plots</h3>
+                <div class="arrived-plot-locality" id="arrivedPlotLocality">
+                  <i class="fas fa-map-marker-alt" style="color:#d97706;"></i> Sholinganallur, OMR
+                </div>
+
+                <div class="arrived-metrics-grid">
+                  <div class="arrived-metric-box price">
+                    <span class="metric-label">All-Inclusive Price</span>
+                    <span class="metric-val" id="arrivedPlotPrice">₹42 Lakhs</span>
+                  </div>
+                  <div class="arrived-metric-box size">
+                    <span class="metric-label">Plot Dimensions</span>
+                    <span class="metric-val" id="arrivedPlotSize">1,500 sq.ft (30×50)</span>
+                  </div>
+                  <div class="arrived-metric-box road">
+                    <span class="metric-label">Road Width</span>
+                    <span class="metric-val" id="arrivedPlotRoad">40-Ft Blacktop</span>
+                  </div>
+                  <div class="arrived-metric-box facing">
+                    <span class="metric-label">Facing Direction</span>
+                    <span class="metric-val" id="arrivedPlotFacing">East Facing</span>
+                  </div>
+                </div>
+
+                <div class="arrived-actions-row">
+                  <button type="button" class="btn-arrived-action cab" onclick="if(window.currentDestPlotId) window.openBookingModal(window.currentDestPlotId)">
+                    <i class="fas fa-car"></i> Book Free Cab Visit
+                  </button>
+                  <button type="button" class="btn-arrived-action dossier" onclick="if(window.currentDestPlotId) window.openPlotDetailView(window.currentDestPlotId)">
+                    <i class="fas fa-file-contract"></i> View Full Dossier
+                  </button>
+                  <button type="button" class="btn-arrived-action whatsapp" onclick="if(window.currentDestPlotId) window.openWhatsAppInquiry(window.currentDestPlotId)">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                  </button>
+                  <button type="button" class="btn-arrived-action overview" id="btnArrivedReturnOverview" onclick="window.returnToChennaiOverview()">
+                    <i class="fas fa-city"></i> Return to Chennai Overview
+                  </button>
+                  <a href="tel:+919345029705" class="btn-arrived-action call">
+                    <i class="fas fa-phone-alt"></i> Call Agent
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Map Floating Legend (Collapsible Pill on Mobile, Expanded on Desktop) -->
+        <div class="map-legend-floating" id="mapLegendFloating" onclick="window.toggleMapLegendFloating(event)" title="Tap to toggle marker key">
+          <div class="map-legend-title">
+            <span class="legend-title-label"><i class="fas fa-map-pin" style="color:#fbbf24;"></i> Marker Key</span>
+            <i class="fas fa-chevron-up map-legend-chevron" id="mapLegendChevron"></i>
+          </div>
+          <div class="legend-items-list" id="mapLegendItemsList">
+            <div class="legend-item">
+              <span class="legend-pointer-preview green"></span>
+              <span>Available Plot (Sanctioned)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-pointer-preview gold"></span>
+              <span>Corner VIP / Ultra-Prime Asset</span>
+            </div>
+            <div class="legend-item">
+              <span style="font-size:0.9rem;">🎯</span>
+              <span>Pulsing Radar indicates live sale</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile One-by-One Plots Stepper Card (Docked Over Map on Mobile) -->
+        <div class="mobile-plot-stepper-card" id="mobilePlotStepperCard">
+          <div class="stepper-header-row">
+            <button type="button" class="btn-stepper-arrow prev" onclick="window.stepMobilePlot(-1)" aria-label="Previous Plot" title="Previous Plot">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="stepper-counter-wrap">
+              <span class="stepper-count-badge" id="stepperCountBadge">
+                <i class="fas fa-map-pin text-gold"></i> Plot <strong id="stepperCurrentIndex">1</strong> of <strong id="stepperTotalPlots">20</strong>
+              </span>
+              <button type="button" class="btn-stepper-quick" onclick="window.fitAllPlotsOnMap()" title="Fit all 20 Chennai plots on screen">
+                <i class="fas fa-globe-asia" style="color:#10b981;"></i> Show All (20)
+              </button>
+              <button type="button" class="btn-stepper-quick" onclick="window.toggleAllPlotsLinearDrawer()" title="View All 20 Plots in One Clean List">
+                <i class="fas fa-th-list" style="color:#38bdf8;"></i> List (20)
+              </button>
+            </div>
+            <button type="button" class="btn-stepper-arrow next" onclick="window.stepMobilePlot(1)" aria-label="Next Plot" title="Next Plot">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <!-- Active Plot Card Banner -->
+          <div class="stepper-plot-details" id="stepperPlotDetails" onclick="window.openCurrentStepperPlotDetails()" title="Tap to open full details">
+            <div class="stepper-plot-thumb-wrap">
+              <img id="stepperPlotImg" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=400&q=80" alt="Plot Thumbnail" class="stepper-plot-thumb">
+              <span class="stepper-plot-status-tag" id="stepperPlotStatus">Available</span>
+            </div>
+            <div class="stepper-plot-info">
+              <div class="stepper-title-row">
+                <h4 class="stepper-plot-title" id="stepperPlotTitle">Emerald Crest Villa Plots</h4>
+                <span class="stepper-plot-price" id="stepperPlotPrice">₹48.0 L</span>
+              </div>
+              <div class="stepper-plot-locality" id="stepperPlotLocality">
+                <i class="fas fa-map-marker-alt" style="color:#d97706;"></i> Sholinganallur, OMR &bull; 1,500 sq.ft &bull; CMDA
+              </div>
+            </div>
+          </div>
+
+          <!-- ALL OPTIONS VISIBLE IN LINE -->
+          <div class="stepper-actions-line" id="stepperActionsLine">
+            <button type="button" class="btn-stepper-action route" onclick="window.triggerRouteForCurrentStepperPlot()" title="Get Turn-by-Turn Driving Directions">
+              <i class="fas fa-directions"></i> <span>Directions</span>
+            </button>
+            <button type="button" class="btn-stepper-action vision" onclick="window.triggerVisionForCurrentStepperPlot()" title="Open 3D Street Turning Vision">
+              <i class="fas fa-vr-cardboard"></i> <span>3D View</span>
+            </button>
+            <button type="button" class="btn-stepper-action cab" onclick="window.triggerCabForCurrentStepperPlot()" title="Book Free VIP Cab Visit">
+              <i class="fas fa-car-side"></i> <span>Free Cab</span>
+            </button>
+            <button type="button" class="btn-stepper-action dossier" onclick="window.openCurrentStepperPlotDetails()" title="View Complete Legal Dossier">
+              <i class="fas fa-file-contract"></i> <span>Dossier</span>
+            </button>
+            <button type="button" class="btn-stepper-action whatsapp" onclick="window.triggerWhatsAppForCurrentStepperPlot()" title="Chat with Relationship Manager">
+              <i class="fab fa-whatsapp"></i> <span>WhatsApp</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANIMATED SELLING PLOT SHOWCASE -->
+  <section class="plots-showcase-section" id="showcaseSection">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fas fa-video"></i> Animated Plot Showcase</span>
+        <h2 class="section-title">Prime Selling Plots Across Chennai</h2>
+        <p class="section-desc">
+          Experience our animated multi-image carousels with Ken Burns drone pan, 3D interactive card tilt, and verified legal clearances.
+        </p>
+      </div>
+
+      <!-- Filter Controls Bar -->
+      <div class="filters-bar">
+        <!-- Top Search Row -->
+        <div class="filters-search-row">
+          <div class="listing-search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="listingSearchInput" class="listing-search-input" placeholder="Search by plot name, project, locality (e.g. Sholinganallur, Tambaram, Porur, ECR)...">
+            <button type="button" class="search-clear-btn" id="listingSearchClearBtn" style="display:none;" title="Clear Search">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="plots-counter-pill" id="filteredPlotsCounter">
+            <span class="pulse-dot-green"></span> <strong>20</strong> Plots Found
+          </div>
+        </div>
+
+        <!-- Zone Tabs Row -->
+        <div class="filter-group" id="zoneFilterTabs">
+          <button class="filter-btn active" data-zone-filter="all">All Areas (20)</button>
+          <button class="filter-btn" data-zone-filter="omr">OMR Corridor (4)</button>
+          <button class="filter-btn" data-zone-filter="ecr">ECR Coast (2)</button>
+          <button class="filter-btn" data-zone-filter="gst">South / GST Road (5)</button>
+          <button class="filter-btn" data-zone-filter="west">West Chennai (4)</button>
+          <button class="filter-btn" data-zone-filter="central">Central Chennai (2)</button>
+          <button class="filter-btn" data-zone-filter="north">North Chennai (3)</button>
+        </div>
+
+        <!-- Multi-Criteria Dropdowns Row -->
+        <div class="filters-dropdowns-row">
+          <div class="filter-dropdown-item">
+            <label><i class="fas fa-wallet"></i> Budget:</label>
+            <select class="filter-select" id="listingBudgetSelect">
+              <option value="all">Any Budget</option>
+              <option value="under30">Under ₹30 Lakhs</option>
+              <option value="30to60">₹30L - ₹60 Lakhs</option>
+              <option value="60to1cr">₹60L - ₹1.00 Crore</option>
+              <option value="above1cr">Above ₹1.00 Crore</option>
+            </select>
+          </div>
+
+          <div class="filter-dropdown-item">
+            <label><i class="fas fa-ruler-combined"></i> Plot Size:</label>
+            <select class="filter-select" id="listingSizeSelect">
+              <option value="all">Any Size</option>
+              <option value="under1200">Under 1,200 sq.ft</option>
+              <option value="1200to1800">1,200 - 1,800 sq.ft</option>
+              <option value="1800to2400">1,800 - 2,400 sq.ft</option>
+              <option value="above2400">2,400+ sq.ft (Villa)</option>
+            </select>
+          </div>
+
+          <div class="filter-dropdown-item">
+            <label><i class="fas fa-tag"></i> Availability:</label>
+            <select class="filter-select" id="listingStatusSelect">
+              <option value="all">All Statuses</option>
+              <option value="available">Available (Sanctioned)</option>
+              <option value="booked">Booked (Token Advance)</option>
+              <option value="sold">Sold (Archived)</option>
+            </select>
+          </div>
+
+          <div class="filter-dropdown-item">
+            <label><i class="fas fa-sort-amount-down"></i> Sort By:</label>
+            <select class="sort-select" id="sortPlotsSelect">
+              <option value="featured">Featured / Best Deals</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="size-high">Plot Size: Largest First</option>
+            </select>
+          </div>
+
+          <button type="button" class="btn btn-outline btn-sm btn-reset-filters" id="resetAllFiltersBtn" title="Reset All Filters">
+            <i class="fas fa-redo"></i> Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Dynamic Plots Grid -->
+      <div class="plots-grid" id="plotsGrid">
+        <!-- Rendered dynamically by chennai-plots.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE 3D/ISOMETRIC LAYOUT MASTERPLAN VIEWER -->
+  <section class="layout-masterplan-section" id="blueprintSection">
+    <div class="container">
+      <div class="masterplan-container">
+        <div class="masterplan-header">
+          <div class="masterplan-title">
+            <span class="section-tag" style="color:#fbbf24;"><i class="fas fa-drafting-compass"></i> Interactive Blueprint</span>
+            <h3>Gated Community Masterplan Layout</h3>
+            <p>Click on any plot number to see dimensions, square footage, facing, and reserve online.</p>
+          </div>
+          <div class="masterplan-stats">
+            <div class="stat-pill-plan">
+              <span class="pulse-dot-green"></span> 16 Plots Available
+            </div>
+            <div class="stat-pill-plan" style="color:#94a3b8;">
+              <i class="fas fa-check"></i> 8 Plots Sold
+            </div>
+          </div>
+        </div>
+
+        <!-- Blueprint Architectural Frame -->
+        <div class="blueprint-frame">
+          <div class="blueprint-grid-overlay"></div>
+          <div class="blueprint-compass">
+            <div>▲ N</div>
+            <div style="font-size:0.55rem; color:#cbd5e1;">Vaastu</div>
+          </div>
+
+          <div style="font-size:0.85rem; color:#fbbf24; font-weight:700; margin-bottom:8px;">
+            <i class="fas fa-road"></i> Main Entry: 60-Ft Commercial Access Road
+          </div>
+
+          <!-- Top Row Plots (#1 to #6) -->
+          <div class="plots-subdivision-grid" id="plotsSubdivisionGrid">
+            <!-- Injected by JavaScript -->
+          </div>
+
+          <div class="road-strip">
+            &#9654;&#9654;&#9654; 40-FT INTERNAL BLACKTOP TAR ROAD &#9654;&#9654;&#9654;
+          </div>
+
+          <!-- Selected Plot Details Live Drawer -->
+          <div class="plot-detail-selected-bar" id="plotDetailSelectedBar">
+            <div>
+              <span style="color:#d97706; font-size:0.8rem; font-weight:800; text-transform:uppercase;">Interactive Inspection</span>
+              <h4 style="font-size:1.2rem; color:#ffffff; font-weight:800;">Click Any Plot Number Above to Inspect</h4>
+              <p style="font-size:0.82rem; color:#94a3b8; margin-top:2px;">Check immediate availability, corner premium status, and reservation pricing.</p>
+            </div>
+            <div>
+              <button class="btn btn-primary btn-sm" onclick="window.openBookingModal('Masterplan Layout Plot Inspection')">
+                <i class="fas fa-phone-alt"></i> Inquire Entire Layout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHENNAI LAND UNIT CONVERTER & BUYING GUIDE -->
+  <section class="converter-section" id="converterSection">
+    <div class="container">
+      <div class="converter-card">
+        <div style="max-width:700px; margin-bottom:24px;">
+          <span class="section-tag"><i class="fas fa-calculator"></i> Real Estate Utility</span>
+          <h2 style="font-size:2rem; font-weight:800; color:var(--primary); margin-bottom:8px;">
+            Chennai Land Unit Converter
+          </h2>
+          <p style="color:var(--text-muted); font-size:0.95rem;">
+            Convert seamlessly between standard Chennai property units: <strong>Square Feet</strong>, <strong>Cents</strong>, <strong>Grounds</strong>, and <strong>Acres</strong>. (1 Ground = 2,400 Sq.Ft • 1 Cent = 435.6 Sq.Ft).
+          </p>
+        </div>
+
+        <div class="converter-grid">
+          <div class="converter-input-box">
+            <label><i class="fas fa-ruler-combined"></i> Square Feet (Sq.Ft)</label>
+            <input type="number" id="convSqft" value="1200" step="10">
+            <div class="converter-hint">Standard Villa Plot Size</div>
+          </div>
+          <div class="converter-input-box">
+            <label><i class="fas fa-vector-square"></i> Cents (Tamil Nadu)</label>
+            <input type="number" id="convCents" value="2.75" step="0.01">
+            <div class="converter-hint">1 Cent = 435.60 Sq.Ft</div>
+          </div>
+          <div class="converter-input-box">
+            <label><i class="fas fa-layer-group"></i> Grounds (Chennai)</label>
+            <input type="number" id="convGrounds" value="0.50" step="0.01">
+            <div class="converter-hint">1 Ground = 2,400 Sq.Ft</div>
+          </div>
+          <div class="converter-input-box">
+            <label><i class="fas fa-globe"></i> Acres</label>
+            <input type="number" id="convAcres" value="0.0275" step="0.0001">
+            <div class="converter-hint">1 Acre = 43,560 Sq.Ft</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELL YOUR CHENNAI PLOT PROMO BANNER -->
+  <section style="background: linear-gradient(135deg, #0b132b, #1c2541); color: #ffffff; padding: 60px 0; border-top: 1px solid rgba(212, 175, 55, 0.2);">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px;">
+      <div style="max-width:700px;">
+        <span class="badge-pill shimmer" style="display:inline-block; margin-bottom:12px;">Direct Owner Portal</span>
+        <h2 style="font-size:2.2rem; font-family:var(--font-serif); font-weight:800; margin-bottom:10px;">
+          Have a Plot to Sell in Chennai?
+        </h2>
+        <p style="color:#cbd5e1; font-size:1.05rem;">
+          Get your plot featured on our high-traffic interactive Chennai map with custom pointed symbol and animated image gallery. Over 4,500 active NRI & local buyers every week.
+        </p>
+      </div>
+      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="window.document.getElementById('openSellPlotModalBtn').click()">
+          <i class="fas fa-plus-circle"></i> List Your Plot for Free
+        </button>
+        <button class="btn btn-outline" style="color:#ffffff; border-color:rgba(255,255,255,0.3);" onclick="window.openWhatsAppInquiry('Seller-Direct-Consult')">
+          <i class="fab fa-whatsapp"></i> Speak with Valuation Expert
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand" style="margin-bottom:16px;">
+            <div class="brand-icon">
+              <i class="fas fa-map-pin"></i>
+            </div>
+            <div class="brand-text">
+              <h1 style="color:#ffffff;">Chennai<span>Plots</span></h1>
+              <p style="color:#94a3b8;">Prime Land & Layouts</p>
+            </div>
+          </div>
+          <p style="font-size:0.88rem; line-height:1.7; margin-bottom:20px;">
+            Chennai's dedicated property marketplace for legally verified residential villa plots, commercial land, and industrial corridors. 100% CMDA & DTCP sanction diligence guaranteed.
+          </p>
+          <div style="display:flex; gap:12px;">
+            <a href="tel:+919345029705" class="btn btn-outline btn-sm" style="color:#ffffff; border-color:rgba(255,255,255,0.2);">
+              <i class="fas fa-phone"></i> +91 93450 29705
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Chennai Zones</h4>
+          <ul>
+            <li><a href="javascript:void(0)" onclick="window.handleZoneQuickJump('omr')">OMR (Sholinganallur/Siruseri)</a></li>
+            <li><a href="javascript:void(0)" onclick="window.handleZoneQuickJump('ecr')">ECR (Injambakkam/Uthandi)</a></li>
+            <li><a href="javascript:void(0)" onclick="window.handleZoneQuickJump('gst')">Tambaram & Guduvanchery</a></li>
+            <li><a href="javascript:void(0)" onclick="window.handleZoneQuickJump('west')">Porur & Poonamallee</a></li>
+            <li><a href="javascript:void(0)" onclick="window.handleZoneQuickJump('central')">Anna Nagar & Velachery</a></li>
+            <li><a href="javascript:void(0)" onclick="window.handleZoneQuickJump('north')">Ambattur & Avadi</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Approvals & Diligence</h4>
+          <ul>
+            <li><a href="#mapSection">CMDA Approved Layouts</a></li>
+            <li><a href="#mapSection">DTCP Sanctioned Plots</a></li>
+            <li><a href="#mapSection">TNRERA Registered</a></li>
+            <li><a href="#converterSection">Patta & Chitta Verification</a></li>
+            <li><a href="#converterSection">Land Unit Converter</a></li>
+            <li><a href="guarantee.html">Sovereign Title Guarantee</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Site Visit Desk</h4>
+          <p style="font-size:0.85rem; margin-bottom:12px;">
+            Complimentary sanitized AC cab pickup and drop anywhere in Chennai for site visits with layout blueprints.
+          </p>
+          <button class="btn btn-primary btn-sm btn-block" style="width:100%;" onclick="window.openBookingModal('General-Footer-Desk')">
+            <i class="fas fa-car"></i> Book Free Cab Pickup
+          </button>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        &copy; 2026 ChennaiPlots Portal &bull; LLB Real Estate Group. All rights reserved. RERA: TNRERA/2026/PL-0842 &bull; CMDA Master Plan 2026 Compliant.
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL 1: SELL YOUR PLOT IN CHENNAI FORM -->
+  <div class="modal-overlay" id="sellPlotModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3><i class="fas fa-plus-circle" style="color:#fbbf24;"></i> Post Your Plot for Sale</h3>
+        <button class="modal-close-btn" aria-label="Close Modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="sellPlotForm">
+          <div class="form-group">
+            <label>Plot Title / Layout Name *</label>
+            <input type="text" class="form-control" id="sellTitle" placeholder="e.g. Royal Palms CMDA Approved Plot" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Locality / Area in Chennai *</label>
+              <input type="text" class="form-control" id="sellLocality" placeholder="e.g. Sholinganallur, Tambaram, Porur" required>
+            </div>
+            <div class="form-group">
+              <label>Chennai Zone *</label>
+              <select class="form-control" id="sellZone" required>
+                <option value="omr">OMR (IT Corridor)</option>
+                <option value="ecr">ECR (Coastal Road)</option>
+                <option value="gst">South Chennai & GST Road</option>
+                <option value="west">West Chennai (Porur/Poonamallee)</option>
+                <option value="central">Central Chennai</option>
+                <option value="north">North Chennai (Ambattur/Avadi)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Plot Size in Sq.Ft *</label>
+              <input type="number" class="form-control" id="sellSqft" placeholder="e.g. 1200" required>
+            </div>
+            <div class="form-group">
+              <label>Facing Direction *</label>
+              <select class="form-control" id="sellFacing" required>
+                <option value="East">East Facing</option>
+                <option value="North">North Facing</option>
+                <option value="North-East Corner">North-East Corner</option>
+                <option value="South">South Facing</option>
+                <option value="West">West Facing</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Asking Price (in ₹ Lakhs) *</label>
+              <input type="number" class="form-control" id="sellPrice" placeholder="e.g. 45" step="0.1" required>
+            </div>
+            <div class="form-group">
+              <label>Approval Type *</label>
+              <select class="form-control" id="sellApproval" required>
+                <option value="CMDA Approved">CMDA Approved</option>
+                <option value="DTCP Approved">DTCP Approved</option>
+                <option value="CMDA & TNRERA">CMDA & TNRERA</option>
+                <option value="Panchayat Approved">Panchayat Approved</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Owner / Promoter Name *</label>
+              <input type="text" class="form-control" id="sellOwnerName" placeholder="Your full name" required>
+            </div>
+            <div class="form-group">
+              <label>Contact Mobile Number (WhatsApp) *</label>
+              <input type="tel" class="form-control" id="sellPhone" placeholder="10-digit mobile number" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address (for instant confirmation & buyer inquiries) *</label>
+            <input type="email" class="form-control" id="sellEmail" placeholder="your.email@gmail.com" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; margin-top:8px;">
+            <i class="fas fa-check-circle"></i> Pin & Publish Plot on Chennai Map
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: BOOK FREE CAB SITE VISIT -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3><i class="fas fa-car" style="color:#fbbf24;"></i> Schedule Free Cab Site Visit</h3>
+        <button class="modal-close-btn" aria-label="Close Modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:#0f172a; border:1px solid rgba(212, 175, 55, 0.3); padding:12px; border-radius:var(--radius-sm); margin-bottom:16px;">
+          <span style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Interested Plot:</span>
+          <div id="bookingPlotDisplay" style="font-size:0.95rem; font-weight:800; color:#fbbf24;">General Chennai Site Visit</div>
+        </div>
+
+        <form id="bookingSiteVisitForm">
+          <input type="hidden" id="bookPlotHidden" value="General Chennai Plot">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" class="form-control" id="bookName" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+              <label>Email Address (for instant confirmation mail) *</label>
+              <input type="email" class="form-control" id="bookEmail" placeholder="your.email@gmail.com" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Mobile Number (for Driver Call) *</label>
+              <input type="tel" class="form-control" id="bookPhone" placeholder="e.g. 98400 12345" required>
+            </div>
+            <div class="form-group">
+              <label>Preferred Visit Date *</label>
+              <input type="date" class="form-control" id="bookDate" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Cab Pickup Location in Chennai *</label>
+            <input type="text" class="form-control" id="bookPickupLocation" placeholder="e.g. Velachery / Airport / Anna Nagar / Home Address" required>
+          </div>
+          <button type="submit" class="btn btn-primary" id="bookSubmitBtn" style="width:100%; margin-top:8px;">
+            <i class="fas fa-check-circle"></i> Confirm Free AC Cab Pickup & Send Confirmation Mail
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: DEDICATED EMAIL SUPPORT & PLOT ENQUIRY MODAL -->
+  <div class="modal-overlay" id="emailEnquiryModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3><i class="fas fa-envelope-open-text" style="color:#fbbf24;"></i> Email Enquiry & Legal Sanction Pack</h3>
+        <button class="modal-close-btn" aria-label="Close Modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:#0f172a; border:1px solid rgba(212, 175, 55, 0.3); padding:12px 16px; border-radius:var(--radius-sm); margin-bottom:16px;">
+          <span style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Plot Inquired:</span>
+          <div id="emailEnquiryPlotDisplay" style="font-size:1.05rem; font-weight:800; color:#fbbf24;">Emerald Crest Villa Plots (Sholinganallur, OMR)</div>
+        </div>
+
+        <form id="emailEnquiryForm">
+          <input type="hidden" id="emailEnquiryPlotHidden" value="General Chennai Plot">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Your Full Name *</label>
+              <input type="text" class="form-control" id="enquiryName" placeholder="e.g. Anand Kumar" required>
+            </div>
+            <div class="form-group">
+              <label>Email Address * <span style="font-size:0.75rem; color:#b45309; font-weight:700;">(Instant confirmation sent here)</span></label>
+              <input type="email" class="form-control" id="enquiryEmail" placeholder="your.email@gmail.com" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>WhatsApp / Mobile Number *</label>
+              <input type="tel" class="form-control" id="enquiryPhone" placeholder="10-digit mobile number" required>
+            </div>
+            <div class="form-group">
+              <label>Inquiry Purpose *</label>
+              <select class="form-control" id="enquirySubject" required>
+                <option value="Full CMDA Sanction Copy & Patta Dossier">Full CMDA Sanction Copy & Patta Dossier</option>
+                <option value="Price Negotiation & Flexible Payment Schedule">Price Negotiation & Flexible Payment Schedule</option>
+                <option value="Schedule Weekend Site Visit with Engineer">Schedule Weekend Site Visit with Engineer</option>
+                <option value="Bank Loan Pre-Approval (SBI / HDFC 80%)">Bank Loan Pre-Approval (SBI / HDFC 80%)</option>
+                <option value="FSI, Setbacks & Villa Construction Potential">FSI, Setbacks & Villa Construction Potential</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Specific Questions or Requirements</label>
+            <textarea class="form-control" id="enquiryMessage" rows="3" placeholder="Tell us if you need corner plot options, loan support, or specific visit timings..."></textarea>
+          </div>
+
+          <div style="margin-bottom: 14px;">
+            <label style="display:flex; align-items:center; gap:8px; font-size:0.82rem; color:#334155; font-weight:500; cursor:pointer;">
+              <input type="checkbox" id="enquiryConsentCheck" checked required>
+              <span>Send me automatic confirmation email with complete CMDA sanction copy and price sheet.</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="enquirySubmitBtn" style="width:100%;">
+            <i class="fas fa-paper-plane"></i> Send Enquiry & Dispatch Confirmation Mail
+          </button>
+        </form>
+
+        <div id="enquiryStatusBox" style="display:none; margin-top:14px; padding:12px 14px; border-radius:8px; font-size:0.85rem; line-height:1.5;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: DEDICATED SEPARATE VIEW PLOT POPUP MODAL -->
+  <div class="modal-overlay plot-modal-overlay" id="plotDetailModal" role="dialog" aria-modal="true" aria-labelledby="modalPlotTitle">
+    <div class="plot-detail-window">
+      <!-- Modal Header -->
+      <div class="plot-detail-header">
+        <div class="plot-detail-header-left">
+          <div class="plot-badge-row">
+            <span class="detail-badge approval" id="modalPlotApproval"><i class="fas fa-shield-alt"></i> CMDA Approved</span>
+            <span class="detail-badge rera" id="modalPlotRera"><i class="fas fa-certificate"></i> TNRERA Registered</span>
+            <span class="detail-badge status" id="modalPlotStatus"><i class="fas fa-check-circle"></i> Available</span>
+            <span class="detail-badge zone" id="modalPlotZone"><i class="fas fa-map-pin"></i> OMR IT Corridor</span>
+          </div>
+          <h2 id="modalPlotTitle" class="plot-detail-title">Emerald Crest Villa Plots</h2>
+          <div class="plot-detail-locality">
+            <i class="fas fa-map-marker-alt" style="color:var(--gold);"></i>
+            <span id="modalPlotLocality">Sholinganallur, OMR, Chennai</span>
+            <span class="plot-id-tag" id="modalPlotIdTag">ID: CHN-OMR-01</span>
+          </div>
+        </div>
+        <div class="plot-detail-header-right">
+          <div class="plot-detail-pricing">
+            <div class="price-val" id="modalPlotPrice">₹48.00 Lakhs</div>
+            <div class="price-rate" id="modalPlotRate">₹4,000 / sq.ft</div>
+          </div>
+          <button class="plot-modal-close-btn" id="closePlotDetailModalBtn" aria-label="Close Plot Separate View">&times;</button>
+        </div>
+      </div>
+
+      <!-- Modal Body (Two-Column Layout) -->
+      <div class="plot-detail-body">
+        <!-- Left Column: Visual Showcase (Ken Burns Animated Gallery & 3D Interactive Land View) -->
+        <div class="plot-detail-visuals">
+          <!-- View Switcher Tabs -->
+          <div class="plot-visual-tabs">
+            <button class="visual-tab-btn active" id="btnTabPhotoGallery">
+              <i class="fas fa-images"></i> Animated Photo Showcase
+            </button>
+            <button class="visual-tab-btn" id="btnTab3DView">
+              <i class="fas fa-cube"></i> Interactive 3D Plot Elevation
+            </button>
+          </div>
+
+          <!-- View 1: Animated Photo Gallery with Ken Burns & Hotspots -->
+          <div class="plot-main-gallery" id="plotPhotoGalleryContainer">
+            <div class="gallery-hero-viewport" id="galleryHeroViewport">
+              <img id="modalHeroImage" class="modal-hero-img active" src="" alt="Plot Visual Showcase">
+              <div class="gallery-zoom-badge"><i class="fas fa-satellite"></i> Live Animated Imagery</div>
+              <div class="gallery-counter-badge" id="modalImageCounter">1 / 4</div>
+              <div class="gallery-hotspots-layer" id="modalHotspotsLayer"></div>
+              
+              <button class="gallery-nav-btn prev" id="modalGalleryPrev" aria-label="Previous image">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button class="gallery-nav-btn next" id="modalGalleryNext" aria-label="Next image">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+            <!-- Thumbnails Strip -->
+            <div class="gallery-thumbs-strip" id="modalThumbsStrip"></div>
+          </div>
+
+          <!-- View 2: Interactive 3D Plot Model Canvas -->
+          <div class="plot-3d-viewport" id="plot3DContainer" style="display:none;">
+            <canvas id="plot3DCanvas"></canvas>
+            <div class="plot-3d-overlay-info">
+              <div class="plot-3d-badges">
+                <span class="badge-3d-compass"><i class="fas fa-compass"></i> Facing: <strong id="modal3DFacing">East</strong></span>
+                <span class="badge-3d-road"><i class="fas fa-road"></i> Frontage: <strong id="modal3DFrotange">40-Ft Tar Road</strong></span>
+              </div>
+              <div class="plot-3d-hint">
+                <i class="fas fa-arrows-alt"></i> Drag with mouse to orbit 3D parcel &bull; Scroll to zoom
+              </div>
+            </div>
+          </div>
+
+          <!-- Google Maps Modeled Route & Distance Summary -->
+          <div class="modal-route-strip" id="modalRouteSummary">
+            <div class="route-strip-header">
+              <div class="route-from-to">
+                <i class="fas fa-route" style="color:#1a73e8;"></i>
+                <span>Distance from <strong id="modalRouteOriginName">Chennai Airport</strong>:</span>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <button type="button" class="btn-modal-route-nav" id="modalShowRouteBtn" title="Navigate on Chennai Map with Property Image">
+                  <i class="fas fa-directions"></i> Show Route on Map
+                </button>
+                <a href="#" target="_blank" rel="noopener" class="btn-open-gmaps" id="modalBtnOpenGoogleMaps">
+                  <i class="fab fa-google"></i> Google Maps <i class="fas fa-external-link-alt" style="font-size:0.7rem;"></i>
+                </a>
+              </div>
+            </div>
+            <div class="route-strip-metrics" id="modalRouteMetrics">
+              <div class="route-metric-pill driving" id="modalPillDrive">
+                <i class="fas fa-car"></i> <strong id="modalDistKm">-- km</strong> (<span id="modalDriveTime">-- min</span>)
+              </div>
+              <div class="route-metric-pill bike" id="modalPillBike">
+                <i class="fas fa-motorcycle"></i> <span id="modalBikeTime">-- min</span>
+              </div>
+              <div class="route-metric-pill transit" id="modalPillTransit">
+                <i class="fas fa-subway"></i> <span id="modalTransitTime">-- min</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Specs Matrix, Legal Dossier, Infrastructure & Actions -->
+        <div class="plot-detail-info">
+          <!-- Land Measurements Matrix -->
+          <div class="detail-section">
+            <h4 class="section-title"><i class="fas fa-ruler-combined" style="color:var(--gold);"></i> Land Dimensions & Facing</h4>
+            <div class="modal-specs-grid">
+              <div class="modal-spec-card">
+                <span class="label">Plot Area</span>
+                <span class="val" id="modalPlotSqft">1,200 sq.ft</span>
+                <span class="sub" id="modalPlotCents">2.75 Cents / 0.50 Gr</span>
+              </div>
+              <div class="modal-spec-card">
+                <span class="label">Dimensions</span>
+                <span class="val" id="modalPlotDims">30 ft × 40 ft</span>
+                <span class="sub">Frontage × Depth</span>
+              </div>
+              <div class="modal-spec-card">
+                <span class="label">Facing Direction</span>
+                <span class="val" id="modalPlotFacing">East Facing</span>
+                <span class="sub">100% Vaastu Compliant</span>
+              </div>
+              <div class="modal-spec-card">
+                <span class="label">Road Width</span>
+                <span class="val" id="modalPlotRoad">40 Feet Tar Road</span>
+                <span class="sub">Direct Heavy Vehicle Access</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Government Sanctions & Legal Dossier -->
+          <div class="detail-section">
+            <h4 class="section-title"><i class="fas fa-balance-scale" style="color:var(--gold);"></i> Legal Sanctions & Clear Title</h4>
+            <div class="legal-dossier-box">
+              <div class="legal-row">
+                <span class="legal-label"><i class="fas fa-stamp text-gold"></i> Approval Order:</span>
+                <span class="legal-value" id="modalPlotApprovalNo">CMDA/PPD/2026/0412</span>
+              </div>
+              <div class="legal-row">
+                <span class="legal-label"><i class="fas fa-certificate text-gold"></i> TNRERA Number:</span>
+                <span class="legal-value" id="modalPlotReraNo">TNRERA/2026/PL-0842</span>
+              </div>
+              <div class="legal-row">
+                <span class="legal-label"><i class="fas fa-file-contract text-gold"></i> Revenue Patta:</span>
+                <span class="legal-value" id="modalPlotPatta">100% Individual Clean Patta</span>
+              </div>
+              <div class="legal-row">
+                <span class="legal-label"><i class="fas fa-landmark text-gold"></i> Bank Loan Approval:</span>
+                <span class="legal-value" id="modalPlotBankLoan">SBI, HDFC, ICICI pre-approved (80%)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Groundwater, Soil & Community Amenities -->
+          <div class="detail-section">
+            <h4 class="section-title"><i class="fas fa-water" style="color:var(--gold);"></i> Ground Water, Soil & Amenities</h4>
+            <div class="modal-features-list" id="modalFeaturesList"></div>
+          </div>
+
+          <!-- Nearby Chennai Landmarks -->
+          <div class="detail-section">
+            <h4 class="section-title"><i class="fas fa-map-signs" style="color:var(--gold);"></i> Key Chennai Proximities</h4>
+            <div class="modal-landmarks-list" id="modalLandmarksList"></div>
+          </div>
+
+          <!-- Plot Description -->
+          <div class="detail-section">
+            <h4 class="section-title"><i class="fas fa-info-circle" style="color:var(--gold);"></i> Plot Overview & Location Highlights</h4>
+            <p class="modal-description-text" id="modalPlotDescription"></p>
+          </div>
+
+          <!-- Action Buttons Bar -->
+          <div class="modal-actions-bar">
+            <button class="btn btn-primary modal-action-btn" id="modalEmailSupportBtn" style="background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);">
+              <i class="fas fa-envelope-open-text"></i> Email Enquiry & Dossier
+            </button>
+            <button class="btn btn-primary modal-action-btn" id="modalBookCabBtn">
+              <i class="fas fa-car"></i> Book Free Cab Visit
+            </button>
+            <button class="btn btn-whatsapp modal-action-btn" id="modalWhatsAppBtn">
+              <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+            </button>
+            <a class="btn btn-outline modal-action-btn" id="modalCallBtn" href="tel:+919345029705">
+              <i class="fas fa-phone-alt"></i> +91 93450 29705
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Floating Map / List Toggle -->
+  <div class="mobile-map-list-toggle-bar" id="mobileMapListToggleBar">
+    <button type="button" class="mobile-toggle-btn active" id="mobileBtnShowMap" onclick="window.mobileSwitchView('map')" title="View Interactive Map">
+      <i class="fas fa-map-marked-alt"></i> Map View
+    </button>
+    <button type="button" class="mobile-toggle-btn" id="mobileBtnShowList" onclick="window.mobileSwitchView('list')" title="View Property Cards">
+      <i class="fas fa-th-large"></i> List View (<span id="mobilePlotCount">20</span>)
+    </button>
+  </div>
+
+  <!-- Three.js 3D WebGL Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Leaflet Map JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Chennai Plots Data & Scripts -->
+  <!-- MapLibre GL JS 3D Engine -->
+  <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+
+  <script src="chennai-plots-data.js"></script>
+  <script src="api-dispatcher.js"></script>
+  <script src="chennai-plots.js"></script>
+
+  <!-- PWA App Install Banner -->
+  <div class="pwa-install-banner" id="pwaInstallBanner" style="display:none;">
+    <div class="pwa-banner-content">
+      <div class="pwa-banner-icon"><i class="fas fa-mobile-alt"></i></div>
+      <div class="pwa-banner-text">
+        <strong>Install Chennai Plots App</strong>
+        <p>Ultra-fast 3D Street Vision & GPS Navigation on your home screen</p>
+      </div>
+    </div>
+    <div class="pwa-banner-actions">
+      <button class="btn btn-sm btn-gold" id="btnPwaInstall">Install</button>
+      <button class="btn-pwa-dismiss" id="btnPwaDismiss">&times;</button>
+    </div>
+  </div>
+
+  <!-- Instant VIP Email Confirmation Receipt Modal -->
+  <div class="modal-backdrop" id="instantEmailReceiptModal" style="display:none; z-index:99999;">
+    <div class="modal-window" style="max-width: 680px; max-height: 90vh; display: flex; flex-direction: column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #0b132b, #1e293b); border-bottom: 2px solid #d4af37;">
+        <h3 style="color:#fbbf24; font-size:1.15rem; display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-check-circle" style="color:#10b981;"></i> Instant VIP Confirmation & Email Pass
+        </h3>
+        <button class="modal-close-btn" onclick="closeModal('instantEmailReceiptModal')" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body" style="overflow-y:auto; padding: 20px; background:#070b14;">
+        <div id="receiptContentContainer">
+          <!-- Dynamically populated with receipt HTML -->
+        </div>
+      </div>
+      <div class="modal-footer" style="padding: 14px 20px; background: #0f172a; border-top: 1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <button class="btn btn-secondary" onclick="window.print()" style="display:inline-flex; align-items:center; gap:6px;">
+          <i class="fas fa-print"></i> Print / Save PDF
+        </button>
+        <button class="btn btn-gold" onclick="closeModal('instantEmailReceiptModal')">
+          <i class="fas fa-check"></i> Done & Return to Map
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Native Mobile App Bottom Navigation Bar -->
+  <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Mobile App Navigation">
+    <button class="mobile-nav-item active" id="mobileNavMap" onclick="window.mobileSwitchView('map')" title="View Map">
+      <i class="fas fa-map-marked-alt"></i>
+      <span>Map</span>
+    </button>
+    <button class="mobile-nav-item" id="mobileNavList" onclick="window.mobileSwitchView('list')" title="View Plot Cards">
+      <i class="fas fa-th-large"></i>
+      <span>Plots (20)</span>
+    </button>
+    <button class="mobile-nav-item" id="mobileNavVision" onclick="window.toggleStreetVisionQuick()" title="Driver's Eye 3D Street Vision">
+      <i class="fas fa-street-view"></i>
+      <span>3D Vision</span>
+    </button>
+    <a href="app.html" class="mobile-nav-item" id="mobileNavApp" title="NoBroker & OLX Mobile App Mode" style="color:#fbbf24;">
+      <i class="fas fa-mobile-alt"></i>
+      <span>App Mode</span>
+    </a>
+    <button class="mobile-nav-item mobile-nav-highlight" id="mobileNavCab" onclick="window.openCabBookingForActivePlot()" title="Book Free VIP Site Visit Cab">
+      <i class="fas fa-car-side"></i>
+      <span>Free Cab</span>
+    </button>
+    <a href="https://wa.me/919345029705?text=Hello%20Chennai%20Prime%20Plots,%20I%20am%20inquiring%20about%20prime%20plots." target="_blank" class="mobile-nav-item" id="mobileNavWhatsApp" title="Chat on WhatsApp">
+      <i class="fab fa-whatsapp"></i>
+      <span>WhatsApp</span>
+    </a>
+  </nav>
+
+
+  <!-- One-by-One All 20 Plots Linear Directory Modal / Bottom Drawer -->
+  <div class="modal-backdrop" id="allPlotsLinearDrawerModal" style="display:none; z-index:99998;">
+    <div class="modal-window all-plots-linear-window" style="max-width: 720px; max-height: 88vh; display: flex; flex-direction: column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #0b132b, #1e293b); border-bottom: 2px solid #d4af37; padding: 14px 18px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <i class="fas fa-th-list" style="color:#fbbf24; font-size:1.2rem;"></i>
+          <div>
+            <h3 style="color:#ffffff; font-size:1.1rem; margin:0; font-weight:800;">All 20 Chennai Prime Plots</h3>
+            <p style="color:#94a3b8; font-size:0.75rem; margin:0;">Browse sequentially one by one with all options in line</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="window.toggleAllPlotsLinearDrawer()" aria-label="Close">&times;</button>
+      </div>
+
+      <!-- Quick Search & Filter Header inside Drawer -->
+      <div style="padding: 10px 16px; background: #070b14; border-bottom: 1px solid rgba(255,255,255,0.08); display:flex; gap:8px; align-items:center;">
+        <div style="position:relative; flex:1;">
+          <i class="fas fa-search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#94a3b8; font-size:0.85rem;"></i>
+          <input type="text" id="linearDrawerSearchInput" oninput="window.filterLinearPlotsDrawer(this.value)" placeholder="Search plots by locality, zone or name..." style="width:100%; padding:8px 12px 8px 34px; background:#0f172a; border:1px solid rgba(212,175,55,0.3); border-radius:8px; color:#ffffff; font-size:0.85rem; outline:none;">
+        </div>
+        <button class="btn btn-sm btn-gold" onclick="window.fitAllPlotsOnMap(); window.toggleAllPlotsLinearDrawer();" style="white-space:nowrap; padding:8px 12px; font-size:0.78rem;">
+          <i class="fas fa-globe-asia"></i> Show All on Map
+        </button>
+      </div>
+
+      <!-- Linear List of All 20 Plots -->
+      <div class="modal-body" style="overflow-y:auto; padding: 14px; background: #070b14; flex:1;" id="allPlotsLinearContainer">
+        <!-- Dynamically rendered one-by-one plot items -->
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

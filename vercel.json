@@ -3,6 +3,22 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/",
+      "destination": "/llb-real-estate/chennai-plots.html"
+    },
+    {
+      "source": "/chennai-plots",
+      "destination": "/llb-real-estate/chennai-plots.html"
+    },
+    {
+      "source": "/chennai-plots.html",
+      "destination": "/llb-real-estate/chennai-plots.html"
+    },
+    {
+      "source": "/real-estate",
+      "destination": "/llb-real-estate/index.html"
+    },
+    {
       "source": "/webhook/llb-property-inquiry",
       "destination": "/api/webhook/llb-property-inquiry"
     },

@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLB Real Estate — Prime Properties | Legally Verified Luxury</title>
+  <meta name="description" content="Discover premium luxury penthouses, waterfront villas, and prime commercial real estate with LLB Real Estate. 100% verified legal titles and instant automated confirmation email response.">
+
+  <!-- Favicon / Logo -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230B132B'/><text x='50%' y='62%' font-size='48' font-weight='900' fill='%23C5A880' text-anchor='middle' font-family='Georgia, serif'>LLB</text></svg>">
+
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar & n8n Live Status -->
+  <aside class="top-bar">
+    <div class="container">
+      <div class="top-bar-inner">
+        <div class="top-bar-left">
+          <span class="rera-badge">
+            <i class="fas fa-landmark"></i> Official Brokerage Registry #RE-LIC-849204 • Fiduciary Escrow Bonded
+          </span>
+        </div>
+        <div class="top-bar-right">
+          <a href="javascript:void(0)" onclick="window.openCredentialsModal()" class="top-bar-link" style="color:var(--gold-light);">
+            <i class="fas fa-award"></i> Regulatory Accreditations
+          </a>
+          <a href="tel:18005527325" class="top-bar-link">
+            <i class="fas fa-phone-alt"></i> +1 (800) 552-7325
+          </a>
+          <a href="mailto:inquiries@llbrealestate.com" class="top-bar-link">
+            <i class="fas fa-envelope"></i> inquiries@llbrealestate.com
+          </a>
+          <!-- Live n8n status pill in top bar -->
+          <div id="n8nStatusPill" class="n8n-pill n8n-pill-demo" onclick="window.LLBN8N.openSettingsModal()">
+            <span class="pulse-indicator"></span>
+            <span id="n8nStatusText">n8n: Ready to Link</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Sticky Main Navigation -->
+  <header class="site-header" id="navbar">
+    <div class="container">
+      <div class="nav-wrapper">
+        <!-- Brand Logo -->
+        <a href="index.html" class="brand-logo">
+          <div class="brand-symbol">LLB</div>
+          <div class="brand-text">
+            <div class="brand-name">LLB <span>REALTY</span></div>
+            <div class="brand-sub">Luxury • Legal • Bespoke</div>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links & Mobile Drawer -->
+        <nav class="desktop-nav" id="desktopNav">
+          <a href="index.html" class="nav-link active">Home</a>
+          <a href="chennai-plots.html" class="nav-link" style="color:var(--gold-primary); font-weight:700;"><i class="fas fa-map-pin"></i> Chennai Plots</a>
+          <a href="properties.html" class="nav-link">Properties</a>
+          <a href="verified-land.html" class="nav-link">Approved Land</a>
+          <a href="guarantee.html" class="nav-link">Guarantee</a>
+          <a href="calculator.html" class="nav-link">Mortgage Calc</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+          
+          <!-- Mobile Drawer Exclusive Actions -->
+          <div class="mobile-nav-actions">
+            <a href="register.html" class="btn btn-black btn-block" onclick="window.closeMobileNav()">
+              <i class="fas fa-user-plus"></i> VIP Client Registration
+            </a>
+            <div class="mobile-sub-actions">
+              <a href="login.html" class="btn btn-outline-black btn-sm" onclick="window.closeMobileNav()">
+                <i class="fas fa-user-lock"></i> Client Login
+              </a>
+              <a href="admin-login.html" class="btn btn-outline-black btn-sm" onclick="window.closeMobileNav()">
+                <i class="fas fa-shield-alt"></i> Admin Login
+              </a>
+            </div>
+            <div class="mobile-sub-actions" style="margin-top:8px;">
+              <a href="guarantee.html" class="btn btn-outline-black btn-sm" onclick="window.closeMobileNav()">
+                <i class="fas fa-certificate"></i> Guarantee
+              </a>
+              <a href="verified-land.html" class="btn btn-outline-black btn-sm" onclick="window.closeMobileNav()">
+                <i class="fas fa-map-marked-alt"></i> Approved Land
+              </a>
+            </div>
+            <div class="mobile-nav-contact">
+              <a href="tel:18005527325"><i class="fas fa-phone-alt"></i> +1 (800) 552-7325</a>
+              <a href="mailto:inquiries@llbrealestate.com"><i class="fas fa-envelope"></i> inquiries@llbrealestate.com</a>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Actions -->
+        <div class="nav-actions">
+          <a href="login.html" class="btn btn-outline-black btn-sm nav-btn-desktop" title="VIP Client Portal & Login Details">
+            <i class="fas fa-user-lock"></i> Client Login
+          </a>
+          <a href="admin-login.html" class="btn btn-outline-black btn-sm nav-btn-desktop" title="Official Brokerage Administration Portal">
+            <i class="fas fa-shield-alt"></i> Admin
+          </a>
+          <a href="register.html" class="btn btn-black btn-sm nav-btn-register" title="Register as VIP Client">
+            <i class="fas fa-id-card"></i> <span class="register-text">VIP Register</span>
+          </a>
+          <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Navigation">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="home">
+    <div class="hero-backdrop-overlay"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge-pill">
+          <i class="fas fa-shield-halved"></i> Officially Licensed Real Estate Brokerage • RERA RE-LIC-849204
+        </div>
+        <h1 class="hero-title">
+          Find Your Exclusive Sanctuary with <span class="text-gold">Verified Legal Excellence</span>
+        </h1>
+        <p class="hero-subtitle">
+          Curated penthouses, waterfront estates, and Grade-A commercial headquarters. Backed by sovereign legal due diligence and automated instant confirmation email delivery.
+        </p>
+
+        <div class="hero-action-buttons">
+          <a href="chennai-plots.html" class="btn btn-gold btn-lg" style="background: linear-gradient(135deg, #d97706, #b45309); color:#ffffff; border:none; box-shadow:0 6px 20px rgba(217,119,6,0.4);">
+            <i class="fas fa-map-pin"></i> Chennai Plots (Interactive Map)
+          </a>
+          <a href="register.html" class="btn btn-gold btn-lg">
+            <i class="fas fa-file-signature"></i> Official VIP Registration
+          </a>
+          <a href="properties.html" class="btn btn-outline-white btn-lg">
+            <i class="fas fa-compass"></i> Explore Properties
+          </a>
+          <a href="verified-land.html" class="btn btn-outline-white btn-lg">
+            <i class="fas fa-map-marked-alt"></i> Approved Land Plots
+          </a>
+        </div>
+
+        <!-- Hero Search & Filter Box -->
+        <div class="hero-search-container">
+          <div class="search-header-tag">
+            <i class="fas fa-shield-halved"></i> Institutional Property Registry • Sovereign Title & Escrow Guaranteed
+          </div>
+          <div class="search-tabs">
+            <button class="tab-btn active" data-type="all">All Listings</button>
+            <button class="tab-btn" data-type="sale">For Sale</button>
+            <button class="tab-btn" data-type="rent">For Rent</button>
+            <button class="tab-btn" data-type="commercial">Commercial</button>
+          </div>
+
+          <div class="search-inputs-grid">
+            <div class="search-field">
+              <label><i class="fas fa-map-marker-alt"></i> Location</label>
+              <div class="search-input-wrapper">
+                <select id="searchLocation">
+                  <option value="any">All Prime Locations</option>
+                  <option value="Metropolis">Downtown Metropolis</option>
+                  <option value="Palm Bay">Palm Bay Coast</option>
+                  <option value="Silicon Hills">Silicon Hills</option>
+                  <option value="Financial">Financial District</option>
+                  <option value="Greens">Suburban Greens</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="search-field">
+              <label><i class="fas fa-home"></i> Property Type</label>
+              <div class="search-input-wrapper">
+                <select id="searchType">
+                  <option value="any">All Property Types</option>
+                  <option value="penthouse">Sky Penthouse</option>
+                  <option value="villa">Waterfront / Estate Villa</option>
+                  <option value="apartment">Designer Loft / Flat</option>
+                  <option value="commercial">Grade-A Commercial</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="search-field">
+              <label><i class="fas fa-tag"></i> Max Budget</label>
+              <div class="search-input-wrapper">
+                <select id="searchBudget">
+                  <option value="any">No Maximum</option>
+                  <option value="2000000">Up to $2,000,000</option>
+                  <option value="4000000">Up to $4,000,000</option>
+                  <option value="6000000">Up to $6,000,000</option>
+                  <option value="10000000">Up to $10,000,000</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="search-field">
+              <label><i class="fas fa-shield-alt"></i> Legal Guarantee</label>
+              <div class="search-input-wrapper" style="font-size:0.8rem; color:var(--text-dark); font-weight:600;">
+                <i class="fas fa-check-circle" style="color:var(--gold-primary);"></i> 100% Clear Titles
+              </div>
+            </div>
+
+            <button class="btn btn-black" id="heroSearchBtn">
+              <i class="fas fa-search"></i> Search Properties
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Official Regulatory Trust Ribbon -->
+  <div class="official-trust-ribbon">
+    <div class="container">
+      <div class="trust-ribbon-grid">
+        <div class="trust-seal-item" onclick="window.openCredentialsModal()" title="View RERA Brokerage License">
+          <div class="trust-seal-icon"><i class="fas fa-landmark"></i></div>
+          <div class="trust-seal-text">
+            <span class="trust-seal-title">RERA Licensed <i class="fas fa-check-circle" style="color:var(--gold-primary); font-size:0.75rem;"></i></span>
+            <span class="trust-seal-sub">Brokerage Lic. #RE-LIC-849204</span>
+          </div>
+        </div>
+        <div class="trust-seal-item" onclick="window.openCredentialsModal()" title="View Escrow Fiduciary Bond Details">
+          <div class="trust-seal-icon"><i class="fas fa-scale-balanced"></i></div>
+          <div class="trust-seal-text">
+            <span class="trust-seal-title">Fiduciary Escrow</span>
+            <span class="trust-seal-sub">JPMorgan & BNY Mellon Trust</span>
+          </div>
+        </div>
+        <div class="trust-seal-item" onclick="window.openCredentialsModal()" title="View Sovereign Title Due Diligence Standard">
+          <div class="trust-seal-icon"><i class="fas fa-shield-alt"></i></div>
+          <div class="trust-seal-text">
+            <span class="trust-seal-title">100% Sovereign Title</span>
+            <span class="trust-seal-sub">3-Tier Municipal Due Diligence</span>
+          </div>
+        </div>
+        <div class="trust-seal-item" onclick="window.openCredentialsModal()" title="View FinCEN AML Compliance">
+          <div class="trust-seal-icon"><i class="fas fa-building-columns"></i></div>
+          <div class="trust-seal-text">
+            <span class="trust-seal-title">FinCEN AML / KYC</span>
+            <span class="trust-seal-sub">Federal Compliance Certified</span>
+          </div>
+        </div>
+        <div class="trust-seal-item" onclick="window.openCredentialsModal()" title="View Luxury Alliance Membership">
+          <div class="trust-seal-icon"><i class="fas fa-award"></i></div>
+          <div class="trust-seal-text">
+            <span class="trust-seal-title">Forbes Luxury Alliance</span>
+            <span class="trust-seal-sub">Vetted Syndicate Member 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Metrics & Trust Bar -->
+  <section class="trust-metrics-section">
+    <div class="container">
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-number">$450M+</div>
+          <div class="metric-label">Closed Transaction Volume</div>
+          <div class="metric-sub">Across Luxury & Commercial Portfolios</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-number">100%</div>
+          <div class="metric-label">Legally Verified Titles</div>
+          <div class="metric-sub">Zero Encumbrance & 3-Tier Due Diligence</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-number">&lt; 60 Sec</div>
+          <div class="metric-label">Automated Email Dispatch</div>
+          <div class="metric-sub">Instant VIP Confirmation & Dossier Delivery</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-number">1,200+</div>
+          <div class="metric-label">High Net-Worth Clients</div>
+          <div class="metric-sub">Across 18 Global Financial Hubs</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Curated Properties Showcase -->
+  <section class="properties-section" id="properties">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Exclusive Portfolio</span>
+        <h2 class="section-title">Prime Residential & Commercial Estates</h2>
+        <p class="section-description">
+          Each asset undergoes rigorous architectural inspection and full legal vetting before entering the LLB Real Estate private registry.
+        </p>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="property-filter-tabs">
+        <button class="filter-btn active" data-filter="all">All Properties</button>
+        <button class="filter-btn" data-filter="penthouse">Penthouses</button>
+        <button class="filter-btn" data-filter="villa">Waterfront & Villas</button>
+        <button class="filter-btn" data-filter="commercial">Commercial Suites</button>
+        <button class="filter-btn" data-filter="apartment">Designer Lofts</button>
+      </div>
+
+      <!-- Property Grid (Rendered Dynamically via JS) -->
+      <div class="properties-grid" id="propertiesGrid">
+        <!-- Injected by app.js -->
+      </div>
+
+      <div style="text-align: center; margin-top: 36px;">
+        <a href="properties.html" class="btn btn-black" style="padding: 14px 28px;">
+          <i class="fas fa-list"></i> View Complete Properties Catalog
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Registered & Approved Land Parcels Highlight -->
+  <section class="properties-section" style="background: var(--bg-light-alt); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Sanctioned & Surveyed Plots</span>
+        <h2 class="section-title">Approved Land Parcels & Estate Sites</h2>
+        <p class="section-description">
+          100% legal title clearance, DTCP & RERA sanctioned layout orders, certified GPS boundary pillars, and zero encumbrances.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 36px;">
+        <!-- Land Card 1 -->
+        <article class="land-card">
+          <div class="land-image-box">
+            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80" alt="Silicon Hills Plots" loading="lazy">
+            <div class="land-badge-status"><i class="fas fa-shield-check"></i> DTCP Approved</div>
+            <div class="land-price-badge">$890,000</div>
+          </div>
+          <div class="land-body">
+            <div class="land-survey-meta">
+              <span><strong>Survey #412/2A</strong></span>
+              <span>0.25 Acres (10,800 sq.ft)</span>
+            </div>
+            <h3 class="land-title">Silicon Hills Crest Residential Plots</h3>
+            <p class="land-tagline">RERA & DTCP Sanctioned Villa Plots with Mountain Vistas</p>
+            <div class="land-actions">
+              <a href="verified-land.html" class="btn btn-outline-black btn-sm" style="flex:1;"><i class="fas fa-eye"></i> View Land Details</a>
+              <a href="register.html?property=Silicon%20Hills%20Plots" class="btn btn-black btn-sm"><i class="fas fa-calendar-check"></i> Book Visit</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Land Card 2 -->
+        <article class="land-card">
+          <div class="land-image-box">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" alt="Commercial Land" loading="lazy">
+            <div class="land-badge-status"><i class="fas fa-shield-check"></i> Municipal Sanctioned</div>
+            <div class="land-price-badge">$4,950,000</div>
+          </div>
+          <div class="land-body">
+            <div class="land-survey-meta">
+              <span><strong>Survey #109/4C</strong></span>
+              <span>1.50 Acres (65,340 sq.ft)</span>
+            </div>
+            <h3 class="land-title">Metro Central Commercial Development Site</h3>
+            <p class="land-tagline">High-FSI Commercial Land Parcel for Corporate HQ or Hotel</p>
+            <div class="land-actions">
+              <a href="verified-land.html" class="btn btn-outline-black btn-sm" style="flex:1;"><i class="fas fa-eye"></i> View Land Details</a>
+              <a href="register.html?property=Metro%20Commercial%20Site" class="btn btn-black btn-sm"><i class="fas fa-calendar-check"></i> Book Visit</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Land Card 3 -->
+        <article class="land-card">
+          <div class="land-image-box">
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Palm Coast Parcel" loading="lazy">
+            <div class="land-badge-status"><i class="fas fa-shield-check"></i> Coastal Zone Approved</div>
+            <div class="land-price-badge">$2,450,000</div>
+          </div>
+          <div class="land-body">
+            <div class="land-survey-meta">
+              <span><strong>Survey #88/19</strong></span>
+              <span>0.60 Acres (26,136 sq.ft)</span>
+            </div>
+            <h3 class="land-title">Palm Coast Oceanfront Estate Parcel</h3>
+            <p class="land-tagline">Direct Beach Access Coastal Land with Full Riparian Rights</p>
+            <div class="land-actions">
+              <a href="verified-land.html" class="btn btn-outline-black btn-sm" style="flex:1;"><i class="fas fa-eye"></i> View Land Details</a>
+              <a href="register.html?property=Palm%20Coast%20Parcel" class="btn btn-black btn-sm"><i class="fas fa-calendar-check"></i> Book Visit</a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div style="text-align: center;">
+        <a href="verified-land.html" class="btn btn-black" style="padding: 14px 32px;">
+          <i class="fas fa-map-marked-alt"></i> Browse All 6 Sanctioned Land Parcels & Cadastral Surveys
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- The LLB Legal & Luxury Advantage -->
+  <section class="llb-advantage-section" id="advantage">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">The LLB Distinction</span>
+        <h2 class="section-title">Where Legal Precision Meets Unrivaled Luxury</h2>
+        <p class="section-description">
+          Unlike traditional brokerage firms, LLB Real Estate was founded by corporate real estate attorneys and luxury development pioneers to deliver impenetrable transaction security.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-box">
+          <div class="feature-icon-wrapper">
+            <i class="fas fa-file-contract"></i>
+          </div>
+          <h3 class="feature-title">3-Tier Legal Title Vetting</h3>
+          <p class="feature-desc">
+            Every listing features a guaranteed sovereign title audit, zero legal encumbrance certification, and complete local municipal compliance.
+          </p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-wrapper">
+            <i class="fas fa-envelope-open-text"></i>
+          </div>
+          <h3 class="feature-title">Automated Confirmation Engine</h3>
+          <p class="feature-desc">
+            Your registration connects directly to our automated workflow. Receive an immediate property dossier and tailored valuation summary via Email within seconds.
+          </p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-wrapper">
+            <i class="fas fa-key"></i>
+          </div>
+          <h3 class="feature-title">Off-Market VIP Access</h3>
+          <p class="feature-desc">
+            Over 40% of our portfolio consists of private pocket listings and unadvertised trophy properties reserved exclusively for vetted clients.
+          </p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-wrapper">
+            <i class="fas fa-landmark"></i>
+          </div>
+          <h3 class="feature-title">Private Escrow & Settlement</h3>
+          <p class="feature-desc">
+            Institutional-grade escrow handling with international multi-currency settlement and cross-border tax structuring guidance.
+          </p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-wrapper">
+            <i class="fas fa-car-side"></i>
+          </div>
+          <h3 class="feature-title">Chauffeured VIP Site Visits</h3>
+          <p class="feature-desc">
+            Experience properties in person with our private executive chauffeur service and designated Senior Real Estate Counsel.
+          </p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-wrapper">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="feature-title">Capital Appreciation Advisory</h3>
+          <p class="feature-desc">
+            Algorithmic yield analysis, rental return forecasting, and commercial zoning appreciation projections tailored to family offices.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Mortgage & EMI Calculator -->
+  <section class="calculator-section" id="calculator">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Financial Structuring</span>
+        <h2 class="section-title">Interactive Luxury Mortgage Calculator</h2>
+        <p class="section-description">
+          Model your capital deployment, monthly EMI obligations, and tenure scenarios in real time.
+        </p>
+      </div>
+
+      <div class="calculator-wrapper">
+        <!-- Sliders -->
+        <div class="calc-inputs">
+          <div class="calc-group">
+            <div class="calc-label-row">
+              <span>Property Value</span>
+              <span class="calc-val-badge" id="homeValueDisplay">$2,000,000</span>
+            </div>
+            <input type="range" class="calc-range" id="homeValueSlider" min="500000" max="10000000" step="50000" value="2000000">
+          </div>
+
+          <div class="calc-group">
+            <div class="calc-label-row">
+              <span>Down Payment</span>
+              <span class="calc-val-badge" id="downPaymentDisplay">$400,000 (20%)</span>
+            </div>
+            <input type="range" class="calc-range" id="downPaymentSlider" min="100000" max="5000000" step="25000" value="400000">
+          </div>
+
+          <div class="calc-group">
+            <div class="calc-label-row">
+              <span>Annual Interest Rate (%)</span>
+              <span class="calc-val-badge" id="interestRateDisplay">6.50%</span>
+            </div>
+            <input type="range" class="calc-range" id="interestRateSlider" min="2.5" max="12.0" step="0.1" value="6.5">
+          </div>
+
+          <div class="calc-group">
+            <div class="calc-label-row">
+              <span>Loan Tenure (Years)</span>
+              <span class="calc-val-badge" id="loanTermDisplay">30 Years</span>
+            </div>
+            <input type="range" class="calc-range" id="loanTermSlider" min="5" max="30" step="5" value="30">
+          </div>
+        </div>
+
+        <!-- Result Card -->
+        <div class="calc-results-card">
+          <div class="emi-main-display">
+            <div class="emi-label">Estimated Monthly Payment</div>
+            <div class="emi-amount" id="emiAmountDisplay">$10,113</div>
+            <div class="emi-sub">Principal & Interest (Excludes Local Property Tax & HOA)</div>
+          </div>
+
+          <div class="calc-breakdown-list">
+            <div class="breakdown-row">
+              <span>Total Financed Amount:</span>
+              <strong id="loanAmountDisplay">$1,600,000</strong>
+            </div>
+            <div class="breakdown-row">
+              <span>Total Interest Payable:</span>
+              <strong id="totalInterestDisplay">$2,040,680</strong>
+            </div>
+            <div class="breakdown-row">
+              <span>Total Lifetime Payment:</span>
+              <strong id="totalPaymentDisplay">$3,640,680</strong>
+            </div>
+          </div>
+
+          <button class="btn btn-gold btn-block" id="calcPreApproveBtn">
+            <i class="fas fa-file-invoice-dollar"></i> Apply for Pre-Approval via n8n
+          </button>
+          <a href="calculator.html" class="btn btn-outline-white btn-block" style="margin-top:10px; font-size:0.875rem;">
+            <i class="fas fa-calculator"></i> Open Full Financial Structuring Suite
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prime Neighborhoods -->
+  <section class="neighborhoods-section" id="neighborhoods">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Prime Locations</span>
+        <h2 class="section-title">Explore Elite Regional Enclaves</h2>
+        <p class="section-description">
+          Strategic developments located in the highest-growth lifestyle and corporate epicenters.
+        </p>
+      </div>
+
+      <div class="neighborhood-grid">
+        <div class="neighborhood-card">
+          <img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=800&q=80" alt="Downtown Metropolis">
+          <div class="neighborhood-overlay">
+            <h3 class="neighborhood-name">Downtown Metropolis</h3>
+            <div class="neighborhood-stats">
+              <span><i class="fas fa-building"></i> 48 Listings</span>
+              <span><i class="fas fa-chart-line"></i> +14.2% YoY</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="neighborhood-card">
+          <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" alt="Palm Bay Coast">
+          <div class="neighborhood-overlay">
+            <h3 class="neighborhood-name">Palm Bay Coast</h3>
+            <div class="neighborhood-stats">
+              <span><i class="fas fa-water"></i> 26 Waterfront Estates</span>
+              <span><i class="fas fa-chart-line"></i> +18.7% YoY</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="neighborhood-card">
+          <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80" alt="Silicon Hills">
+          <div class="neighborhood-overlay">
+            <h3 class="neighborhood-name">Silicon Hills</h3>
+            <div class="neighborhood-stats">
+              <span><i class="fas fa-tree"></i> 34 Modernist Mansions</span>
+              <span><i class="fas fa-chart-line"></i> +21.4% YoY</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIP Client Registration & Automated Lead Dispatch (Linked to n8n) -->
+  <section class="lead-capture-section" id="register">
+    <div id="contact" style="position:relative; top:-90px;"></div>
+    <div class="container">
+      <div class="lead-form-grid">
+        <!-- Left Perks Column -->
+        <div class="lead-perks-box">
+          <span class="section-tag">Instant n8n Automation</span>
+          <h2 class="section-title">VIP Client & Investor Registration</h2>
+          <p class="section-description">
+            Register your acquisition profile with LLB Real Estate. Submitting this form automatically triggers our <strong>n8n automation pipeline</strong> to send you an instantaneous executive email dossier containing verified sovereign title deed summaries, complete pricing schedules, and direct private concierge contacts.
+          </p>
+
+          <div class="perk-item">
+            <div class="perk-icon"><i class="fas fa-envelope-open-text"></i></div>
+            <div>
+              <div class="perk-title">Instant Automated Email Confirmation</div>
+              <div class="perk-desc">Your registered email receives a personalized 80/20 luxury HTML dossier with comprehensive property specs, legal deed vetting, and direct advisory contacts within seconds.</div>
+            </div>
+          </div>
+
+          <div class="perk-item">
+            <div class="perk-icon"><i class="fas fa-shield-alt"></i></div>
+            <div>
+              <div class="perk-title">100% Sovereign Legal Title Guarantee</div>
+              <div class="perk-desc">Every listing in the LLB registry is subjected to strict 3-tier municipal due diligence and certified 100% encumbrance-free.</div>
+            </div>
+          </div>
+
+          <div class="perk-item">
+            <div class="perk-icon"><i class="fas fa-user-tie"></i></div>
+            <div>
+              <div class="perk-title">Designated Real Estate Attorney</div>
+              <div class="perk-desc">A senior partner attorney is assigned to your registration file for confidential escrow structuring and private viewings.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Form Column -->
+        <div class="inquiry-form-card">
+          <div style="margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-light);">
+            <h3 style="font-family: var(--font-serif); font-size: 1.5rem; color: var(--text-dark); margin-bottom: 6px;">
+              <i class="fas fa-file-signature" style="color:var(--black-primary);"></i> VIP Registration Form
+            </h3>
+            <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0;">
+              Fields marked with an asterisk (*) are required. Confirmation email dispatched automatically.
+            </p>
+          </div>
+
+          <form id="llbLeadForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="leadName"><i class="fas fa-user"></i> Full Name *</label>
+                <input type="text" id="leadName" class="form-control" placeholder="e.g. Jonathan Sterling" required>
+              </div>
+              <div class="form-group">
+                <label for="leadEmail"><i class="fas fa-envelope"></i> Email Address * <span style="font-weight:400; color:var(--gold-primary); font-size:0.75rem;">(Email sent here)</span></label>
+                <input type="email" id="leadEmail" class="form-control" placeholder="jonathan@domain.com" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="leadPhone"><i class="fas fa-phone-alt"></i> Mobile / Phone *</label>
+                <input type="tel" id="leadPhone" class="form-control" placeholder="+1 (555) 000-0000" required>
+              </div>
+              <div class="form-group">
+                <label for="leadInquiryType"><i class="fas fa-user-tag"></i> Registration Type</label>
+                <select id="leadInquiryType" class="form-control">
+                  <option value="VIP Property Buyer">VIP Property Buyer (Private Homeowner)</option>
+                  <option value="Real Estate Investor">Real Estate Investor / Portfolio Client</option>
+                  <option value="Private Site Visit Tour">Private Site Visit Tour</option>
+                  <option value="Commercial Acquisition">Commercial Corporate Acquisition</option>
+                  <option value="Luxury Rental Inquiry">Luxury Rental & Short-Stay</option>
+                  <option value="Off-Market Pocket Listings">Off-Market Pocket Listings Access</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="leadPropertySelect"><i class="fas fa-building"></i> Interested Property</label>
+                <select id="leadPropertySelect" class="form-control">
+                  <option value="General Luxury Portfolio">General Luxury Portfolio Selection</option>
+                  <option value="The Grand Horizon Sky Penthouse">The Grand Horizon Sky Penthouse ($4,850,000)</option>
+                  <option value="Villa Solaria Waterfront Estate">Villa Solaria Waterfront Estate ($6,200,000)</option>
+                  <option value="The Lumina Glass Pavilion">The Lumina Glass Pavilion ($3,450,000)</option>
+                  <option value="Aura Prime Corporate Tower Suites">Aura Prime Corporate Tower Suites ($18,500/mo)</option>
+                  <option value="The Azure Modernist Loft">The Azure Modernist Loft ($7,200/mo)</option>
+                  <option value="Bellevue Manor Country Estate">Bellevue Manor Country Estate ($5,400,000)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="leadBudget"><i class="fas fa-dollar-sign"></i> Target Budget</label>
+                <select id="leadBudget" class="form-control">
+                  <option value="$1,000,000 - $3,000,000">$1,000,000 - $3,000,000</option>
+                  <option value="$3,000,000 - $5,000,000" selected>$3,000,000 - $5,000,000</option>
+                  <option value="$5,000,000 - $10,000,000">$5,000,000 - $10,000,000</option>
+                  <option value="$10,000,000+">$10,000,000+</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="leadTimeline"><i class="fas fa-clock"></i> Move-in / Acquisition Timeline</label>
+                <select id="leadTimeline" class="form-control">
+                  <option value="Immediate (Next 30 Days)">Immediate (Next 30 Days)</option>
+                  <option value="1 to 3 Months" selected>1 to 3 Months</option>
+                  <option value="3 to 6 Months">3 to 6 Months</option>
+                  <option value="Long-Term Investment Planning">Long-Term Investment Planning</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="leadPreferredContact"><i class="fas fa-bell"></i> Preferred Contact Channel</label>
+                <select id="leadPreferredContact" class="form-control">
+                  <option value="Email" selected>Email (Full Executive Dossier & Deeds)</option>
+                  <option value="Phone Call">Direct Phone Call from Senior Attorney</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="leadMessage"><i class="fas fa-comment-alt"></i> Specific Requirements & Preferences</label>
+              <textarea id="leadMessage" class="form-control" placeholder="Specify preferred viewing dates, timeline, or particular architectural requirements..."></textarea>
+            </div>
+
+            <!-- Automated Communication Toggles -->
+            <div class="automation-preference-box">
+              <div class="pref-title"><i class="fas fa-envelope-open-text"></i> Automated n8n Email Delivery</div>
+              <div class="pref-checkboxes">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="prefEmail" checked>
+                  <span>Dispatch legal certificate summary and viewing dossier automatically to my <strong>Email</strong></span>
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-black btn-block btn-lg" id="leadSubmitBtn">
+              <i class="fas fa-paper-plane"></i> Submit Registration & Send Confirmation Email
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand-logo" style="margin-bottom:12px;">
+            <div class="brand-symbol">LLB</div>
+            <div class="brand-text">
+              <div class="brand-name">LLB <span>REALTY</span></div>
+              <div class="brand-sub">Luxury • Legal • Bespoke</div>
+            </div>
+          </div>
+          <p class="footer-bio">
+            LLB Real Estate is an international boutique brokerage providing sovereign legal due diligence and advisory across trophy residential estates, luxury penthouses, and Grade-A commercial holdings.
+          </p>
+          <div class="social-links">
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://facebook.com" target="_blank" rel="noopener" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://youtube.com" target="_blank" rel="noopener" class="social-link"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Portfolio & Land</h4>
+          <ul class="footer-links-list">
+            <li><a href="properties.html">All Properties</a></li>
+            <li><a href="verified-land.html">Approved Land Parcels</a></li>
+            <li><a href="properties.html#penthouses">Sky Penthouses</a></li>
+            <li><a href="properties.html#villas">Waterfront Estates</a></li>
+            <li><a href="properties.html#commercial">Commercial Headquarters</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Legal & Authority</h4>
+          <ul class="footer-links-list">
+            <li><a href="guarantee.html">Sovereign Title Guarantee</a></li>
+            <li><a href="verified-land.html">Approved Land Registry</a></li>
+            <li><a href="calculator.html">Mortgage & Financing</a></li>
+            <li><a href="contact.html">Concierge & Offices</a></li>
+            <li><a href="javascript:void(0)" onclick="window.openCredentialsModal()">Regulatory Accreditations</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Access & Account</h4>
+          <ul class="footer-links-list">
+            <li><a href="register.html">VIP Client Registration</a></li>
+            <li><a href="login.html">Client Portal & Login</a></li>
+            <li><a href="admin-login.html">Admin & Legal Gateway</a></li>
+            <li><a href="admin.html">Automation Dashboard</a></li>
+            <li><a href="javascript:void(0)" onclick="window.LLBN8N.openSettingsModal()">n8n Webhook Settings</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Concierge Desk</h4>
+          <div class="footer-contact-info">
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>One Grand Plaza, Suite 4800, Financial District, New York, NY 10005</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone-alt"></i>
+              <span>+1 (800) 552-7325</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <span>inquiries@llbrealestate.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; 2026 LLB Real Estate Group LLC. All Rights Reserved. Licensed Real Estate Brokerage RERA RE-LIC-849204.
+        </div>
+        <div>
+          Automated Lead Engine Connected via <a href="javascript:void(0)" onclick="window.LLBN8N.openSettingsModal()" style="color:var(--gold-primary); text-decoration:underline;">n8n Webhook</a> • <a href="mobile.html" target="_blank" style="color:var(--gold-primary); text-decoration:underline;"><i class="fas fa-mobile-alt"></i> Mobile Access & QR</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating n8n Config Button (Developer / Admin quick link) -->
+  <button class="floating-n8n-btn" onclick="window.LLBN8N.openSettingsModal()" title="Configure n8n Webhook Automation">
+    <i class="fas fa-robot"></i> n8n Automation Hub
+  </button>
+
+  <!-- =========================================================================
+       MODALS
+       ========================================================================= -->
+
+  <!-- 1. Property Details Modal -->
+  <div class="modal-overlay" id="propertyModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="propertyModalClose" aria-label="Close Modal">
+        <i class="fas fa-times"></i>
+      </button>
+      <div style="padding: 32px;" id="propertyModalBody">
+        <!-- Injected dynamically via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Success Modal -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal-card success-modal-card">
+      <button class="modal-close-btn" id="successModalClose" aria-label="Close Modal">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="success-icon-animated">
+        <i class="fas fa-check"></i>
+      </div>
+      <h3 class="success-title">VIP Registration Confirmed</h3>
+      <div class="success-lead-id" id="successLeadId">Reference ID: LLB-XXXX</div>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;" id="successChannelNote">
+        Your registration has been successfully transmitted and verified by the LLB Real Estate automated pipeline.
+      </p>
+
+      <div id="successBannerNote" style="background: rgba(184, 134, 11, 0.08); border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 24px; font-size: 0.8125rem; color: var(--text-dark);">
+        <i class="fas fa-envelope-open-text" style="color:var(--black-primary);"></i> <strong>Confirmation Mail Status:</strong> Your bespoke luxury confirmation email containing property specs, valuation notes, and legal verification records has been generated.
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <a href="#" target="_blank" class="btn btn-black" id="successViewEmailBtn" style="display: none;">
+          <i class="fas fa-envelope-open-text"></i> View Generated Confirmation Email
+        </a>
+        <a href="admin.html" class="btn btn-gold">
+          <i class="fas fa-tachometer-alt"></i> Open Automation Dashboard
+        </a>
+        <button class="btn btn-outline-black" onclick="document.getElementById('successModal').classList.remove('active'); document.body.classList.remove('modal-open');">
+          Continue Browsing
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. n8n Integration Hub Modal (Settings, Live Test, & Workflow Download) -->
+  <div class="modal-overlay" id="n8nModal">
+    <div class="modal-card n8n-modal-content">
+      <button class="modal-close-btn" onclick="window.LLBN8N.closeSettingsModal()" aria-label="Close Modal">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <div class="n8n-modal-header">
+        <h3><i class="fas fa-project-diagram"></i> n8n Automation Engine Hub</h3>
+        <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 6px;">
+          Link your website directly with n8n to trigger automated confirmation Emails (Gmail / SMTP) on every registration.
+        </p>
+      </div>
+
+      <div class="n8n-info-card">
+        <strong style="color: var(--black-primary);"><i class="fas fa-info-circle"></i> How this works:</strong>
+        When a client submits any form on this website, a JSON payload is dispatched to your n8n Webhook URL. n8n then automatically triggers your Email nodes, and records the lead into Google Sheets or your CRM.
+      </div>
+
+      <div class="form-group" style="margin-bottom: 16px;">
+        <label for="n8nWebhookInput" style="font-weight: 700; color: var(--text-dark);">
+          <i class="fas fa-link"></i> Your n8n Webhook URL (POST Endpoint):
+        </label>
+        <input type="url" id="n8nWebhookInput" class="form-control" placeholder="http://localhost:8080/webhook/llb-property-inquiry" value="http://localhost:8080/webhook/llb-property-inquiry">
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
+          * If you are testing with n8n's "Listen for test event" button, paste your <code>/webhook-test/...</code> URL.
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+        <button class="btn btn-black btn-sm" id="n8nSaveBtn" onclick="window.LLBN8N.setWebhookUrl(document.getElementById('n8nWebhookInput').value); alert('✅ n8n Webhook URL saved successfully!');">
+          <i class="fas fa-save"></i> Save Webhook URL
+        </button>
+        <button class="btn btn-outline-black btn-sm" id="n8nTestBtn" onclick="window.LLBN8N.testWebhook()">
+          <i class="fas fa-bolt"></i> Send Live Test Lead
+        </button>
+        <a href="llb_n8n_automation_workflow.json" download="llb_n8n_automation_workflow.json" class="btn btn-outline-black btn-sm">
+          <i class="fas fa-download"></i> Download n8n Workflow JSON
+        </a>
+      </div>
+
+      <!-- Test Diagnostic Output Area -->
+      <div id="n8nTestOutput" class="n8n-test-output"></div>
+
+      <!-- Instructions Accordion / Steps -->
+      <div style="margin-top: 24px; border-top: 1px solid var(--border-light); padding-top: 20px;">
+        <h4 style="font-size: 1rem; color: var(--text-dark); margin-bottom: 10px;">
+          <i class="fas fa-list-ol" style="color: var(--black-primary);"></i> 3-Step Setup in n8n:
+        </h4>
+        <ol style="color: var(--text-muted); font-size: 0.8125rem; padding-left: 20px; line-height: 1.8;">
+          <li>
+            <strong>Import Workflow:</strong> Download <code>llb_n8n_automation_workflow.json</code>, open n8n, click <em>Workflows > Import from File</em>.
+          </li>
+          <li>
+            <strong>Activate Webhook:</strong> Copy the production or test URL from the Webhook node in n8n and paste it into the field above.
+          </li>
+          <li>
+            <strong>Connect Email Credentials:</strong>
+            Connect your Gmail/SMTP credentials in the Email node so confirmation emails deliver automatically to client inboxes.
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Official Regulatory & Legal Credentials Modal -->
+  <div class="modal-overlay" id="credentialsModal">
+    <div class="modal-card credentials-modal-card">
+      <button class="modal-close-btn" onclick="window.closeCredentialsModal()" aria-label="Close Modal">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <div style="text-align: left; margin-bottom: 20px;">
+        <span class="section-tag">Regulatory Transparency</span>
+        <h3 style="font-family: var(--font-serif); font-size: 1.7rem; color: var(--black-primary); margin-top: 6px;">
+          Official Brokerage Credentials & Legal Registry
+        </h3>
+        <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 4px;">
+          LLB Real Estate Group LLC operates as an officially licensed, legally vetted, and sovereign fiduciary-backed luxury real estate brokerage.
+        </p>
+      </div>
+
+      <div class="cred-badge-banner">
+        <i class="fas fa-certificate"></i>
+        <div class="cred-badge-banner-text">
+          <strong>Official Certificate of Good Standing #REG-849204</strong>
+          <span>Licensed by Department of State Real Estate Licensing Commission & RERA Governing Body</span>
+        </div>
+      </div>
+
+      <div class="credentials-grid">
+        <div class="cred-card">
+          <div class="cred-card-header">
+            <i class="fas fa-landmark"></i>
+            <div class="cred-card-title">Brokerage Registration</div>
+          </div>
+          <div class="cred-card-body">
+            <strong>Corporate ID:</strong> LLB-US-849204<br>
+            <strong>License Type:</strong> Prime Luxury Real Estate Brokerage<br>
+            <strong>Jurisdiction:</strong> Federal & State Licensed
+          </div>
+        </div>
+
+        <div class="cred-card">
+          <div class="cred-card-header">
+            <i class="fas fa-user-tie"></i>
+            <div class="cred-card-title">Managing Broker of Record</div>
+          </div>
+          <div class="cred-card-body">
+            <strong>Designated Counsel:</strong> Jonathan Sterling, Esq.<br>
+            <strong>Bar Admission:</strong> State Bar Association #489201<br>
+            <strong>Fiduciary Duty:</strong> Sovereign Title Trustee
+          </div>
+        </div>
+
+        <div class="cred-card">
+          <div class="cred-card-header">
+            <i class="fas fa-scale-balanced"></i>
+            <div class="cred-card-title">Sovereign Escrow Accounts</div>
+          </div>
+          <div class="cred-card-body">
+            <strong>Institutional Banks:</strong> JPMorgan Chase & BNY Mellon<br>
+            <strong>Escrow Protection:</strong> $100M Fiduciary Bonded<br>
+            <strong>Wire Fraud Safeguard:</strong> FinCEN Dual-Auth Protocol
+          </div>
+        </div>
+
+        <div class="cred-card">
+          <div class="cred-card-header">
+            <i class="fas fa-shield-halved"></i>
+            <div class="cred-card-title">AML / KYC Compliance</div>
+          </div>
+          <div class="cred-card-body">
+            <strong>Compliance Standard:</strong> FinCEN Real Estate Rule 2026<br>
+            <strong>Due Diligence:</strong> 3-Tier Municipal Search Guarantee<br>
+            <strong>Encumbrance Audit:</strong> 100% Sovereign Free Title
+          </div>
+        </div>
+      </div>
+
+      <div class="official-seal-box">
+        <div class="official-stamp">
+          <i class="fas fa-stamp"></i> Officially Verified & Sealed 2026
+        </div>
+        <button class="btn btn-black btn-sm" onclick="alert('Official Brokerage Disclosure Dossier Ref: LLB-LEGAL-2026 has been verified. A copy is included in your VIP Registration confirmation email.');">
+          <i class="fas fa-file-pdf"></i> Download Official Due Diligence Dossier
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="config.js"></script>
+  <script src="properties-data.js"></script>
+  <script src="api-dispatcher.js"></script>
+  <script src="n8n-integration.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
