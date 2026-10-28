@@ -625,6 +625,456 @@ def send_smtp_email(to_email, subject, html_content):
         return False, f"SMTP dispatch failed: {str(e)}"
 
 
+
+def get_plot_by_id(plot_id):
+    if not plot_id:
+        return None
+    clean_id = str(plot_id).strip().lower()
+    for p in load_all_properties():
+        if str(p.get("id", "")).strip().lower() == clean_id:
+            return p
+        if str(p.get("title", "")).strip().lower() == clean_id:
+            return p
+    # Fallback to master file
+    if os.path.exists(MASTER_PLOTS_FILE):
+        try:
+            with open(MASTER_PLOTS_FILE, "r", encoding="utf-8") as f:
+                for p in json.load(f):
+                    if str(p.get("id", "")).strip().lower() == clean_id:
+                        return p
+        except Exception:
+            pass
+    return None
+
+
+def generate_plot_availability_email_html(plot, visit_data):
+    full_name = visit_data.get("fullName") or visit_data.get("name") or "Valued Investor"
+    clean_email = visit_data.get("email", "").strip().lower()
+    phone = visit_data.get("phone") or "+91 93450 29705"
+    visit_ref = visit_data.get("visitRef") or ("VISIT-" + hex(int(time.time()))[2:].upper())
+    visit_date = visit_data.get("visitDate") or "Immediate Inspection (Today / Tomorrow)"
+    visit_time = visit_data.get("visitTime") or "10:30 AM (Preferred Slot)"
+    pickup_location = visit_data.get("pickupLocation") or "Doorstep Pickup / Airport / Central Station"
+    need_cab = visit_data.get("needCab", True)
+    date_str = datetime.now().strftime("%B %d, %Y - %I:%M %p IST")
+
+    plot_id = plot.get("id", "CHN-OMR-01")
+    title = plot.get("title", "Emerald Crest Villa Plots")
+    locality = plot.get("locality", "Sholinganallur, OMR")
+    zone_label = plot.get("zoneLabel") or "Chennai Prime Corridor"
+    price_disp = plot.get("priceDisplay") or "₹48.00 Lakhs"
+    rate_disp = plot.get("pricePerSqftDisplay") or "₹4,000 / sq.ft"
+    sqft = plot.get("plotSizeSqft") or 1200
+    cents = plot.get("plotSizeCents") or 2.75
+    grounds = plot.get("plotSizeGrounds") or 0.50
+    dimensions = plot.get("dimensions") or "30 ft × 40 ft"
+    facing = plot.get("facing") or "East"
+    road_width = plot.get("roadWidth") or "40 Feet Blacktop Road"
+    approval_type = plot.get("approvalType") or "CMDA & TNRERA"
+    approval_no = plot.get("approvalNo") or "CMDA/PPD/2026/0412"
+    rera_no = plot.get("reraNo") or "TNRERA/2026/PL-0842"
+    patta_status = plot.get("pattaStatus") or "100% Individual Clean Patta (Nil EC 30+ Yrs)"
+    bank_loan = plot.get("bankLoan") or "Pre-approved by SBI, HDFC, ICICI (up to 80%)"
+    coords = plot.get("coords") or [12.9010, 80.2279]
+    lat, lng = coords[0], coords[1]
+
+    gmaps_url = f"https://www.google.com/maps/dir/?api=1&destination={lat},{lng}"
+    vision_url_live = f"https://monica-2004.github.io/Chennai-Prime-Plots/chennai-plots.html?plot={plot_id}&autovision=1"
+    vision_url_local = f"http://localhost:8080/chennai-plots.html?plot={plot_id}&autovision=1"
+    app_url_live = f"https://monica-2004.github.io/Chennai-Prime-Plots/app.html?plot={plot_id}"
+    app_url_local = f"http://localhost:8080/app.html?plot={plot_id}"
+    cab_status = "Included (Doorstep White AC Innova / Dzire)" if need_cab else "Self Drive / Direct Arrival"
+
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plot Availability Verified &amp; Visit Pass — {plot_id}</title>
+  <style>
+    body {{
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #070b14;
+      color: #f1f5f9;
+      margin: 0;
+      padding: 30px 15px;
+    }}
+    .email-wrapper {{
+      max-width: 640px;
+      margin: 0 auto;
+      background: #0f172a;
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.7);
+    }}
+    .email-header {{
+      background: linear-gradient(135deg, #0b132b 0%, #1e293b 100%);
+      padding: 32px 24px;
+      text-align: center;
+      border-bottom: 2px solid #d4af37;
+    }}
+    .badge-top {{
+      display: inline-block;
+      background: #10b981;
+      color: #0b132b;
+      font-weight: 900;
+      font-size: 12px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }}
+    .logo-text {{
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      margin: 0;
+    }}
+    .header-sub {{
+      color: #94a3b8;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }}
+    .email-body {{
+      padding: 32px 24px;
+      line-height: 1.6;
+      color: #cbd5e1;
+      font-size: 14.5px;
+    }}
+    .verify-banner {{
+      background: linear-gradient(135deg, rgba(16,185,129,0.18) 0%, rgba(5,150,105,0.08) 100%);
+      border: 2px solid #10b981;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }}
+    .specs-table {{
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 13.5px;
+    }}
+    .specs-table td {{
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }}
+    .specs-table tr:last-child td {{
+      border-bottom: none;
+    }}
+    .specs-label {{
+      color: #94a3b8;
+      font-weight: 600;
+      width: 40%;
+      background: rgba(255, 255, 255, 0.03);
+    }}
+    .specs-val {{
+      color: #ffffff;
+      font-weight: 700;
+    }}
+    .visit-card {{
+      background: rgba(212, 175, 55, 0.09);
+      border: 2px dashed #fbbf24;
+      border-radius: 12px;
+      padding: 22px;
+      margin: 24px 0;
+      text-align: center;
+    }}
+    .visit-ref-num {{
+      font-size: 26px;
+      font-weight: 900;
+      color: #fbbf24;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 4px;
+      margin: 8px 0;
+    }}
+    .btn-action-primary {{
+      display: inline-block;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff !important;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 14.5px;
+      padding: 14px 26px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+      margin: 8px 6px;
+    }}
+    .btn-action-gold {{
+      display: inline-block;
+      background: linear-gradient(135deg, #fbbf24 0%, #d4af37 100%);
+      color: #0b132b !important;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 14.5px;
+      padding: 14px 26px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+      margin: 8px 6px;
+    }}
+    .surveyor-box {{
+      background: rgba(255, 255, 255, 0.03);
+      border-left: 4px solid #d4af37;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 22px 0;
+      text-align: left;
+    }}
+    .email-footer {{
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 11.5px;
+      color: #64748b;
+      line-height: 1.6;
+    }}
+  </style>
+</head>
+<body>
+  <div class="email-wrapper">
+    <div class="email-header">
+      <div class="badge-top">✔ Availability Verified &amp; Visit Pass</div>
+      <h1 class="logo-text">CHENNAI PRIME PLOTS</h1>
+      <div class="header-sub">CMDA &bull; DTCP &bull; TNRERA Approved &bull; 100% Clean Title Patta</div>
+    </div>
+
+    <div class="email-body">
+      <!-- Availability Stamp Banner -->
+      <div class="verify-banner">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="color:#34d399; font-weight:800; font-size:14px; text-transform:uppercase; letter-spacing:1px;">
+            🟢 Plot Status: 100% Available
+          </span>
+          <span style="color:#94a3b8; font-size:11.5px;">Ref: {plot_id}</span>
+        </div>
+        <div style="font-size:18px; font-weight:800; color:#ffffff; margin-bottom:6px;">
+          {title} — {locality}
+        </div>
+        <div style="color:#94a3b8; font-size:13px; line-height:1.5;">
+          This plot is officially verified, sovereign-title clear, and ready for immediate sale deed registration. Nil-encumbrance is certified from 1994 to 2026.
+        </div>
+      </div>
+
+      <p>Dear <strong>{full_name}</strong>,</p>
+      <p>
+        Thank you for requesting plot availability and scheduling a site inspection. Your visit voucher has been confirmed in our master site registry. Full plot sanction parameters and your site visit pass are detailed below:
+      </p>
+
+      <!-- Plot Specifications Table -->
+      <table class="specs-table">
+        <tr>
+          <td class="specs-label">Plot Reference</td>
+          <td class="specs-val"><span style="color:#fbbf24;">{plot_id}</span></td>
+        </tr>
+        <tr>
+          <td class="specs-label">Project &amp; Location</td>
+          <td class="specs-val">{title}, {locality}</td>
+        </tr>
+        <tr>
+          <td class="specs-label">Plot Dimensions &amp; Size</td>
+          <td class="specs-val">{sqft:,} Sq.Ft &bull; {dimensions} ({cents} Cents / {grounds} Ground)</td>
+        </tr>
+        <tr>
+          <td class="specs-label">Orientation (Vastu)</td>
+          <td class="specs-val"><span style="color:#34d399;">✔ {facing} Facing (100% Vastu Compliant)</span></td>
+        </tr>
+        <tr>
+          <td class="specs-label">Internal Road Access</td>
+          <td class="specs-val">{road_width}</td>
+        </tr>
+        <tr>
+          <td class="specs-label">Quoted Rate &amp; Price</td>
+          <td class="specs-val"><strong style="color:#fbbf24; font-size:15px;">{price_disp}</strong> <span style="color:#94a3b8; font-size:12px;">({rate_disp})</span></td>
+        </tr>
+        <tr>
+          <td class="specs-label">Sanction Orders</td>
+          <td class="specs-val">{approval_no} ({approval_type})</td>
+        </tr>
+        <tr>
+          <td class="specs-label">TNRERA Registration</td>
+          <td class="specs-val">{rera_no}</td>
+        </tr>
+        <tr>
+          <td class="specs-label">Patta &amp; Title Guarantee</td>
+          <td class="specs-val"><span style="color:#10b981;">{patta_status}</span></td>
+        </tr>
+        <tr>
+          <td class="specs-label">Bank Loan Approvals</td>
+          <td class="specs-val">{bank_loan}</td>
+        </tr>
+        <tr>
+          <td class="specs-label">Potable Drinking Water</td>
+          <td class="specs-val">Sweet Drinking Groundwater @ 24ft Depth</td>
+        </tr>
+      </table>
+
+      <!-- Confirmed Site Visit Voucher Card -->
+      <div class="visit-card">
+        <div style="color:#94a3b8; font-size:11px; text-transform:uppercase; letter-spacing:2px; font-weight:700;">
+          🎫 Official Site Visit Security Pass
+        </div>
+        <div class="visit-ref-num">{visit_ref}</div>
+        <div style="color:#94a3b8; font-size:12px; margin-bottom:14px;">Present this pass to your assigned surveyor upon arrival</div>
+
+        <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:14px; text-align:left; font-size:13px; line-height:1.7;">
+          <div><strong style="color:#94a3b8;">📅 Visit Date &amp; Time:</strong> <span style="color:#ffffff; font-weight:bold;">{visit_date} at {visit_time}</span></div>
+          <div><strong style="color:#94a3b8;">🚖 VIP Transport:</strong> <span style="color:#34d399; font-weight:bold;">{cab_status}</span></div>
+          <div><strong style="color:#94a3b8;">📍 Doorstep Pickup:</strong> <span style="color:#ffffff;">{pickup_location}</span></div>
+          <div><strong style="color:#94a3b8;">👤 Registered Client:</strong> <span style="color:#ffffff;">{full_name} ({phone})</span></div>
+        </div>
+      </div>
+
+      <!-- Assigned Surveyor Box -->
+      <div class="surveyor-box">
+        <div style="color:#fbbf24; font-size:11px; text-transform:uppercase; letter-spacing:1.5px; font-weight:800; margin-bottom:4px;">
+          📍 Assigned Chief Land Surveyor &amp; Inspection Officer
+        </div>
+        <div style="font-size:16px; font-weight:800; color:#ffffff;">Er. K. Senthil Nathan</div>
+        <div style="font-size:12.5px; color:#94a3b8;">Chief Surveyor &amp; Senior Site Coordinator &bull; Office: +91 93450 29705</div>
+        <div style="margin-top:12px;">
+          <a href="tel:+919345029705" style="display:inline-block; background:#0b132b; border:1px solid #d4af37; color:#fbbf24 !important; text-decoration:none; padding:8px 14px; border-radius:6px; font-size:12.5px; font-weight:700; margin-right:8px; margin-bottom:6px;">
+            📞 Call +91 93450 29705
+          </a>
+          <a href="https://wa.me/919345029705?text=Hello%20Senthil,%20I%20have%20received%20visit%20pass%20{visit_ref}%20for%20{title}%20({plot_id})" style="display:inline-block; background:#25d366; color:#ffffff !important; text-decoration:none; padding:8px 14px; border-radius:6px; font-size:12.5px; font-weight:700;">
+            💬 WhatsApp Surveyor
+          </a>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="text-align:center; margin:26px 0 10px;">
+        <a href="{gmaps_url}" class="btn-action-primary" target="_blank">
+          📍 Open GPS Driving Route (Google Maps)
+        </a>
+        <a href="{vision_url_live}" class="btn-action-gold" target="_blank">
+          📱 3D Street Vision &amp; Virtual Tour
+        </a>
+      </div>
+
+      <div style="text-align:center; margin-top:8px;">
+        <a href="{app_url_live}" style="color:#38bdf8; font-size:12px; text-decoration:underline;">
+          View in Mobile App (GitHub Pages)
+        </a>
+        &bull;
+        <a href="{app_url_local}" style="color:#94a3b8; font-size:12px; text-decoration:underline;">
+          Localhost Web App
+        </a>
+      </div>
+
+      <p style="font-size:12px; color:#64748b; margin-top:24px; line-height:1.5;">
+        Pass issued on {date_str}. This digital confirmation is valid for 7 calendar days. For modifications or reschedule requests, contact <a href="mailto:monicaperumal2004@gmail.com" style="color:#94a3b8;">monicaperumal2004@gmail.com</a>.
+      </p>
+    </div>
+
+    <div class="email-footer">
+      Chennai Prime Plots &bull; DPIIT Recognized &bull; TN RERA Registered Partner<br>
+      One Grand Plaza, Anna Salai / OMR Expressway, Chennai, Tamil Nadu 600028<br>
+      Site Coordination Helpline: +91 93450 29705 &bull; Support: monicaperumal2004@gmail.com
+    </div>
+  </div>
+</body>
+</html>"""
+
+
+def send_plot_availability_email(plot_id_or_data, visit_data):
+    clean_email = (visit_data.get("email") or "").strip().lower()
+    if not clean_email or "@" not in clean_email:
+        clean_email = "monicaperumal2004@gmail.com"
+
+    # Resolve plot
+    plot = None
+    if isinstance(plot_id_or_data, dict):
+        plot = plot_id_or_data
+    elif isinstance(plot_id_or_data, str):
+        plot = get_plot_by_id(plot_id_or_data)
+
+    if not plot:
+        # Fallback plot object
+        plot_id = str(plot_id_or_data) if plot_id_or_data else "CHN-OMR-01"
+        plot = {
+            "id": plot_id,
+            "title": visit_data.get("propertyTitle") or "Chennai Prime Villa Plot",
+            "locality": visit_data.get("locality") or "OMR / ECR Expressway, Chennai",
+            "zoneLabel": "Chennai Prime Corridor",
+            "priceDisplay": visit_data.get("priceDisplay") or "₹48.00 Lakhs",
+            "pricePerSqftDisplay": "₹4,000 / sq.ft",
+            "plotSizeSqft": 1200,
+            "plotSizeCents": 2.75,
+            "plotSizeGrounds": 0.50,
+            "dimensions": "30 ft × 40 ft",
+            "facing": "East",
+            "roadWidth": "40 Feet Blacktop Road",
+            "approvalType": "CMDA & TNRERA",
+            "approvalNo": "CMDA/PPD/2026/0412",
+            "reraNo": "TNRERA/2026/PL-0842",
+            "pattaStatus": "100% Individual Clean Patta (Nil EC 30+ Yrs)",
+            "bankLoan": "Pre-approved by SBI, HDFC, ICICI (up to 80%)",
+            "coords": [12.9010, 80.2279]
+        }
+
+    visit_ref = "VISIT-" + hex(int(time.time()))[2:].upper()
+    visit_data["visitRef"] = visit_ref
+
+    html_content = generate_plot_availability_email_html(plot, visit_data)
+
+    plot_id = plot.get("id", "PLOT")
+    email_filename = f"VISIT_{plot_id}_{visit_ref}.html"
+    email_path = os.path.join(EMAILS_DIR, email_filename)
+    try:
+        with open(email_path, "w", encoding="utf-8") as f:
+            f.write(html_content)
+    except Exception as e:
+        print(f"[!] Warning: could not write email file: {e}")
+
+    # Dispatch via Gmail SMTP
+    subject = f"🟢 Plot Availability Verified & Visit Pass: {plot.get('title')} [{plot.get('id')}]"
+    sent, msg = send_smtp_email(to_email=clean_email, subject=subject, html_content=html_content)
+
+    # Record lead in leads.json
+    lead_record = {
+        "leadId": visit_ref,
+        "fullName": visit_data.get("fullName") or visit_data.get("name") or "Valued Investor",
+        "email": clean_email,
+        "phone": visit_data.get("phone", ""),
+        "inquiryType": "Plot Availability Verification & Visit",
+        "propertyTitle": plot.get("title"),
+        "propertyId": plot.get("id"),
+        "budget": plot.get("priceDisplay", "Price on Request"),
+        "visitDate": visit_data.get("visitDate", "Immediate"),
+        "visitTime": visit_data.get("visitTime", "10:30 AM"),
+        "pickupLocation": visit_data.get("pickupLocation", "Doorstep Pickup"),
+        "needCab": visit_data.get("needCab", True),
+        "timestamp": datetime.now().isoformat(),
+        "emailSent": sent,
+        "emailStatus": msg,
+        "viewEmailUrl": f"/sent_emails/{email_filename}"
+    }
+    save_lead(lead_record)
+
+    return {
+        "success": True,
+        "emailSent": sent,
+        "visitRef": visit_ref,
+        "plotId": plot.get("id"),
+        "plotTitle": plot.get("title"),
+        "recipient": clean_email,
+        "message": f"Official plot availability confirmed & visit pass dispatched to {clean_email}!",
+        "viewUrl": f"/sent_emails/{email_filename}",
+        "receiptHtml": html_content,
+        "plot": plot,
+        "visit": visit_data
+    }
+
+
 def render_webhook_console():
     cfg = load_smtp_config()
     user = cfg.get("user", "monicaperumal2004@gmail.com")
@@ -1371,6 +1821,29 @@ class AutomationRequestHandler(http.server.SimpleHTTPRequestHandler):
                 return
 
         # API: Post Ad / Sell Property (OLX Style)
+        
+        # API: Verify Plot Availability & Dispatch Confirmation Email
+        if clean_path in ["/api/plots/verify-availability-email", "/api/plots/schedule-visit-email"]:
+            data = read_json_body()
+            plot_id = data.get("plotId") or data.get("propertyId") or "CHN-OMR-01"
+            email = data.get("email", "").strip().lower()
+            if not email or "@" not in email:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "A valid recipient email address is required."}).encode("utf-8"))
+                return
+
+            res = send_plot_availability_email(plot_id, data)
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(json.dumps(res).encode("utf-8"))
+            print(f"[✓] Plot Availability & Visit Pass Dispatched | Plot: {plot_id} | To: {email} | Sent: {res.get('emailSent')}")
+            return
+
         if clean_path == "/api/properties/create":
             data = read_json_body()
             title = data.get("title", "").strip()

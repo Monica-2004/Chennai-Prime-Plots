@@ -996,7 +996,10 @@
               <h4 style="font-size:1.2rem; color:#ffffff; font-weight:800;">Click Any Plot Number Above to Inspect</h4>
               <p style="font-size:0.82rem; color:#94a3b8; margin-top:2px;">Check immediate availability, corner premium status, and reservation pricing.</p>
             </div>
-            <div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+              <button class="btn btn-sm" style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff; font-weight:800; border:none; border-radius:6px; padding:8px 14px; display:inline-flex; align-items:center; gap:6px;" onclick="window.openBookingModal(window.currentSelectedPlotId || 'Masterplan Layout Plot Inspection')">
+                <i class="fas fa-envelope-circle-check"></i> Verify Availability &amp; Email Visit Pass
+              </button>
               <button class="btn btn-primary btn-sm" onclick="window.openBookingModal('Masterplan Layout Plot Inspection')">
                 <i class="fas fa-phone-alt"></i> Inquire Entire Layout
               </button>

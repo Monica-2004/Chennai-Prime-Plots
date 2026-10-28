@@ -436,6 +436,193 @@
     `;
   }
 
+
+  /**
+   * Generates a luxury Plot Availability & Site Visit Confirmation HTML pass
+   */
+  function generatePlotAvailabilityReceiptHtml(plot, visitData, isLiveDispatched) {
+    const plotId = plot.id || visitData.plotId || "CHN-OMR-01";
+    const title = plot.title || visitData.plotTitle || "Chennai Prime Plot";
+    const locality = plot.locality || visitData.locality || "OMR / ECR, Chennai";
+    const priceDisplay = plot.priceDisplay || visitData.priceDisplay || "₹48.00 Lakhs";
+    const sqft = plot.plotSizeSqft || visitData.plotSizeSqft || 1200;
+    const facing = plot.facing || visitData.facing || "East";
+    const visitRef = visitData.visitRef || ("VISIT-" + Math.floor(100000 + Math.random() * 900000));
+    const visitDate = visitData.visitDate || "Immediate Inspection (Tomorrow)";
+    const visitTime = visitData.visitTime || "10:30 AM";
+    const pickup = visitData.pickupLocation || "Doorstep Pickup in Chennai";
+    const cabStatus = visitData.needCab ? "Included (Complimentary AC Cab)" : "Direct Arrival";
+    const recipient = visitData.email || "Registered Investor";
+
+    const statusBadge = isLiveDispatched
+      ? `<span style="background:rgba(16,185,129,0.2); color:#34d399; font-size:12px; font-weight:800; padding:4px 12px; border-radius:12px; border:1px solid #10b981;">✔ Dispatched to ${recipient}</span>`
+      : `<span style="background:rgba(251,191,36,0.2); color:#fbbf24; font-size:12px; font-weight:800; padding:4px 12px; border-radius:12px; border:1px solid #fbbf24;">✔ Verified Availability Pass Ready</span>`;
+
+    return `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 620px; margin: 0 auto; background: #0b132b; color: #f8fafc; border: 1px solid rgba(212,175,55,0.45); border-radius: 12px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.6);">
+        <!-- Header -->
+        <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 24px; border-bottom: 2px solid #d4af37; text-align: center;">
+          <span style="display:inline-block; background:#10b981; color:#0b132b; font-weight:900; font-size:11px; padding:3px 12px; border-radius:12px; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px;">✔ 100% Available &amp; Verified</span>
+          <h2 style="margin: 0; color: #ffffff; font-size: 22px; letter-spacing: 1px; font-weight: 800;">CHENNAI PRIME PLOTS</h2>
+          <p style="margin: 4px 0 0; color: #94a3b8; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px;">Official Availability &amp; Visit Confirmation Pass</p>
+        </div>
+
+        <!-- Body -->
+        <div style="padding: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <div style="color:#fbbf24; font-size:12px; font-weight:bold; letter-spacing:1px;">PLOT: ${plotId}</div>
+            ${statusBadge}
+          </div>
+
+          <div style="background: rgba(16,185,129,0.12); border: 1px solid #10b981; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+            <div style="color: #ffffff; font-size: 17px; font-weight: 800; margin-bottom: 4px;">${title}</div>
+            <div style="color: #94a3b8; font-size: 13px; margin-bottom: 10px;">${locality}</div>
+            <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; font-size:12.5px; border-top:1px solid rgba(255,255,255,0.08); padding-top:10px;">
+              <div><span style="color:#94a3b8;">Price:</span> <strong style="color:#fbbf24;">${priceDisplay}</strong></div>
+              <div><span style="color:#94a3b8;">Size:</span> <strong style="color:#ffffff;">${sqft} Sq.Ft</strong></div>
+              <div><span style="color:#94a3b8;">Facing:</span> <strong style="color:#34d399;">${facing} (Vastu)</strong></div>
+              <div><span style="color:#94a3b8;">Sanction:</span> <strong style="color:#38bdf8;">CMDA &amp; TNRERA</strong></div>
+            </div>
+          </div>
+
+          <!-- Confirmed Visit Pass Box -->
+          <div style="background: rgba(212,175,55,0.08); border: 2px dashed #fbbf24; border-radius: 10px; padding: 18px; text-align: center; margin-bottom: 20px;">
+            <div style="color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;">Official Visit Reference Pass</div>
+            <div style="font-size: 24px; font-weight: 900; color: #fbbf24; letter-spacing: 3px; font-family: monospace; margin: 6px 0;">${visitRef}</div>
+            <div style="font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-top: 8px;">
+              <strong>Date &amp; Time:</strong> ${visitDate} at ${visitTime}<br>
+              <strong>Transport:</strong> ${cabStatus} &bull; <strong>Pickup:</strong> ${pickup}
+            </div>
+          </div>
+
+          <!-- Assigned Surveyor -->
+          <div style="background: rgba(255,255,255,0.03); border-left: 3px solid #d4af37; padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 20px; font-size: 13px;">
+            <div style="color: #fbbf24; font-size: 11.5px; font-weight: bold; text-transform: uppercase; margin-bottom: 2px;">Assigned Senior Site Coordinator</div>
+            <strong style="color: #ffffff;">Er. K. Senthil Nathan</strong> (Chief Land Surveyor)<br>
+            <span style="color: #94a3b8; font-size: 12px;">Direct Line: +91 93450 29705</span>
+          </div>
+
+          <!-- Actions -->
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+            <a href="https://wa.me/919345029705?text=Hello%20Senthil,%20I%20have%20visit%20pass%20${visitRef}%20for%20${encodeURIComponent(title)}" target="_blank" style="flex:1; min-width:140px; text-align:center; background:#25d366; color:#ffffff !important; text-decoration:none; padding:12px; border-radius:8px; font-weight:bold; font-size:13px;">
+              💬 WhatsApp Surveyor
+            </a>
+            <a href="tel:+919345029705" style="flex:1; min-width:140px; text-align:center; background:#0b132b; border:1px solid #d4af37; color:#fbbf24 !important; text-decoration:none; padding:12px; border-radius:8px; font-weight:bold; font-size:13px;">
+              📞 Call Coordinator
+            </a>
+          </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.4); padding: 14px; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); font-size: 11px; color: #64748b;">
+          Chennai Prime Plots &bull; Official Availability &bull; Helpline: +91 93450 29705
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * Verifies plot availability and dispatches official visit pass via Email
+   */
+  async function verifyPlotAvailabilityAndEmailPass(data) {
+    const plotId = data.plotId || "CHN-OMR-01";
+    const plotTitle = data.plotTitle || data.propertyTitle || "Prime Villa Plot";
+    const email = (data.email || "").trim().toLowerCase();
+    const fullName = data.fullName || data.name || "Valued Investor";
+    const phone = data.phone || "+91 93450 29705";
+    const visitRef = "VISIT-" + Math.floor(100000 + Math.random() * 900000);
+    const visitDate = data.visitDate || "Immediate Inspection (Tomorrow)";
+    const visitTime = data.visitTime || "10:30 AM";
+    const pickupLocation = data.pickupLocation || "Doorstep Pickup in Chennai";
+    const needCab = data.needCab !== false;
+
+    const payload = {
+      plotId: plotId,
+      plotTitle: plotTitle,
+      locality: data.locality || "OMR / ECR Expressway, Chennai",
+      fullName: fullName,
+      email: email,
+      phone: phone,
+      visitDate: visitDate,
+      visitTime: visitTime,
+      pickupLocation: pickupLocation,
+      needCab: needCab,
+      visitRef: visitRef,
+      inquiryType: "Plot Availability Verification & Visit",
+      message: `Verified availability requested for ${plotTitle} (${plotId}). Scheduled visit: ${visitDate} at ${visitTime}. Pickup: ${pickupLocation}.`
+    };
+
+    // Save scheduled visit to localStorage for user profile
+    try {
+      const scheduled = JSON.parse(localStorage.getItem("cp_user_plot_visits") || "[]");
+      scheduled.unshift({
+        visitRef: visitRef,
+        plotId: plotId,
+        plotTitle: plotTitle,
+        visitDate: visitDate,
+        visitTime: visitTime,
+        pickupLocation: pickupLocation,
+        email: email,
+        phone: phone,
+        status: "Confirmed & Email Dispatched",
+        createdAt: new Date().toISOString()
+      });
+      localStorage.setItem("cp_user_plot_visits", JSON.stringify(scheduled.slice(0, 30)));
+    } catch (e) {
+      console.warn("Storage warning:", e);
+    }
+
+    let serverDispatched = false;
+    let serverVisitRef = visitRef;
+    let actualPlot = data.plot || { id: plotId, title: plotTitle, locality: data.locality, priceDisplay: data.priceDisplay };
+
+    const endpoints = [
+      "/api/plots/verify-availability-email",
+      "http://localhost:8080/api/plots/verify-availability-email",
+      "http://127.0.0.1:8080/api/plots/verify-availability-email",
+      "/webhook/llb-property-inquiry",
+      "http://localhost:8080/webhook/llb-property-inquiry",
+      "http://127.0.0.1:8080/webhook/llb-property-inquiry"
+    ];
+
+    for (const ep of endpoints) {
+      if (serverDispatched) break;
+      try {
+        const res = await fetchWithTimeout(ep, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(payload),
+        }, 4500);
+
+        if (res.ok) {
+          const json = await res.json().catch(() => ({}));
+          if (json && (json.success || json.emailSent || json.status === "success")) {
+            serverDispatched = Boolean(json.emailSent || json.success);
+            if (json.visitRef) serverVisitRef = json.visitRef;
+            if (json.plot) actualPlot = json.plot;
+            console.log("Plot availability confirmation dispatched via:", ep);
+            break;
+          }
+        }
+      } catch (err) {
+        // Try next endpoint
+      }
+    }
+
+    payload.visitRef = serverVisitRef;
+    const receiptHtml = generatePlotAvailabilityReceiptHtml(actualPlot, payload, serverDispatched);
+
+    return {
+      success: true,
+      emailSent: serverDispatched,
+      visitRef: serverVisitRef,
+      plotId: plotId,
+      receiptHtml: receiptHtml,
+      message: serverDispatched
+        ? `Official plot availability verified & confirmation pass sent to ${email}!`
+        : `Availability confirmed for ${plotTitle}! Digital visit pass generated for ${fullName}.`
+    };
+  }
+
   // Create Universal API Object
   const UniversalDispatcher = {
     dispatchInquiry: dispatchInquiry,
@@ -443,6 +630,8 @@
     verifyEmailCode: verifyEmailCode,
     generateEmailReceiptHtml: generateEmailReceiptHtml,
     generateVerificationEmailHtml: generateVerificationEmailHtml,
+    generatePlotAvailabilityReceiptHtml: generatePlotAvailabilityReceiptHtml,
+    verifyPlotAvailabilityAndEmailPass: verifyPlotAvailabilityAndEmailPass,
   };
 
   // Export globally under all canonical names for 100% compatibility

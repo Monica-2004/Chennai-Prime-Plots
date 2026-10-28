@@ -41,5 +41,19 @@
     ],
     "myListings": [],
     "createdAt": "2026-10-28T12:24:58.071629"
+  },
+  {
+    "id": "USR-V-6AE1A1A1",
+    "name": "Nasiha",
+    "email": "nasiha2305@gmail.com",
+    "phone": "+91 93450 29705",
+    "role": "VIP Verified Investor",
+    "emailVerified": true,
+    "savedPlots": [
+      "CHN-OMR-01",
+      "CHN-ECR-01"
+    ],
+    "myListings": [],
+    "createdAt": "2026-10-28T12:47:53.691173"
   }
 ]

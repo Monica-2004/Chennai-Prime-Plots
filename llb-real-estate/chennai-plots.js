@@ -1870,6 +1870,11 @@
 
             </button>
 
+            <!-- Dedicated Verify Availability & Email Visit Pass Button -->
+            <button class="btn btn-sm" style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff; font-weight:800; border:none; border-radius:6px; padding:8px 12px; margin-top:6px; width:100%; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer;" onclick="window.openBookingModal('${plot.id}')" title="Verify Availability & Email Visit Pass">
+              <i class="fas fa-envelope-circle-check"></i> Verify Availability &amp; Email Visit Pass
+            </button>
+
             <div class="card-actions-row">
 
               <button class="btn btn-primary btn-sm" onclick="window.openBookingModal('${plot.id}')" title="Book Free Cab Visit">
