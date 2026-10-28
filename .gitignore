@@ -32,6 +32,7 @@ Thumbs.db
 .vercel
 *.log
 scratch/
+cloudflared.exe
 
 
 pgi_backup/

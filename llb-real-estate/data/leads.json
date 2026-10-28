@@ -1,5 +1,23 @@
 [
   {
+    "leadId": "VISIT-6AE1D5F0",
+    "fullName": "Chandrasekar (Cloudflare Test)",
+    "email": "monicaperumal2004@gmail.com",
+    "phone": "+91 93450 29705",
+    "inquiryType": "Plot Availability Verification & Visit",
+    "propertyTitle": "Emerald Crest Villa Plots",
+    "propertyId": "CHN-OMR-01",
+    "budget": "\u20b948.00 Lakhs",
+    "visitDate": "Tomorrow - 10:00 AM",
+    "visitTime": "10:30 AM",
+    "pickupLocation": "Doorstep Pickup",
+    "needCab": true,
+    "timestamp": "2026-10-28T16:31:10.266066",
+    "emailSent": true,
+    "emailStatus": "Email successfully dispatched to monicaperumal2004@gmail.com.",
+    "viewEmailUrl": "/sent_emails/VISIT_CHN-OMR-01_VISIT-6AE1D5F0.html"
+  },
+  {
     "leadId": "VISIT-6AE1B91D",
     "fullName": "Monica Perumal",
     "email": "monicaperumal2004@gmail.com",

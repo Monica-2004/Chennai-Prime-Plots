@@ -19,6 +19,7 @@
    * Helper to attempt cross-origin and local endpoints with fast timeout
    */
   const HTTPS_API_BASES = [
+    "https://coat-carry-explore-vocabulary.trycloudflare.com",
     "https://good-monkey-24.loca.lt",
     "https://chennai-plots-api.loca.lt"
   ];
