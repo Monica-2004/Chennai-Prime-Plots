@@ -54,28 +54,10 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-main);
-      color: var(--text-white);
-      min-height: 100vh;
-      overflow-x: hidden;
-      padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom, 16px) + 20px);
-      -webkit-font-smoothing: antialiased;
-    }
+    
 
     /* TOP APP BAR (NoBroker Style) */
-    .app-top-bar {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(7, 11, 20, 0.94);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 10px 14px;
-      padding-top: calc(10px + env(safe-area-inset-top, 0px));
-    }
+    
 
     .app-bar-row1 {
       display: flex;
@@ -642,22 +624,7 @@
     }
 
     /* BOTTOM APP NAVIGATION (NoBroker & OLX 5-Tab Bar) */
-    .mobile-bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: var(--bottom-nav-h);
-      background: rgba(7, 11, 20, 0.96);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-top: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      z-index: 1000;
-      padding-bottom: env(safe-area-inset-bottom, 10px);
-    }
+    
 
     .nav-tab-item {
       display: flex;
@@ -738,21 +705,7 @@
       justify-content: center;
     }
 
-    .app-modal-sheet {
-      width: 100%;
-      max-width: 520px;
-      max-height: 90vh;
-      background: #0f172a;
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: none;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
-      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+    
 
     @keyframes slideUp {
       from { transform: translateY(100%); }
@@ -1022,10 +975,128 @@
       transform: translateY(-1px);
     }
 
+  
+    /* ==========================================================================
+       MOBILE FRAME ARCHITECTURE & VIEWPORT ALIGNMENT
+       ========================================================================== */
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #030712;
+      color: var(--text-white);
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .mobile-app-shell {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background-color: var(--bg-main);
+      position: relative;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.85);
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom, 16px) + 24px);
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+
+    .app-top-bar {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      z-index: 1000;
+      background: rgba(7, 11, 20, 0.94);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 10px 14px;
+      padding-top: calc(10px + env(safe-area-inset-top, 0px));
+      box-sizing: border-box;
+    }
+
+    .mobile-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      height: var(--bottom-nav-h);
+      background: rgba(7, 11, 20, 0.96);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border-subtle);
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 1000;
+      padding-bottom: env(safe-area-inset-bottom, 10px);
+      box-sizing: border-box;
+    }
+
+    .app-modal-sheet {
+      width: 100%;
+      max-width: 480px;
+      max-height: 90vh;
+      background: #0f172a;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: none;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        background-color: var(--bg-main);
+      }
+      .mobile-app-shell {
+        max-width: 100%;
+        border-left: none;
+        border-right: none;
+        box-shadow: none;
+      }
+      .app-top-bar {
+        max-width: 100%;
+      }
+      .mobile-bottom-nav {
+        max-width: 100%;
+        left: 0;
+        transform: none;
+        border-left: none;
+        border-right: none;
+      }
+      .app-modal-sheet {
+        max-width: 100%;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+      }
+    }
+
   </style>
 </head>
 <body>
-
+  <div class="mobile-app-shell">
   <!-- TOP APP BAR -->
   <header class="app-top-bar">
     <div class="app-bar-row1">
@@ -1130,6 +1201,8 @@
       <span>Account</span>
     </button>
   </nav>
+
+    </div>
 
   <!-- =========================================================================
        MODAL 1: INTERACTIVE CLOSE-UP MAP & GPS DIRECTIONS (NEW)
