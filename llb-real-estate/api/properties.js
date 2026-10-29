@@ -1,6 +1,6 @@
 // Vercel Serverless Function: GET /api/properties & POST /api/properties
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 let masterPlots = null;
 

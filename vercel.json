@@ -4,27 +4,55 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/llb-real-estate/chennai-plots.html"
+      "destination": "/app.html"
+    },
+    {
+      "source": "/app",
+      "destination": "/app.html"
+    },
+    {
+      "source": "/app.html",
+      "destination": "/app.html"
+    },
+    {
+      "source": "/mobile",
+      "destination": "/mobile.html"
+    },
+    {
+      "source": "/mobile.html",
+      "destination": "/mobile.html"
     },
     {
       "source": "/chennai-plots",
-      "destination": "/llb-real-estate/chennai-plots.html"
+      "destination": "/chennai-plots.html"
     },
     {
       "source": "/chennai-plots.html",
-      "destination": "/llb-real-estate/chennai-plots.html"
+      "destination": "/chennai-plots.html"
     },
     {
       "source": "/real-estate",
-      "destination": "/llb-real-estate/index.html"
+      "destination": "/index.html"
+    },
+    {
+      "source": "/api/properties",
+      "destination": "/api/properties.js"
+    },
+    {
+      "source": "/api/plots/verify-availability-email",
+      "destination": "/api/plots/verify-availability-email.js"
+    },
+    {
+      "source": "/api/plots/schedule-visit-email",
+      "destination": "/api/plots/verify-availability-email.js"
     },
     {
       "source": "/webhook/llb-property-inquiry",
-      "destination": "/api/webhook/llb-property-inquiry"
+      "destination": "/api/webhook/llb-property-inquiry.js"
     },
     {
       "source": "/api/send-email",
-      "destination": "/api/webhook/llb-property-inquiry"
+      "destination": "/api/webhook/llb-property-inquiry.js"
     }
   ]
 }
