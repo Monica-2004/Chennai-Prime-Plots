@@ -31,6 +31,16 @@
 
   <!-- Chennai Plots Custom Stylesheet -->
   <link rel="stylesheet" href="chennai-plots.css">
+  <!-- Seamless Mobile App Auto-Routing -->
+  <script>
+    (function() {
+      var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth && window.innerWidth < 768);
+      var search = window.location.search || "";
+      if (search.indexOf("verify_plot") !== -1 || search.indexOf("app=1") !== -1 || (isMobile && !sessionStorage.getItem("stay_on_desktop"))) {
+        window.location.replace("app.html" + search);
+      }
+    })();
+  </script>
 </head>
 <body>
   <!-- Full-Page Interactive 3D Terrain & Particle Universe Canvas -->
